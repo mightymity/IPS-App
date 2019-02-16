@@ -1,0 +1,5 @@
+export const todoContants = {
+    CREATE_NEW_TODO: 'CREATE_NEW_TODO',
+    LIST_ALL_TODOS: 'LIST_ALL_TODOS',
+    DELETE_TODO_BY_INDEX: 'DELETE_TODO_BY_INDEX',
+};
