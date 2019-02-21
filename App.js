@@ -54,6 +54,36 @@ class App extends Component {
           >
           
             <Scene
+              title="BLE"
+              key="ble"
+              component={BLE}
+            />
+
+            <Scene
+              title="GPS"
+              key="gps"
+              component={GPS}
+            />
+
+            <Scene
+              title="Patient"
+              key="patient"
+              component={Patient}
+            />
+
+            <Scene
+              title="Caretaker"
+              key="caretaker"
+              component={Caretaker}
+            />
+
+            <Scene
+              title="Edit Map"
+              key="edit-map"
+              component={EditMap}
+            />
+
+            <Scene
               title="Home"
               // drawerLockMode="locked-closed"
               // renderRightButton={() => <View />}
@@ -69,36 +99,6 @@ class App extends Component {
               title="Create Todo"
               key="create_todo"
               component={CreateTodo}
-            />    
-
-           <Scene
-              title="BLE"
-              key="ble"
-              component={BLE}
-            />    
-
-            <Scene
-              title="GPS"
-              key="gps"
-              component={GPS}
-            />    
-
-            <Scene
-              title="Patient"
-              key="patient"
-              component={Patient}
-            />    
-
-            <Scene
-              title="Caretaker"
-              key="caretaker"
-              component={Caretaker}
-            />    
-
-            <Scene
-              title="Edit Map"
-              key="edit-map"
-              component={EditMap}
             />
 
 

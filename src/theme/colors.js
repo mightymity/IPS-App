@@ -13,5 +13,7 @@ export const colors = {
   redA: '#FF0000',
   blueA: '#1E90FF',
 
+  blackA: '#000000',
+
   purpleA: '#43425D'
 };
