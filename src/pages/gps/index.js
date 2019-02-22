@@ -63,7 +63,9 @@ export class GPS extends Component {
                     onPress={this.pickLocationHandler}
                     ref = {ref => this.map = ref}
                  >
+
                   {marker}
+                  
                  </MapView>
 
             </View>
