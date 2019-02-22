@@ -65,7 +65,8 @@ export class GPS extends Component {
                  >
 
                   {marker}
-                  
+                
+                
                  </MapView>
 
             </View>
