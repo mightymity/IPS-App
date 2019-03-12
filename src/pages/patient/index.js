@@ -93,6 +93,41 @@ export class Patient extends Component {
       }
       
 ]
+
+state = {
+  patients: [{ name: "Prayut JunOK", duty: "Uncle near home" },
+  { name: "Pravitt TheWatch", duty: "Watcher" },
+  { name: "Suthep T.", duty: "Karawa Land" }],
+
+  buildings: [{
+      name: 'IC Building',
+      floors: [
+          {
+              number: '6',
+              img: 'abc'
+          },
+          {
+              number: '8',
+              img: 'abc'
+          }
+      ]
+  },
+  {
+      name: 'ECC Building',
+      floors: [
+          {
+              number: '3',
+              img: 'abc'
+          },
+          {
+              number: '5',
+              img: 'abc'
+          }
+      ]
+  }
+  ]
+
+}
     goToReg = () => {
       Actions.jump('patient_regis')
     }
@@ -118,7 +153,7 @@ export class Patient extends Component {
             //{/* <SearchPatient /> */}
         
         <ScrollView style={{flex:3}} contentContainerStyle={global.pageScrollView}>
-        <SearchPatient />
+        <SearchPatient patients={this.state.patients}/>
         
         
         {/* <FlatList
