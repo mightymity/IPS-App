@@ -1,9 +1,5 @@
 import React, { Component } from 'react'
-<<<<<<< HEAD
-import { View, Text, FlatList, TouchableOpacity, TextInput } from 'react-native'
-=======
 import { View, Text, FlatList, Image, TextInput, ScrollView, TouchableOpacity } from 'react-native'
->>>>>>> stamp
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 import { ListItem} from 'react-native-elements'
@@ -79,19 +75,6 @@ import PatientList from '../../components/patient-list'
 import Autocomplete from 'react-native-autocomplete-input'
 
 export class Patient extends Component {
-<<<<<<< HEAD
-   
-
-    render() {
-        const { todos, } = this.props;
-        
-        
-        return (
-            <View style={global.pageContainer}>
-                <Text>Patient</Text>
-            </View>
-        )
-=======
   list = [
     {
       name: 'Amy Farha',
@@ -154,7 +137,6 @@ export class Patient extends Component {
 
         </ScrollView>
     )
->>>>>>> stamp
     }
 
     // render() {
