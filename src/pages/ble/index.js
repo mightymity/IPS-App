@@ -25,11 +25,11 @@ export class BLE extends Component {
             floors: [
                 {
                     number: '6',
-                    img: 'abc'
+                    img: require('../../assets/images/ic-floor6.png')
                 },
                 {
                     number: '8',
-                    img: 'abc'
+                    img: require('../../assets/images/ic-floor8.png')
                 }
             ]
         },
@@ -38,11 +38,11 @@ export class BLE extends Component {
             floors: [
                 {
                     number: '3',
-                    img: 'abc'
+                    img: require('../../assets/images/ecc-floor3.png')
                 },
                 {
                     number: '5',
-                    img: 'abc'
+                    img: require('../../assets/images/ecc-floor5.png')
                 }
             ]
         }

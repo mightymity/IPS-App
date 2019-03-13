@@ -4,7 +4,8 @@ import {
   TextInput,
   Picker,
   TouchableOpacity,
-  Image
+  Image,
+  Text
 } from 'react-native';
 
 import { local } from "./style";
@@ -20,6 +21,7 @@ class IndoorMap extends Component {
     buildings: this.props.buildings,
     name: this.props.buildings.name,
     nameIndex: 0,
+    floorsIndex:0,
     floors: this.props.buildings && this.props.buildings.floors ? this.props.buildings.floors : null,
     floorsNo: this.props.buildings && this.props.buildings.floors ? this.props.buildings.floors.number : null
   }
@@ -50,6 +52,7 @@ class IndoorMap extends Component {
   render() {
     const { name, floors, floorsNo, } = this.state;
     const black = '#000000';
+    const img = this.state.buildings[0].floors[0].img
 
 
     return (
@@ -112,7 +115,7 @@ class IndoorMap extends Component {
               style={local.x}
               mode="dropdown"
               selectedValue={floorsNo}
-              onValueChange={(itemValue) => this.setState({ floorsNo: itemValue })}>
+              onValueChange={(itemValue,index) => this.setState({ floorsNo: itemValue, floorsIndex: index })}>
 
               {this.state.buildings[this.state.nameIndex].floors.map(item => (
                 <Picker.Item label={item.number} value={item.number} style={{ fontSize: 16 }} />
@@ -129,7 +132,9 @@ class IndoorMap extends Component {
         </View>
 
         <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
-          <Image resizeMode='contain' source={require('../../assets/images/MorgantownMall.png')}></Image>
+          {/* <Image resizeMode='contain' source={require('../../assets/images/MorgantownMall.png')}></Image> */}
+          {/* <Text>{img}</Text> */}
+          <Image resizeMode='center' style={{ width:800, height:400}} source={this.state.buildings[this.state.nameIndex].floors[this.state.floorsIndex].img}></Image>
         </View>
 
       </View>
