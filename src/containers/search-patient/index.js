@@ -21,8 +21,8 @@ import TitleIndicator from "../../components/title-indicator";
 class SearchPatient extends Component {
   state = {
     name: '',
-    patients: this.props.patients,
-    selectedPatient: this.props.patients[0]
+    patients: this.props.patientss,
+    selectedPatient: this.props.patientss[0]
   }
 
   onChangeName = (value) => {

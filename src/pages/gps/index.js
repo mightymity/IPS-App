@@ -38,7 +38,7 @@ export class GPS extends Component {
             },
         }],
 
-        patients:[{ name: "Prayut JunOK", duty: "Uncle near home" },
+        patientss:[{ name: "Prayut JunOK", duty: "Uncle near home" },
         { name: "Pravitt TheWatch", duty: "Watcher" },
         { name: "Suthep T.", duty: "Karawa Land" }]
 
@@ -98,7 +98,7 @@ export class GPS extends Component {
 
             <ScrollView contentContainerStyle={global.pageScrollView}>
                 <View>
-                    <SearchPatient patients={this.state.patients}/>
+                    <SearchPatient patientss={this.state.patientss}/>
                 </View>
                 <View>
                     <MapView

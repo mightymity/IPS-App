@@ -74,7 +74,7 @@ list = [
 export class Caretaker extends Component {
 
   state = {
-    patients: [{ name: "Prayut JunOK", duty: "Uncle near home" },
+    patientss: [{ name: "Prayut JunOK", duty: "Uncle near home" },
     { name: "Pravitt TheWatch", duty: "Watcher" },
     { name: "Suthep T.", duty: "Karawa Land" }],
   
@@ -133,7 +133,7 @@ export class Caretaker extends Component {
                   //{/* <SearchPatient /> */}
               
               <ScrollView style={{flex:3}} contentContainerStyle={global.pageScrollView}>
-              <SearchPatient patients={this.state.patients}/>
+              <SearchPatient patientss={this.state.patientss}/>
               
               
               <FlatList
