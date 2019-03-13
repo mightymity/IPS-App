@@ -127,7 +127,7 @@ export class Patient extends Component {
         renderItem={this.renderItem}
         /> */}
         <FlatList data={patients} renderItem={({ item, index }) =>
-            <PatientList name={item.name} ble={item.ble} gps={item.gps} />
+            <PatientList avatar={item.avatar} name={item.name} ble={item.ble} gps={item.gps} />
         } />
         
         

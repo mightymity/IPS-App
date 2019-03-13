@@ -9,6 +9,7 @@ export const patientActions = {
 function createNewPatient(name, ble, gps) {
     return {
         type: patientConstants.CREATE_NEW_PATIENT,
+        //avatar: avatar,
         name: name,
         ble: ble,
         gps: gps

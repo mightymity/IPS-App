@@ -2,9 +2,9 @@
 import { caretakerConstants } from '../_constants';
 
 const defaultState = [
-  { name: 'John Smith', id: '000', address: 'address', tel: '000', patient: '' },
-  { name: 'Sarah Parker', id: '111', address: 'address', tel: '000', patient: ''},
-  { name: 'James Black', id: '222', address: 'address', tel: '000', patient: '' },
+  { name: 'John Smith', id: '000', address: 'address', tel: '000', patient: 'Jim Strange' },
+  { name: 'Sarah Parker', id: '111', address: 'address', tel: '000', patient: 'Dan Brown'},
+  { name: 'James Black', id: '222', address: 'address', tel: '000', patient: 'Jack Black' },
 ]
 
 export function caretakers(state = defaultState, action) {

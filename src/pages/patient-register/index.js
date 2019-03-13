@@ -19,12 +19,14 @@ export class patientRegist extends Component {
       }
 
     state = {
+    //avatar: '',
     name: '',
     ble: '',
     gps: ''
     }
 
     saveNewPatient = () => {
+    //this.setState({avatar: '../../assets/images/default.png'})
     const { name, ble, gps } = this.state
     this.props.dispatch(patientActions.createNewPatient(name, ble, gps));
     Alert.alert(
@@ -58,6 +60,7 @@ export class patientRegist extends Component {
 
     render() {
         const { name, ble, gps } = this.state
+        //const avatar = '../../assets/images/default.png'
         return (
             <View style={{alignSelf:'stretch'}}>
                 <ScrollView>
