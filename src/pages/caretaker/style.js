@@ -17,5 +17,10 @@ export const local = StyleSheet.create({
   btnText:{
     color: '#fff',
     fontWeight: 'bold',
+  },
+
+  view: {
+    flex: 3,
+    backgroundColor: colors.whiteB,
   }
 });

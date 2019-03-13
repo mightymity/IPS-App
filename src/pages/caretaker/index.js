@@ -9,7 +9,8 @@ import { global } from '../../theme'
 import TodoItem from '../../components/todo-item'
 import {Actions} from 'react-native-router-flux'
 import SearchPatient from "../../containers/search-patient"
-import { ListItem} from 'react-native-elements'
+import { ListItem } from 'react-native-elements'
+import CaretakerList from '../../components/caretaker-list'
 
 list = [
     {
@@ -86,6 +87,7 @@ export class Caretaker extends Component {
             
       
           render () {
+            const { caretakers } = this.props;
           return (
               
                //{/* // <View>
@@ -95,16 +97,19 @@ export class Caretaker extends Component {
               
                   //{/* <SearchPatient /> */}
               
-              <ScrollView style={{flex:3}} contentContainerStyle={global.pageScrollView}>
+              <ScrollView style={local.view} contentContainerStyle={global.pageScrollView}>
               <SearchPatient />
               
               
-              <FlatList
+              {/* <FlatList
               //keyExtractor={this.keyExtractor}
               data={list}
               renderItem={this.renderItem}
-              />
+              /> */}
               
+              <FlatList data={caretakers} renderItem={({ item, index }) =>
+                <CaretakerList name={item.name} id={item.id} address={item.address} tel={item.tel} patient={item.patient}/>
+              } />
               
               <TouchableOpacity style={local.button} onPress={() => {this.goToReg()}}>
                 <Text style={local.btnText}>Add</Text>
@@ -117,6 +122,7 @@ export class Caretaker extends Component {
       
 const mapStateToProps = (state) => ({
     todos: state.todos,
+    caretakers: state.caretakers
 })
 
 const mapDispatchToProps = {

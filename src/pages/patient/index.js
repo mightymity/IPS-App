@@ -6,12 +6,14 @@ import { ListItem} from 'react-native-elements'
 
 import { local } from './style'
 import { global } from '../../theme'
+import colors from '../../theme/colors'
 
 import {Actions} from 'react-native-router-flux'
 
 import SearchPatient from "../../containers/search-patient"
 import TodoItem from '../../components/todo-item'
 import PatientList from '../../components/patient-list'
+
 
 
 
@@ -115,7 +117,7 @@ export class Patient extends Component {
         
             //{/* <SearchPatient /> */}
         
-        <ScrollView style={{flex:3}} contentContainerStyle={global.pageScrollView}>
+        <ScrollView style={local.view} contentContainerStyle={global.pageScrollView}>
         <SearchPatient />
         
         

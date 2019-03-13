@@ -7,7 +7,7 @@ export default class patientList extends Component {
   render() {
     const { name, ble, gps } = this.props;
     return (
-      <View style={[global.card, local.container]}>
+      <View style={[local.container]}>
         <Text style={{ fontWeight: 'bold' }}>{name}</Text>
         <Text>{ble}</Text>
         <Text>{gps}</Text>

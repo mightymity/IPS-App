@@ -30,10 +30,10 @@ export class patientRegist extends Component {
     Alert.alert(
     
         // This is Alert Dialog Title
-        'Add',
+        'Message',
      
         // This is Alert Dialog Message. 
-        'Added',
+        'Patient Added',
         [
           // First Text Button in Alert Dialog.
           {text: 'OK'}
@@ -88,7 +88,8 @@ export class patientRegist extends Component {
 
 const mapStateToProps = (state) => ({
     todos: state.todos,
-    patients: state.patients
+    patients: state.patients,
+    caretakers: state.caretakers
 })
 
 // const mapDispatchToProps = {
