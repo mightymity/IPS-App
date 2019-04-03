@@ -21,6 +21,48 @@ export function caretakers(state = defaultState, action) {
       return nextState;
     } break;
 
+
+    case caretakerConstants.SET_CURRENT: {
+      const updatedItems = state.map(item => {
+        if(item.current === true){
+          item.current = false;
+        }
+        return item
+      })
+      return updatedItems
+    } break;
+
+    case caretakerConstants.EDIT_CARETAKER_BY_INDEX: {
+      const updatedItems = state.map(item => {
+        if(item.current === true){
+          if(action.name != ''){
+            item.name = action.name;
+          }
+
+          if(action.id != ''){
+            item.id = action.id;
+          }
+
+          if(action.address != ''){
+            item.address = action.address;
+          }
+
+          if(action.tel != ''){
+            item.tel = action.tel;
+          }
+
+          if(action.patient != ''){
+            item.patient = action.patient;
+          }
+
+          item.current = false;
+          //return thisItem
+        }
+        return item
+      })
+      return updatedItems
+    } break;
+
     default:
       return state
   }

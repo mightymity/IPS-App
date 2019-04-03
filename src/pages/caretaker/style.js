@@ -22,5 +22,15 @@ export const local = StyleSheet.create({
   view: {
     flex: 3,
     backgroundColor: colors.whiteB,
+  },
+
+  image:{
+    padding: 10,
+    margin: 5,
+    height: 30,
+    width: 30,
+    resizeMode: 'stretch',
+    alignItems: 'center',
+    marginTop: 26,
   }
 });
