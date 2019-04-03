@@ -7,8 +7,7 @@ export class PatientDetail extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
         ble: PropTypes.string.isRequired,
-        gps: PropTypes.string.isRequired,
-        current: PropTypes.bool.isRequired,
+        gps: PropTypes.string.isRequired
     }
 
     render() {

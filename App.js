@@ -20,8 +20,6 @@ import Caretaker from "./src/pages/caretaker";
 import EditMap from "./src/pages/edit-map";
 import patient_regis from "./src/pages/patient-register"
 import caretaker_regis from "./src/pages/caretaker-register"
-import patient_edit from "./src/pages/patient-edit"
-import caretaker_edit from "./src/pages/caretaker-edit"
 
 
 // Components
@@ -117,18 +115,6 @@ class App extends Component {
             key = "patient_regis" 
             component = {patient_regis}  
             />
-
-            <Scene 
-            title = "Patient Edit"
-            key = "patient_edit" 
-            component = {patient_edit}  
-            />    
-
-            <Scene 
-            title = "Caretaker Edit"
-            key = "caretaker_edit" 
-            component = {caretaker_edit}  
-            /> 
 
           </Drawer>
         </Router>

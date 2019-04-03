@@ -19,24 +19,21 @@ export class patientRegist extends Component {
       }
 
     state = {
-    //avatar: '',
     name: '',
     ble: '',
-    gps: '',
-    current: false,
+    gps: ''
     }
 
     saveNewPatient = () => {
-    //this.setState({avatar: '../../assets/images/default.png'})
-    const { name, ble, gps, current } = this.state
-    this.props.dispatch(patientActions.createNewPatient(name, ble, gps, current));
+    const { name, ble, gps } = this.state
+    this.props.dispatch(patientActions.createNewPatient(name, ble, gps));
     Alert.alert(
     
         // This is Alert Dialog Title
-        'Message',
+        'Add',
      
         // This is Alert Dialog Message. 
-        'Patient Added',
+        'Added',
         [
           // First Text Button in Alert Dialog.
           {text: 'OK'}
@@ -61,7 +58,6 @@ export class patientRegist extends Component {
 
     render() {
         const { name, ble, gps } = this.state
-        //const avatar = '../../assets/images/default.png'
         return (
             <View style={{alignSelf:'stretch'}}>
                 <ScrollView>
@@ -92,8 +88,7 @@ export class patientRegist extends Component {
 
 const mapStateToProps = (state) => ({
     todos: state.todos,
-    patients: state.patients,
-    caretakers: state.caretakers
+    patients: state.patients
 })
 
 // const mapDispatchToProps = {
