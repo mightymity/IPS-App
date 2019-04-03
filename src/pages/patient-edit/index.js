@@ -12,31 +12,33 @@ import {Actions} from 'react-native-router-flux'
 import SearchPatient from "../../containers/search-patient"
 
 import { patientActions } from '../../actions'
+import Axios from 'axios';
 
-export class patientRegist extends Component {
+export class patientEdit extends Component {
     confirm = () => {
         Actions.jump('Patient')
       }
-
+    // const n = this.props.name
+    // const b = this.props.ble
+    // const g = this.props.gps
     state = {
-    //avatar: '',
-    name: '',
     ble: '',
     gps: '',
     current: false,
     }
 
-    saveNewPatient = () => {
+    editPatient = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
-    const { name, ble, gps, current } = this.state
-    this.props.dispatch(patientActions.createNewPatient(name, ble, gps, current));
+    const { ble, gps, current} = this.state
+    this.props.dispatch(patientActions.editPatientByIndex(ble, gps));
+    
     Alert.alert(
     
         // This is Alert Dialog Title
         'Message',
      
         // This is Alert Dialog Message. 
-        'Patient Added',
+        'Edited',
         [
           // First Text Button in Alert Dialog.
           {text: 'OK'}
@@ -44,11 +46,32 @@ export class patientRegist extends Component {
         ]
      
       )
+      
     }
 
-    onChangeName = (value) => {
-    this.setState({ name: value })
+    setCurrentFalse = () => {
+        this.props.dispatch(patientActions.setCurrent());
+        this.goBack()
     }
+
+    goBack = () =>{
+        Actions.jump('patient');
+    }
+
+    // setCurrent = () => {
+    // const updatedItem = state.map(item => {
+    //     if(item.current === true){
+    //         this.setState({name: item.name})
+    //         this.setState({ble: item.ble})
+    //         this.setState({gps: item.gps})
+    //         this.setState({current: item.current})
+    //         return item
+    //     }
+    //     return updatedItem })
+    // }
+        
+    // }
+
 
     onChangeBle = (value) => {
     this.setState({ ble: value });
@@ -60,18 +83,20 @@ export class patientRegist extends Component {
 
 
     render() {
-        const { name, ble, gps } = this.state
-        //const avatar = '../../assets/images/default.png'
+        // const {currrentIndex, data} = this.props.patients;
+
+        // data[currrentIndex]
+        
+        const { ble, gps } = this.state
+        // const result = patient.find(item => (item.current === true), this);
+        // const { name, ble, gps, current} = result
         return (
             <View style={{alignSelf:'stretch'}}>
                 <ScrollView>
                 <SearchPatient />
                 </ScrollView>
                 <View style={{ padding: 5 }}>
-                    <Text style={local.heading1}> Registration </Text>
-
-                    <TextInput value={name} style={local.textInput} placeholder="Name"
-                    underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeName(value)}/>
+                    <Text style={local.heading1}> Edit </Text>
 
                     <TextInput value={ble} style={local.textInput} placeholder="BLE"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeBle(value)}/>
@@ -79,8 +104,11 @@ export class patientRegist extends Component {
                     <TextInput value={gps} style={local.textInput} placeholder="GPS"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeGps(value)}/>
 
-                    <TouchableOpacity style={local.button} onPress={() => {this.saveNewPatient()}}>
+                    <TouchableOpacity style={local.button} onPress={() => {this.editPatient()}}>
                     <Text style={local.btnText}>Confirm</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={local.button} onPress={() => {this.setCurrentFalse()}}>
+                    <Text style={local.btnText}>Back</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -100,4 +128,4 @@ const mapStateToProps = (state) => ({
 
 // }
 
-export default connect(mapStateToProps)(patientRegist)
+export default connect(mapStateToProps)(patientEdit)

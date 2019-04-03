@@ -4,6 +4,8 @@ export const caretakerActions = {
     createNewCaretaker,
     listAllCaretakers,
     deleteCaretakerByIndex,
+    editCaretakerByIndex,
+    setCurrent,
 };
 
 function createNewCaretaker(name, id, address, tel, patient) {
@@ -29,3 +31,21 @@ function deleteCaretakerByIndex(index) {
         index: index
     }
 } 
+
+function setCurrent() {
+    return {
+        type: caretakerConstants.SET_CURRENT
+    }
+}
+
+function editCaretakerByIndex(name, id, address, tel, patient) {
+    return {
+        type: caretakerConstants.EDIT_CARETAKER_BY_INDEX,
+        name: name,
+        id: id,
+        address: address,
+        tel: tel,
+        patient: patient
+    }
+} 
+

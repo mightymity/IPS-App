@@ -16,38 +16,8 @@ import IndoorMap from "../../containers/indoor-map"
 export class BLE extends Component {
 
     state = {
-        patients: [{ name: "Prayut JunOK", duty: "Uncle near home" },
-        { name: "Pravitt TheWatch", duty: "Watcher" },
-        { name: "Suthep T.", duty: "Karawa Land" }],
-
-        buildings: [{
-            name: 'IC Building',
-            floors: [
-                {
-                    number: '6',
-                    img: require('../../assets/images/ic-floor6.png')
-                },
-                {
-                    number: '8',
-                    img: require('../../assets/images/ic-floor8.png')
-                }
-            ]
-        },
-        {
-            name: 'ECC Building',
-            floors: [
-                {
-                    number: '3',
-                    img: require('../../assets/images/ecc-floor3.png')
-                },
-                {
-                    number: '5',
-                    img: require('../../assets/images/ecc-floor5.png')
-                }
-            ]
-        }
-        ]
-
+        name: '',
+        description: ''
     }
 
     onChangeName = (value) => {
@@ -57,15 +27,43 @@ export class BLE extends Component {
     render() {
         const { todos } = this.props;
         const black = '#000000';
-        const { name, description, buildings } = this.state;
-        // const currentBuilding = buildings[currentBuildingIndex];
+        const { name, description } = this.state;
         return (
+            // <ScrollView contentContainerStyle={global.pageScrollView}>
+            // <View style={[global.pageContainer, {flexDirection: 'column' }]}>
+            //     <View style={{ flex: 1, flexDirection: 'row', }}>
+            //         <View style={{ flex: 5, paddingLeft: 20, backgroundColor: 'powderblue' }}>
+            //             {/* <AppText size="l" value="Search" center color={black} /> */}
+            //             <TextInput value={name} placeholder="Name" underlineColorAndroid={colors.greenA}
+            //                 onChangeText={(value) => this.onChangeName(value)} />
+            //         </View>
+            //         <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: 20, }}>
+            //             <AppText size="l" value="Picture" center color={black} />
+            //         </View>
+
+            //     </View>
+            //     <View style={{ flex: 1, flexDirection: 'row' }}>
+            //         <View style={{ flex: 1, alignItems: 'flex-start', paddingLeft: 20, }}>
+            //             <AppText size="xxl" value="Overview" center bold color={black} />
+            //         </View>
+            //     </View>
+            //     <View style={{ flex: 4, flexDirection: 'row' }}>
+            //         <View style={{ flex: 1, alignItems: 'flex-end', paddingRight: 20, }}>
+            //             <AppText size="xxl" value="Choose floor" center bold color={black} />
+            //         </View>
+            //     </View>
+            //     <View style={{ flex: 6 }}>
+            //         <AppText size="xxxl" value="Indoor picture" center bold color={black} />
+            //         {/* <Image source={require('./' + icon + '.png')} style={{resizeMode:'contain'}}/> */}
+            //     </View>
+            // </View>
+            // </ScrollView>
 
             <ScrollView contentContainerStyle={global.pageScrollView}>
-
-                <SearchPatient patients={this.state.patients}/>
-                <IndoorMap buildings={this.state.buildings}/>
-
+            
+                <SearchPatient />
+                <IndoorMap/>
+                
             </ScrollView>
         )
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, ScrollView, TouchableOpacity, TextInput, Alert } from 'react-native'
+import { View, Text, FlatList, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -7,44 +7,74 @@ import { local } from './style'
 import { global } from '../../theme'
 
 import TodoItem from '../../components/todo-item'
-import SearchPatient from "../../containers/search-patient"
 import {Actions} from 'react-native-router-flux'
 
+import SearchPatient from "../../containers/search-patient"
+
 import { caretakerActions } from '../../actions'
+import Axios from 'axios';
 
-export class caretakerRegist extends Component {
-
+export class caretakerEdit extends Component {
     confirm = () => {
         Actions.jump('caretaker')
       }
-
-
+    // const n = this.props.name
+    // const b = this.props.ble
+    // const g = this.props.gps
     state = {
-    name: '',
-    id: '',
-    address: '',
-    tel: '',
-    patient: ''
+        name: '',
+        id: '',
+        address: '',
+        tel: '',
+        patient: '',
+        current: '',
     }
 
-    saveNewCaretaker = () => {
-    const { name, id, address, tel, patient } = this.state
-    this.props.dispatch(caretakerActions.createNewCaretaker(name, id, address, tel, patient));
+    editCaretaker = () => {
+    //this.setState({avatar: '../../assets/images/default.png'})
+    const { name, id, address, tel, patient, current} = this.state
+    this.props.dispatch(caretakerActions.editCaretakerByIndex(name, id, address, tel, patient));
+    
     Alert.alert(
     
         // This is Alert Dialog Title
         'Message',
-        
+     
         // This is Alert Dialog Message. 
-        'Caretaker Added',
+        'Edited!',
         [
-            // First Text Button in Alert Dialog.
-            {text: 'OK'}
-            
+          // First Text Button in Alert Dialog.
+          {text: 'OK'}
+          
         ]
-        
-        )
+     
+      )
+      
     }
+
+    setCurrentFalse = () => {
+        this.props.dispatch(caretakerActions.setCurrent());
+        this.goBack()
+    }
+
+    goBack = () =>{
+        Actions.jump('caretaker');
+    }
+
+    // setCurrent = () => {
+    // const updatedItem = state.map(item => {
+    //     if(item.current === true){
+    //         this.setState({name: item.name})
+    //         this.setState({ble: item.ble})
+    //         this.setState({gps: item.gps})
+    //         this.setState({current: item.current})
+    //         return item
+    //     }
+    //     return updatedItem })
+    // }
+        
+    // }
+
 
     onChangeName = (value) => {
     this.setState({ name: value })
@@ -65,15 +95,22 @@ export class caretakerRegist extends Component {
     this.setState({ patient: value });
     }
 
+
     render() {
+        // const {currrentIndex, data} = this.props.patients;
+
+        // data[currrentIndex]
+        
         const { name, id, address, tel, patient } = this.state
+        // const result = patient.find(item => (item.current === true), this);
+        // const { name, ble, gps, current} = result
         return (
             <View style={{alignSelf:'stretch'}}>
                 <ScrollView>
                 <SearchPatient />
                 </ScrollView>
                 <View style={{ padding: 5 }}>
-                    <Text style={local.heading1}> Registration </Text>
+                    <Text style={local.heading1}> Edit </Text>
 
                     <TextInput value={name} style={local.textInput} placeholder="Name"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeName(value)}/>
@@ -90,8 +127,11 @@ export class caretakerRegist extends Component {
                     <TextInput value={patient} style={local.textInput} placeholder="Patient"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangePatient(value)}/>
 
-                    <TouchableOpacity style={local.button} onPress={() => {this.saveNewCaretaker()}}>
+                    <TouchableOpacity style={local.button} onPress={() => {this.editCaretaker()}}>
                     <Text style={local.btnText}>Confirm</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={local.button} onPress={() => {this.setCurrentFalse()}}>
+                    <Text style={local.btnText}>Back</Text>
                     </TouchableOpacity>
                 </View>
                 
@@ -111,4 +151,4 @@ const mapStateToProps = (state) => ({
 
 // }
 
-export default connect(mapStateToProps)(caretakerRegist)
+export default connect(mapStateToProps)(caretakerEdit)

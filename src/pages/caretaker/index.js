@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, ScrollView, TouchableOpacity} from 'react-native'
+import { View, Text, FlatList, ScrollView, TouchableOpacity, Alert, Image} from 'react-native'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -9,7 +9,11 @@ import { global } from '../../theme'
 import TodoItem from '../../components/todo-item'
 import {Actions} from 'react-native-router-flux'
 import SearchPatient from "../../containers/search-patient"
-import { ListItem} from 'react-native-elements'
+import { ListItem } from 'react-native-elements'
+import CaretakerList from '../../components/caretaker-list'
+
+import { caretakerActions } from '../../actions/caretaker.action';
+import { Row } from 'react-native-easy-grid';
 
 list = [
     {
@@ -69,95 +73,106 @@ list = [
       },
 ]
 
-
-
 export class Caretaker extends Component {
 
-  state = {
-    patients: [{ name: "Prayut JunOK", duty: "Uncle near home" },
-    { name: "Pravitt TheWatch", duty: "Watcher" },
-    { name: "Suthep T.", duty: "Karawa Land" }],
+state = {
+  current: false,
+}
+
+goToEdit = () => {
+  Actions.jump('caretaker_edit');
+}
+
+onChangeCurrent = (caretakers, index) => {
+  let ids = [...caretakers];     // create the copy of state array
+  ids[index].current = true;                  //new value
+  this.setState({ ids });
+  this.goToEdit()
+}
+
+onDeleteCaretaker = (index) => {
+  Alert.alert(
   
-    buildings: [{
-        name: 'IC Building',
-        floors: [
-            {
-                number: '6',
-                img: 'abc'
-            },
-            {
-                number: '8',
-                img: 'abc'
-            }
-        ]
-    },
-    {
-        name: 'ECC Building',
-        floors: [
-            {
-                number: '3',
-                img: 'abc'
-            },
-            {
-                number: '5',
-                img: 'abc'
-            }
-        ]
-    }
-    ]
-  
+    // This is Alert Dialog Title
+    'Message',
+ 
+    // This is Alert Dialog Message. 
+    'Delete this caregiver?',
+    [
+      // First Text Button in Alert Dialog.
+      {text: 'YES', onPress: () => this.deleteCaretaker(index)},
+      {text: 'NO', onPress: () => console.log('Cancel Pressed!'), style: 'cancel'},
+      
+      
+    ],
+    { cancelable: false }
+ 
+  )
+ 
+}
+
+deleteCaretaker = (index) => {
+  this.props.dispatch(caretakerActions.deleteCaretakerByIndex(index));
+}
+
+goToReg = () => {
+    Actions.jump('caretaker_regis')
   }
 
-   
-        goToReg = () => {
-            Actions.jump('caretaker_regis')
-          }
-      
-          renderItem = ({ item }) => (
-              <ListItem
-                title={item.name}
-                //subtitle={item.subtitle}
-                leftAvatar={{ source: { uri: item.avatar_url } }}
-              />
-            )
-            
-      
-          render () {
-          return (
-              
-               //{/* // <View>
-              // // <SearchPatient />
-              
-              // // </View> */}
-              
-                  //{/* <SearchPatient /> */}
-              
-              <ScrollView style={{flex:3}} contentContainerStyle={global.pageScrollView}>
-              <SearchPatient patients={this.state.patients}/>
-              
-              
-              <FlatList
-              //keyExtractor={this.keyExtractor}
-              data={list}
-              renderItem={this.renderItem}
-              />
-              
-              
-              <TouchableOpacity style={local.button} onPress={() => {this.goToReg()}}>
-                <Text style={local.btnText}>Add</Text>
-              </TouchableOpacity>
-      
-              </ScrollView>
-          )
-            }
-        }          
+    
+
+render () {
+  const { caretakers } = this.props;
+return (
+    
+      //{/* // <View>
+    // // <SearchPatient />
+    
+    // // </View> */}
+    
+        //{/* <SearchPatient /> */}
+    
+    <ScrollView style={local.view} contentContainerStyle={global.pageScrollView}>
+    <SearchPatient />
+    
+    
+    {/* <FlatList
+    //keyExtractor={this.keyExtractor}
+    data={list}
+    renderItem={this.renderItem}
+    /> */}
+    
+    <FlatList data={caretakers} renderItem={({ item, index }) =>
+    <View style={{flexDirection:'row'}}>
+      <CaretakerList name={item.name} id={item.id} address={item.address} tel={item.tel} patient={item.patient}/>
+      <TouchableOpacity onPress={() => this.onDeleteCaretaker(index)}>
+        <Image style={local.image} source={require('../../assets/icons/remove.png')} />
+        {/* <Text style={local.btnText}>Delete</Text> */}
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => this.onChangeCurrent(caretakers, index)}>
+      <Image style={local.image} source={require('../../assets/icons/edit.png')} />
+      </TouchableOpacity>
+    </View>
+    } />
+    <View style={{alignSelf: 'flex-end',
+    alignItems: 'flex-end',
+    padding: 20,
+    marginTop: 30,
+    flexDirection: 'row'}}>
+    <TouchableOpacity onPress={() => {this.goToReg()}}>
+    <Image style={{height: 40, width: 40}} source={require('../../assets/icons/plus.png')} />
+    </TouchableOpacity>
+    </View>
+    </ScrollView>
+  )
+    }
+}          
       
 const mapStateToProps = (state) => ({
     todos: state.todos,
+    caretakers: state.caretakers
 })
 
-const mapDispatchToProps = {
 
-}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Caretaker)
+export default connect(mapStateToProps)(Caretaker)

@@ -3,12 +3,13 @@ import { View, Text } from 'react-native'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
-export class PatientDetail extends Component {
+export class caretakerDetail extends Component {
     static propTypes = {
         name: PropTypes.string.isRequired,
-        ble: PropTypes.string.isRequired,
-        gps: PropTypes.string.isRequired,
-        current: PropTypes.bool.isRequired,
+        id: PropTypes.string.isRequired,
+        address: PropTypes.string.isRequired,
+        tel: PropTypes.string.isRequired,
+        patient: PropTypes.string.isRequired
     }
 
     render() {
@@ -28,4 +29,4 @@ const mapDispatchToProps = {
 
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(PatientDetail)
+export default connect(mapStateToProps, mapDispatchToProps)(caretakerDetail)
