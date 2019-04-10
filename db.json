@@ -1,0 +1,19 @@
+{
+    "patients": [
+      {
+        "name": "Sebastian Eschweiler",
+        "ble": "BLE",
+        "gps": "GPS"
+      },
+      {
+        "name": "Steve Palmer",
+        "ble": "BLE",
+        "gps": "GPS"
+      },
+      {
+        "name": "Ann Smith",
+        "ble": "BLE",
+        "gps": "GPS"
+      }
+    ]
+  }

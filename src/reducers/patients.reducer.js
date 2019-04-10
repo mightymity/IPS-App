@@ -20,10 +20,14 @@ const defaultState = [
 export function patients(state = defaultState, action) {
   switch (action.type) {
 
-    case "CREATE_NEW_PATIENT_SUCCESS": {
-      const nextState = [...state, action.data];
-      return nextState;
+    case "LIST_ALL_PATIENT_SUCCESS": {
+      return [...state, ...action.patients];
     }
+
+    case "CREATE_NEW_PATIENT_SUCCESS": {
+      const nextState = [...state, {name: action.data.name, ble: action.data.ble, gps: action.data.gps}];
+      return nextState;
+    } break;
 
     case patientConstants.CREATE_NEW_PATIENT: {
       const nextState = [...state, { avatar: action.avatar, name: action.name, ble: action.ble, gps: action.gps, current: aciton.current }];

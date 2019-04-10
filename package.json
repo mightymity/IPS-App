@@ -9,8 +9,9 @@
     "buildApk": "react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res"
   },
   "dependencies": {
+    "axios": "^0.18.0",
     "react": "^16.6.3",
-    "react-native": "0.58.3",
+    "react-native": "^0.58.3",
     "react-native-axios": "^0.17.1",
     "react-native-easy-grid": "^0.2.1",
     "react-native-elements": "^1.0.0",

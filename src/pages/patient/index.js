@@ -95,6 +95,13 @@ export class Patient extends Component {
 
   // ]
 
+  constructor(props) {
+    super(props);
+
+    const {dispatch} = props;
+    dispatch(patientActions.listAllPatients())
+  }
+
   state = {
     current: false,
   }
@@ -136,7 +143,6 @@ export class Patient extends Component {
 
   deletePatient = (index) => {
     this.props.dispatch(patientActions.deletePatientByIndex(index));
-    
   }
   
   
