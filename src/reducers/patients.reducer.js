@@ -21,8 +21,14 @@ export function patients(state = defaultState, action) {
   switch (action.type) {
 
     case "LIST_ALL_PATIENT_SUCCESS": {
-      return [...state, ...action.patients];
+      // return [...state, ...action.patients];
+      return [...action.patients];
     }
+
+    // case "CREATE_NEW_PATIENT_REQUEST": {
+      
+    //   return [...action.patients];
+    // }
 
     case "CREATE_NEW_PATIENT_SUCCESS": {
       const nextState = [...state, {name: action.data.name, ble: action.data.ble, gps: action.data.gps}];

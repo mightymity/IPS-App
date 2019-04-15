@@ -13,6 +13,17 @@ import SearchPatient from "../../containers/search-patient"
 
 import { patientActions } from '../../actions'
 
+import { db } from '../../firebase';
+
+
+// let addItem = item => {  
+//     db.ref('/patients').push({
+//       name: item.name,
+//       ble: item.ble,
+//       gps: item.gps
+//     });
+//   };
+
 export class patientRegist extends Component {
     confirm = () => {
         Actions.jump('Patient')
@@ -29,6 +40,7 @@ export class patientRegist extends Component {
     saveNewPatient = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
     const { name, ble, gps, current } = this.state
+    //addItem(this.state)
     this.props.dispatch(patientActions.createNewPatient(name, ble, gps, current));
     Alert.alert(
     

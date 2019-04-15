@@ -20,6 +20,8 @@ import Caretaker from "./src/pages/caretaker";
 import EditMap from "./src/pages/edit-map";
 import patient_regis from "./src/pages/patient-register"
 import caretaker_regis from "./src/pages/caretaker-register"
+import patient_edit from "./src/pages/patient-edit"
+import caretaker_edit from "./src/pages/caretaker-edit"
 
 
 // Components
@@ -30,6 +32,20 @@ import IconButton from "./src/components/icon-button";
 // Theme
 import { colors } from "./src/theme";
 import { Actions } from "react-native-router-flux";
+
+// // Firebase
+// import firebase from 'firebase';
+
+// const firebaseConfig = {
+//   apiKey: "AIzaSyCEwsnw51LHiL2entmVNcsZ95UQApv7BQ0",
+//   authDomain: "ips-app-ce85b.firebaseapp.com",
+//   databaseURL: "https://ips-app-ce85b.firebaseio.com",
+//   projectId: "ips-app-ce85b",
+//   storageBucket: "ips-app-ce85b.appspot.com",
+//   messagingSenderId: "131590502729"
+// };
+
+// firebase.initializeApp(firebaseConfig);
 
 
 class App extends Component {
@@ -114,6 +130,18 @@ class App extends Component {
             title = "Patient Registration"
             key = "patient_regis" 
             component = {patient_regis}  
+            />
+
+            <Scene 
+            title = "Patient Edit"
+            key = "patient_edit" 
+            component = {patient_edit}  
+            />
+
+            <Scene 
+            title = "Caretaker Edit"
+            key = "caretaker_edit" 
+            component = {caretaker_edit}  
             />
 
           </Drawer>

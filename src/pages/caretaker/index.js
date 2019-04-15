@@ -97,7 +97,7 @@ onDeleteCaretaker = (index) => {
     'Message',
  
     // This is Alert Dialog Message. 
-    'Delete this caregiver?',
+    'Delete this caretaker?',
     [
       // First Text Button in Alert Dialog.
       {text: 'YES', onPress: () => this.deleteCaretaker(index)},
