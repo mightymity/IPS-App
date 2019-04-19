@@ -30,18 +30,17 @@ export class patientRegist extends Component {
       }
 
     state = {
-    //avatar: '',
+    id: '',
     name: '',
     ble: '',
-    gps: '',
-    current: false,
+    gps: ''
     }
 
     saveNewPatient = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
-    const { name, ble, gps, current } = this.state
+    const { id, name, ble, gps} = this.state
     //addItem(this.state)
-    this.props.dispatch(patientActions.createNewPatient(name, ble, gps, current));
+    this.props.dispatch(patientActions.createNewPatient(id, name, ble, gps));
     Alert.alert(
     
         // This is Alert Dialog Title
@@ -58,6 +57,10 @@ export class patientRegist extends Component {
       )
     }
 
+    onChangeId = (value) => {
+    this.setState({ id: value })
+    }
+
     onChangeName = (value) => {
     this.setState({ name: value })
     }
@@ -72,7 +75,7 @@ export class patientRegist extends Component {
 
 
     render() {
-        const { name, ble, gps } = this.state
+        const { id, name, ble, gps } = this.state
         //const avatar = '../../assets/images/default.png'
         return (
             <View style={{alignSelf:'stretch'}}>
@@ -81,6 +84,9 @@ export class patientRegist extends Component {
                 </ScrollView>
                 <View style={{ padding: 5 }}>
                     <Text style={local.heading1}> Registration </Text>
+
+                    <TextInput value={id} style={local.textInput} placeholder="ID"
+                    underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeId(value)}/>
 
                     <TextInput value={name} style={local.textInput} placeholder="Name"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeName(value)}/>

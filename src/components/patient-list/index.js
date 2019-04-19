@@ -7,7 +7,7 @@ import { Col, Row, Grid } from "react-native-easy-grid";
 
 export default class patientList extends Component {
   render() {
-    const { avatar, name, ble, gps } = this.props;
+    const { id, name, ble, gps } = this.props;
     return (
       <View style={[local.container]}>
         <View style={local.SectionStyle}>
@@ -15,7 +15,7 @@ export default class patientList extends Component {
           <Text style={{ fontWeight: 'bold',flex: 2}}>{name}</Text>
         
           <View style={{flex:2}}>
-          <Text>BLE: {ble}            GPS: {gps}</Text>
+          <Text>BLE: {ble}     ID: {id}       GPS: {gps}</Text>
           {/* <Text>GPS: {gps}</Text> */}
           </View>
         </View>

@@ -14,6 +14,7 @@ import SearchPatient from "../../containers/search-patient"
 import { patientActions } from '../../actions'
 import Axios from 'axios';
 
+
 export class patientEdit extends Component {
     confirm = () => {
         Actions.jump('Patient')
@@ -22,14 +23,15 @@ export class patientEdit extends Component {
     // const b = this.props.ble
     // const g = this.props.gps
     state = {
+    id: '',
     ble: '',
     gps: '',
-    current: false,
+    // current: false,
     }
 
     editPatient = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
-    const { ble, gps, current} = this.state
+    const { ble, gps} = this.state
     this.props.dispatch(patientActions.editPatientByIndex(ble, gps));
     
     Alert.alert(
@@ -50,7 +52,7 @@ export class patientEdit extends Component {
     }
 
     setCurrentFalse = () => {
-        this.props.dispatch(patientActions.setCurrent());
+        this.props.dispatch(patientActions.setCurrent(''));
         this.goBack()
     }
 
@@ -124,8 +126,10 @@ const mapStateToProps = (state) => ({
     caretakers: state.caretakers
 })
 
-// const mapDispatchToProps = {
-
+// const mapDispatchToProps = (dispatch) => {
+//     return {
+//     patientActions: () => dispatch(editPatientByIndex(ble,gps))
+// }
 // }
 
 export default connect(mapStateToProps)(patientEdit)

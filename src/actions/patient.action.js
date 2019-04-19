@@ -2,6 +2,8 @@ import { patientConstants } from '../_constants';
 import axios from 'axios';
 import { db } from '../firebase';
 
+
+
 export const patientActions = {
     createNewPatient,
     listAllPatients,
@@ -10,7 +12,7 @@ export const patientActions = {
     setCurrent,
 };
 
-function createNewPatient(name, ble, gps, current) {
+function createNewPatient(id, name, ble, gps, current) {
     // return {
     //     type: patientConstants.CREATE_NEW_PATIENT,
     //     name: name,
@@ -80,9 +82,17 @@ function createNewPatient(name, ble, gps, current) {
     //     }
     // }
 
-    const data = { name, ble, gps };
+    // db.ref('/patients').push({
+    //     name: name,
+    //     ble: ble,
+    //     gps: gps
+    //   })
+
+
+    const data = { id, name, ble, gps };
     return dispatch => {
-        db.ref('/patients').push({
+        db.ref('/patients').child(id).set({
+            id: id,
             name: name,
             ble: ble,
             gps: gps
@@ -106,16 +116,21 @@ function listAllPatients() {
     // }
     //https://5cad900001a0b80014dcd82e.mockapi.io/patients
 
-    return dispatch => {
+    // return dispatch => {
 
-        axios.get('http://10.0.2.2:3000/patients')
-            .then(res => {
-                dispatch(success(res.data))
+    //     axios.get('http://10.0.2.2:3000/patients')
+    //         .then(res => {
+    //             dispatch(success(res.data))
 
-            })
+    //         })
+    // }
 
-        
-    }
+    return dispatch => {db.ref('/patients').on("value", snapshot => {
+        let data = snapshot.val();
+        let items = Object.values(data);
+        console.log('this is items: ',items)
+        dispatch(success(items))
+      });
 
     function success(data) {
         return {
@@ -123,12 +138,13 @@ function listAllPatients() {
             patients: data
         }
     }
-
+}
 }
 
-function setCurrent() {
+function setCurrent(current) {
     return {
-        type: patientConstants.SET_CURRENT
+        type: patientConstants.SET_CURRENT,
+        current: current,
     }
 }
 
@@ -142,7 +158,7 @@ function deletePatientByIndex(index) {
 
 function editPatientByIndex(ble, gps) {
     return {
-        type: patientConstants.EDIT_PATIENT_BY_INDEX,
+        type: "EDIT_PATIENT_BY_INDEX",
         ble: ble,
         gps: gps,
     }
