@@ -23,7 +23,7 @@ export class patientEdit extends Component {
     // const b = this.props.ble
     // const g = this.props.gps
     state = {
-    id: '',
+    id: this.props.patients.current,
     ble: '',
     gps: '',
     // current: false,
@@ -31,9 +31,10 @@ export class patientEdit extends Component {
 
     editPatient = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
-    const { ble, gps} = this.state
-    this.props.dispatch(patientActions.editPatientByIndex(ble, gps));
-    
+    const { id, ble, gps} = this.state
+    this.props.dispatch(patientActions.editPatientByIndex(id, ble, gps));
+    this.props.dispatch(patientActions.selectEditPatient(null));
+    Actions.jump('patient')
     Alert.alert(
     
         // This is Alert Dialog Title
@@ -52,7 +53,7 @@ export class patientEdit extends Component {
     }
 
     setCurrentFalse = () => {
-        this.props.dispatch(patientActions.setCurrent(''));
+        this.props.dispatch(patientActions.selectEditPatient(null));
         this.goBack()
     }
 
@@ -88,7 +89,6 @@ export class patientEdit extends Component {
         // const {currrentIndex, data} = this.props.patients;
 
         // data[currrentIndex]
-        
         const { ble, gps } = this.state
         // const result = patient.find(item => (item.current === true), this);
         // const { name, ble, gps, current} = result

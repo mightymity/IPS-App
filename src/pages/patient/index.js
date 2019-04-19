@@ -24,7 +24,7 @@ export class Patient extends Component {
     super(props);
 
     const {dispatch} = props;
-    dispatch(patientActions.listAllPatients())
+    dispatch(patientActions.updatePatientList())
   }
 
   state = {
@@ -37,7 +37,7 @@ export class Patient extends Component {
   goToEdit = () => {
     const { curr } = this.state
     // console.log('curr', curr)
-    this.props.dispatch(patientActions.setCurrent(curr))
+    this.props.dispatch(patientActions.selectEditPatient(curr))
     Actions.jump('patient_edit');
   }
 
@@ -150,7 +150,7 @@ export class Patient extends Component {
           <View style={{flexDirection:'row'}}>
             <PatientList id={item.id} name={item.name} ble={item.ble} gps={item.gps} />
             <Text> {item.id} </Text>
-            <TouchableOpacity onPress={() => this.onDeletePatient(index)}>
+            <TouchableOpacity onPress={() => this.onDeletePatient(item.id)}>
             <Image style={local.image} source={require('../../assets/icons/remove.png')} />
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.onChangeId(item.id)}>
