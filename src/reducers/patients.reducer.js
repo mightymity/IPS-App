@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 const defaultState = {
   current: null,
-  data: [{ id: '99', name: 'John Smith', ble: 'BLE', gps: 'GPS'}]
+  data: null
 }
 
 // const initState = {
@@ -24,7 +24,7 @@ const defaultState = {
 export function patients(state = defaultState, action) {
   switch (action.type) {
 
-    case "LIST_ALL_PATIENT_SUCCESS": {
+    case "LIST_ALL_PATIENTS": {
       const nextState = {current:{...state.current}, data: action.patients };
       // nextState.data = [...action.patients]
       // const nextState = {data:{newData}, current:{...state.current}}

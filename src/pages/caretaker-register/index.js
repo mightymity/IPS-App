@@ -29,7 +29,8 @@ export class caretakerRegist extends Component {
 
     saveNewCaretaker = () => {
     const { name, id, address, tel, patient } = this.state
-    this.props.dispatch(caretakerActions.createNewCaretaker(name, id, address, tel, patient));
+    this.props.dispatch(caretakerActions.createNewCaretaker(id, name, patient));
+    //Actions.jump('caretaker')
     Alert.alert(
     
         // This is Alert Dialog Title
@@ -39,7 +40,7 @@ export class caretakerRegist extends Component {
         'Caretaker Added',
         [
             // First Text Button in Alert Dialog.
-            {text: 'OK'}
+            {text: 'OK', onPress: () => this.confirm()}
             
         ]
         
@@ -81,11 +82,11 @@ export class caretakerRegist extends Component {
                     <TextInput value={id} style={local.textInput} placeholder="ID"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeId(value)}/>
 
-                    <TextInput value={address} style={local.textInput} placeholder="Address"
+                    {/* <TextInput value={address} style={local.textInput} placeholder="Address"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeAddress(value)}/>
 
                     <TextInput value={tel} style={local.textInput} placeholder="Tel"
-                    underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeTel(value)}/>
+                    underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeTel(value)}/> */}
 
                     <TextInput value={patient} style={local.textInput} placeholder="Patient"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangePatient(value)}/>

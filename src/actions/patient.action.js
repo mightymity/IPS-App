@@ -17,7 +17,7 @@ export const patientActions = {
 
 function listAllPatients(data) {
     return {
-        type: "LIST_ALL_PATIENT_SUCCESS",
+        type: "LIST_ALL_PATIENTS",
         patients: data
     }
   }

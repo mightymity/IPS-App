@@ -33,7 +33,7 @@ export class patientRegist extends Component {
       }
 
     confirm = () => {
-        Actions.jump('Patient')
+        Actions.jump('patient')
       }
 
     state = {
@@ -48,21 +48,21 @@ export class patientRegist extends Component {
     const { id, name, ble, gps} = this.state
     //addItem(this.state)
     this.props.dispatch(patientActions.createNewPatient(id, name, ble, gps));
-    Actions.jump('patient')
-    // Alert.alert(
+    //Actions.jump('patient')
+    Alert.alert(
     
-    //     // This is Alert Dialog Title
-    //     'Message',
+        // This is Alert Dialog Title
+        'Message',
      
-    //     // This is Alert Dialog Message. 
-    //     'Patient Added',
-    //     [
-    //       // First Text Button in Alert Dialog.
-    //       {text: 'YES', onPress: () => this.confirm()}
+        // This is Alert Dialog Message. 
+        'Patient Added',
+        [
+          // First Text Button in Alert Dialog.
+          {text: 'YES', onPress: () => this.confirm()}
           
-    //     ]
+        ]
      
-    //   )
+      )
     }
 
     onChangeId = (value) => {

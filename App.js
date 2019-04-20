@@ -54,7 +54,7 @@ class App extends Component {
     return (
       <Provider store={appStore}>
         <Router >
-
+        
           <Drawer
             key="Root"
             drawerPosition="left"
@@ -71,11 +71,11 @@ class App extends Component {
             backButtonTintColor={colors.whiteA}
             rightButtonTintColor={colors.whiteB}
           >
-
+            
             <Scene
-              title="Patient"
-              key="patient"
-              component={Patient}
+              title="Caretaker"
+              key="caretaker"
+              component={Caretaker}
             />
 
             <Scene
@@ -90,13 +90,17 @@ class App extends Component {
               component={GPS}
             />
 
-
-
             <Scene
+              title="Patient"
+              key="patient"
+              component={Patient}
+            />
+
+            {/* <Scene
               title="Caretaker"
               key="caretaker"
               component={Caretaker}
-            />
+            /> */}
 
             <Scene
               title="Edit Map"
@@ -122,28 +126,28 @@ class App extends Component {
               component={CreateTodo}
             />
 
-            <Scene
-              title="Caretaker Registration"
-              key="caretaker_regis"
-              component={caretaker_regis}
+            <Scene 
+            title = "Caretaker Registration"
+            key = "caretaker_regis" 
+            component = {caretaker_regis} 
             />
 
-            <Scene
-              title="Patient Registration"
-              key="patient_regis"
-              component={patient_regis}
+            <Scene 
+            title = "Patient Registration"
+            key = "patient_regis" 
+            component = {patient_regis}  
             />
 
-            <Scene
-              title="Patient Edit"
-              key="patient_edit"
-              component={patient_edit}
+            <Scene 
+            title = "Patient Edit"
+            key = "patient_edit" 
+            component = {patient_edit}  
             />
 
-            <Scene
-              title="Caretaker Edit"
-              key="caretaker_edit"
-              component={caretaker_edit}
+            <Scene 
+            title = "Caretaker Edit"
+            key = "caretaker_edit" 
+            component = {caretaker_edit}  
             />
 
           </Drawer>

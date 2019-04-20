@@ -28,7 +28,7 @@ export class Patient extends Component {
   }
 
   state = {
-    curr: 'lll'
+    curr: ''
   }
   goToReg = () => {
     Actions.jump('patient_regis')
@@ -36,21 +36,13 @@ export class Patient extends Component {
 
   goToEdit = () => {
     const { curr } = this.state
-    // console.log('curr', curr)
     this.props.dispatch(patientActions.selectEditPatient(curr))
     Actions.jump('patient_edit');
   }
 
   onChangeId = (value) => {
-    //console.log(value)
     this.setState({curr: value})
-    //console.log(this.state.curr)
     this.changeCurrent()
-    // const current = this.state
-    // this.props.dispatch(patientActions.setCurrent(current))
-    // this.goToEdit()
-    //console.log('fjfsd:',this.state.current)
-    //this.onChangeCurrent()
   }
 
   changeCurrent = () => {
@@ -74,16 +66,6 @@ export class Patient extends Component {
   }
 
 
-  // onChangeCurrent = (patients, index)
-  // onChangeCurrent = () => {
-  //   // let ids = [...patients];     // create the copy of state array
-  //   // ids[index].current = true;                  //new value
-  //   // this.setState({ ids });
-  //   // this.goToEdit()
-  //   const { current } = this.state
-  //   this.props.dispatch(patientActions.setCurrent(current))
-  //   this.goToEdit()
-  // }
 
   onDeletePatient = (index) => {
     Alert.alert(
@@ -103,49 +85,24 @@ export class Patient extends Component {
       { cancelable: false }
    
     )
-   // this.deletePatient(index)
+  
   }
 
   deletePatient = (index) => {
     this.props.dispatch(patientActions.deletePatientByIndex(index));
   }
   
-  
-
-  // renderItem = ({ item }) => (
-  //   <ListItem
-  //     title={item.name}
-  //     subtitle={item.subtitle}
-  //     leftAvatar={{ source: { uri: item.avatar_url } }}
-  //   />
-  // )
-
 
 
 
   render() {
     const { patients } = this.props;
-    // const goToEdit = (n, b, g) => {
-    //   Actions.patient_edit({ name: n, ble: b, gps: g })
-    // };
+
     return (
-
-      //{/* // <View>
-      // // <SearchPatient />
-
-      // // </View> */}
-
-      //{/* <SearchPatient /> */}
 
       <ScrollView style={local.view} contentContainerStyle={global.pageScrollView}>
         <SearchPatient />
 
-
-        {/* <FlatList
-        //keyExtractor={this.keyExtractor}
-        data={list}
-        renderItem={this.renderItem}
-        /> */}
         <FlatList data={patients.data} renderItem={({ item, index }) =>
           <View style={{flexDirection:'row'}}>
             <PatientList id={item.id} name={item.name} ble={item.ble} gps={item.gps} />
@@ -171,15 +128,6 @@ export class Patient extends Component {
       </ScrollView>
     )
   }
-
-  // render() {
-  //     const { todos } = this.props;
-  //     return (
-  //         <View style={global.pageContainer}>
-  //              <Text>Patient</Text>
-  //         </View>
-  //     )
-  // }
 }
 
 const mapStateToProps = (state) => ({

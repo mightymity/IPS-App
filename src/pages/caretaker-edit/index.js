@@ -23,7 +23,7 @@ export class caretakerEdit extends Component {
     // const g = this.props.gps
     state = {
         name: '',
-        id: '',
+        id: this.props.caretakers.current,
         address: '',
         tel: '',
         patient: '',
@@ -33,18 +33,19 @@ export class caretakerEdit extends Component {
     editCaretaker = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
     const { name, id, address, tel, patient, current} = this.state
-    this.props.dispatch(caretakerActions.editCaretakerByIndex(name, id, address, tel, patient));
-    
+    this.props.dispatch(caretakerActions.editCaretakerByIndex(id, name, patient));
+    this.props.dispatch(caretakerActions.selectEditCaretaker(null));
+    //Actions.jump('caretaker')
     Alert.alert(
     
         // This is Alert Dialog Title
         'Message',
      
         // This is Alert Dialog Message. 
-        'Edited!',
+        'Edited',
         [
           // First Text Button in Alert Dialog.
-          {text: 'OK'}
+          {text: 'OK', onPress: () => this.goBack()}
           
         ]
      
@@ -52,8 +53,8 @@ export class caretakerEdit extends Component {
       
     }
 
-    setCurrentFalse = () => {
-        this.props.dispatch(caretakerActions.setCurrent());
+    setCurrentNull = () => {
+        this.props.dispatch(caretakerActions.selectEditCaretaker(null));
         this.goBack()
     }
 
@@ -115,14 +116,14 @@ export class caretakerEdit extends Component {
                     <TextInput value={name} style={local.textInput} placeholder="Name"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeName(value)}/>
 
-                    <TextInput value={id} style={local.textInput} placeholder="ID"
+                    {/* <TextInput value={id} style={local.textInput} placeholder="ID"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeId(value)}/>
 
                     <TextInput value={address} style={local.textInput} placeholder="Address"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeAddress(value)}/>
 
                     <TextInput value={tel} style={local.textInput} placeholder="Tel"
-                    underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeTel(value)}/>
+                    underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeTel(value)}/> */}
 
                     <TextInput value={patient} style={local.textInput} placeholder="Patient"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangePatient(value)}/>
@@ -130,7 +131,7 @@ export class caretakerEdit extends Component {
                     <TouchableOpacity style={local.button} onPress={() => {this.editCaretaker()}}>
                     <Text style={local.btnText}>Confirm</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={local.button} onPress={() => {this.setCurrentFalse()}}>
+                    <TouchableOpacity style={local.button} onPress={() => {this.setCurrentNull()}}>
                     <Text style={local.btnText}>Back</Text>
                     </TouchableOpacity>
                 </View>

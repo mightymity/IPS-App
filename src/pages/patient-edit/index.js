@@ -34,7 +34,7 @@ export class patientEdit extends Component {
     const { id, ble, gps} = this.state
     this.props.dispatch(patientActions.editPatientByIndex(id, ble, gps));
     this.props.dispatch(patientActions.selectEditPatient(null));
-    Actions.jump('patient')
+    //Actions.jump('patient')
     Alert.alert(
     
         // This is Alert Dialog Title
@@ -44,7 +44,7 @@ export class patientEdit extends Component {
         'Edited',
         [
           // First Text Button in Alert Dialog.
-          {text: 'OK'}
+          {text: 'OK', onPress: () => this.goBack()}
           
         ]
      
