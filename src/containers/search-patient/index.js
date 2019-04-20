@@ -21,44 +21,44 @@ import TitleIndicator from "../../components/title-indicator";
 class SearchPatient extends Component {
   state = {
     name: '',
-    patients: this.props.patientss,
-    selectedPatient: this.props.patientss[0]
+    // patients: this.props.patientss,
+    // selectedPatient: this.props.patientss[0]
   }
 
   onChangeName = (value) => {
     this.setState({ name: value })
   }
 
-  filterData = (query) => {
-    if(query === ""){
-      return []
-    }
+  // filterData = (query) => {
+  //   if(query === ""){
+  //     return []
+  //   }
 
-    else{
-    filteredData = this.props.patients.filter((patient) => {
-      return patient.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
-    })
+  //   else{
+  //   filteredData = this.props.patientss.filter((patient) => {
+  //     return patient.name.toLowerCase().indexOf(query.toLowerCase()) !== -1;
+  //   })
 
-    return filteredData
-    }
-  }
+  //   return filteredData
+  //   }
+  // }
 
   render() {
     const { name } = this.state;
     const black = '#000000';
-    const data = this.filterData(name)
+    // const data = this.filterData(name)
     return (
       <View style={[local.container, { backgroundColor: '' }]}>
         <View style={[local.card, local.customCard]}>
           <View style={{ flex: 1, flexDirection: 'row' }}>
             <View style={{ flex: 4, justifyContent: 'center'}}>
-              {/* <TextInput
+              <TextInput
                 value={name}
                 placeholder="Search patient"
                 underlineColorAndroid={colors.greenA}
-                onChangeText={(value) => this.onChangeName(value)} /> */}
+                onChangeText={(value) => this.onChangeName(value)} />
 
-              <Autocomplete
+              {/* <Autocomplete
                 data={data}
                 defaultValue={name}
                 onChangeText={text => this.setState({ name: text })}
@@ -67,7 +67,7 @@ class SearchPatient extends Component {
                     <Text>{item.name}</Text>
                   </TouchableOpacity>
                 )}
-              />
+              /> */}
 
             </View>
             <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '' }}>

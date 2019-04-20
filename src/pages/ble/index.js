@@ -16,7 +16,7 @@ import IndoorMap from "../../containers/indoor-map"
 export class BLE extends Component {
 
     state = {
-        patientss: [{ name: "Prayut JunOK", duty: "Uncle near hom" },
+        patientss: [{ name: "Prayut JunOK", duty: "Uncle near home" },
         { name: "Pravitt TheWatch", duty: "Watcher" },
         { name: "Suthep T.", duty: "Karawa Land" }],
 
@@ -63,7 +63,8 @@ export class BLE extends Component {
 
             <ScrollView contentContainerStyle={global.pageScrollView}>
 
-                <SearchPatient patientss={this.state.patientss}/>
+                {/* <SearchPatient patientss={this.state.patientss}/> */}
+                <SearchPatient/>
                 <IndoorMap buildings={this.state.buildings}/>
 
             </ScrollView>

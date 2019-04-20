@@ -98,6 +98,7 @@ export class GPS extends Component {
 
             <ScrollView contentContainerStyle={global.pageScrollView}>
                 <View>
+                    {/* <SearchPatient patientss={this.state.patientss}/> */}
                     <SearchPatient patientss={this.state.patientss}/>
                 </View>
                 <View>

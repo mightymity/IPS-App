@@ -20,6 +20,8 @@ import Caretaker from "./src/pages/caretaker";
 import EditMap from "./src/pages/edit-map";
 import patient_regis from "./src/pages/patient-register"
 import caretaker_regis from "./src/pages/caretaker-register"
+import TestFeature from "./src/pages/testFeature"
+import RealSearch from "./src/containers/search"
 
 
 // Components
@@ -38,7 +40,6 @@ class App extends Component {
     return (
       <Provider store={appStore}>
         <Router >
-        
           <Drawer
             key="Root"
             drawerPosition="left"
@@ -55,7 +56,13 @@ class App extends Component {
             backButtonTintColor={colors.whiteA}
             rightButtonTintColor={colors.whiteB}
           >
-          
+
+            <Scene
+              title="TF"
+              key="tf"
+              component={TestFeature}
+            />
+
             <Scene
               title="BLE"
               key="ble"
@@ -104,17 +111,23 @@ class App extends Component {
               component={CreateTodo}
             />
 
-            <Scene 
-            title = "Caretaker Registration"
-            key = "caretaker_regis" 
-            component = {caretaker_regis} 
+            <Scene
+              title="Caretaker Registration"
+              key="caretaker_regis"
+              component={caretaker_regis}
             />
 
-            <Scene 
-            title = "Patient Registration"
-            key = "patient_regis" 
-            component = {patient_regis}  
+            <Scene
+              title="Patient Registration"
+              key="patient_regis"
+              component={patient_regis}
             />
+
+            <Scene
+              key="realSearch"
+              component={RealSearch}
+            />
+            
 
           </Drawer>
         </Router>
