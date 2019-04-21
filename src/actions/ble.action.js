@@ -1,5 +1,6 @@
 import { bleConstants } from '../_constants';
-// import {db} from '../services/firebase_demo'
+import { db }  from '../services/firebase_demo'
+
 
 // export const bleActions = {
 //     trackingSelectedBlePatient,
@@ -33,31 +34,36 @@ export function listAllBlePatients2(items) {
     }
 }
 
-export function updateData(items){
-    return {
-        type: bleConstants.UPDATE_DATA,
-        items: items
-    }
-}
-
-export function updateTrackedPatientLocation(item){
-    return choosePatient(item)
-}
-
-// export function updateAllPatientLocation(){
-//     return function(dispatch){
-//         db.ref('/patient').child(item.id).on("value", function(snapshot){
-//             let data = snapshot.val()
-//             let items = Object.values(data)
-//             dispatch(listAllBlePatients(items))
-//         })
+// export function updateData(items){
+//     return {
+//         type: bleConstants.UPDATE_DATA,
+//         items: items
 //     }
 // }
 
-// function choosePatient(item, dispatch = dispatch){
-//     db.ref('/patient').child(item.id).on("value", function(snapshot){
-//         let data = snapshot.val()
-//         let item = Object.values(data)
-//         dispatch(trackingSelectedBlePatient2(item))
-//     })
-// }
+export function updateAllPatient(){
+    return function(dispatch){
+        db.ref('/patients').on("value", function(snapshot){
+            let data = snapshot.val()
+            let items = Object.values(data)
+            dispatch(listAllBlePatients2(items))
+        })
+    }
+}
+
+
+export function updateTrackingPatient(key){
+    return function(dispatch){
+        db.ref('/patients').child(key).on('value', function(snapshot){
+            let item = snapshot.val()
+            dispatch(trackingSelectedBlePatient2(item))
+        })
+    }
+}
+
+export function selectPatientToTrack(key){
+    return {
+        type: 'SELECT_PATIENT_TO_TRACK',
+        key: key
+    }
+}
