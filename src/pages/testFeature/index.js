@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { listAllBlePatients, updateAllPatient, updateTrackingPatient } from '../../actions/ble.action'
+import {updateAllPatient, updateTrackingPatient, cancelSelectedTracking } from '../../actions/ble.action'
 
 import { db } from '../../services/firebase_demo'
 
@@ -175,7 +175,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  cancel: () => dispatch(listAllBlePatients()),
+  cancel: () => dispatch(cancelSelectedTracking()),
   updateTrackData: (key) => dispatch(updateTrackingPatient(key)),
   updateData: () => dispatch(updateAllPatient())
 })

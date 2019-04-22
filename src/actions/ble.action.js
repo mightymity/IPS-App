@@ -67,3 +67,9 @@ export function selectPatientToTrack(key){
         key: key
     }
 }
+
+export function cancelSelectedTracking(){
+    return {
+        type: 'CANCEL_SELECTED_TRACKING'
+    }
+}
