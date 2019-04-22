@@ -7,9 +7,11 @@ import { Actions } from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import {updateAllPatient, updateTrackingPatient, cancelSelectedTracking } from '../../actions/ble.action'
+import { updateAllPatient, cancelSelectedTracking, updateTrackedPatientData } from '../../actions/ble.action'
 
 import { db } from '../../services/firebase_demo'
+
+import _ from "lodash";
 
 
 
@@ -17,16 +19,24 @@ export class TestFeature extends Component {
 
   constructor(props) {
     super(props);
-    if (this.props.ble.selected2 === null) {
-      return null
+    this.state = {
+      trackedPatient: null,
     }
-    else {
-      this.props.updateTrackData(this.props.ble.selected2)
-    }
+
+    this.props.updateData()
   }
 
-  state = {
-    trackedPatient: this.props.ble.selected2,
+  componentWillReceiveProps = (nextprops) => {
+    if (nextprops.ble.selected2 != null) {
+      const item = _.filter(nextprops.ble.data2, user => {
+        return this.checkEqualPL(user, nextprops.ble.selected2);
+      })
+      this.setState({ trackedPatient: item[0] })
+    }
+
+    else{
+      this.setState({trackedPatient: null})
+    }
   }
 
   checkFirebase = () => {
@@ -47,55 +57,25 @@ export class TestFeature extends Component {
     })
   }
 
-  loadData = () => {
-    // this.props.updateData()
-    Actions.jump('realSearch')
-  }
-
-  onChangeName = (value) => {
-    this.setState({ name: value })
-  }
-
-  callRealSearch = () => {
-    this.setState({ show: !this.state.show })
-  }
-
-  // showTrackedPatient = () => {
-  //   if (this.state.trackedPatient === null) {
-  //     return <Text>
-  //       Show all ble patient
-  //     </Text>
-  //   }
-
-  //   else {
-  //     let name = this.state.trackedPatient.name.first
-  //     return <Text>
-  //       {name}
-  //     </Text>
-
-  //     // console.log('This index will show in this page: ', this.props.ble.data[this.state.trackedPatientIndex].name.first)
-  //   }
-  // }
-
   showTrackedPatient2 = () => {
-    if (this.props.ble.selectedData === null) {
+    if (this.props.ble.selected2 === null) {
       return <Text>
         Show all ble patient
       </Text>
     }
 
     else {
-      let name = this.props.ble.selectedData.name + ' ' + this.props.ble.selectedData.last
-      return <Text>
-        {name}
-      </Text>
-
-      // console.log('This index will show in this page: ', this.props.ble.data[this.state.trackedPatientIndex].name.first)
+      if (this.state.trackedPatient != null) {
+        let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+        return <Text>
+          {name}
+        </Text>
+      }
     }
   }
 
   showCancelButton = () => {
-    if (this.state.trackedPatient === null) {
+    if (this.props.ble.selected2 === null) {
       return null
     }
 
@@ -108,29 +88,33 @@ export class TestFeature extends Component {
     this.props.cancel()
   }
 
-  componentWillReceiveProps = (nextprops) => {
-    // console.log('remain index: ', nextprops.ble.selected)
-    this.setState({ trackedPatient: nextprops.ble.selected2 })
-    console.log('nextProps: ', nextprops.ble.selected2)
-  }
-
-  room = () => {
-    if(this.props.ble.selectedData === null){
+  showRoom = () => {
+    if (this.props.ble.selected2 === null) {
       return (<Text>
         -
       </Text>)
     }
 
-    else{
-      return (<Text>
-        {this.props.ble.selectedData.room}
-      </Text>)
+    else {
+      if (this.state.trackedPatient != null) {
+        return <Text>
+          {this.state.trackedPatient.room}
+        </Text>
+      }
     }
   }
 
 
-  render() {
+  checkEqualPL = ({ id }, query) => {
+    if (id === query) {
+      return true;
+    }
+    return false;
+  };
 
+
+  render() {
+    console.log('this is trackedpatient pos2', this.state.trackedPatient)
     return (
       <View>
 
@@ -157,7 +141,7 @@ export class TestFeature extends Component {
           <Text>
             Room:
             </Text>
-          {this.room()}
+          {this.showRoom()}
         </View>
 
         <View>
@@ -165,9 +149,7 @@ export class TestFeature extends Component {
         </View>
       </View>
     )
-
   }
-
 }
 
 const mapStateToProps = (state) => ({
@@ -176,7 +158,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   cancel: () => dispatch(cancelSelectedTracking()),
-  updateTrackData: (key) => dispatch(updateTrackingPatient(key)),
   updateData: () => dispatch(updateAllPatient())
 })
 

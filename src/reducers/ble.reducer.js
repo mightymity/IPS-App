@@ -28,8 +28,7 @@ export function ble(state = defaultState, action) {
     // } break;
 
     case 'LIST_ALL_BLE_PATIENTS2': {
-      // const nextState = {selected: null, selected2: null, data: [...state.data], data2: action.items , selectedData: null}
-      const nextState = {...state, data2: action.items }
+      const nextState = {...state, data2: action.items}
       return nextState
     } break;
 
@@ -39,7 +38,7 @@ export function ble(state = defaultState, action) {
     // }break;
 
     case 'SELECT_PATIENT_TO_TRACK': {
-      const nextState = {...state, selected: null, selected2: action.key, }
+      const nextState = {...state, selected: null, selected2: action.key}
       return nextState
     } break;
 

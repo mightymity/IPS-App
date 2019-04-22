@@ -2,18 +2,6 @@ import { bleConstants } from '../_constants';
 import { db }  from '../services/firebase_demo'
 
 
-// export const bleActions = {
-//     trackingSelectedBlePatient,
-//     listAllBlePatients
-// };
-
-export function trackingSelectedBlePatient(item) {
-    return {
-        type: bleConstants.TRACKING_SELECTED_BLE_PATIENT,
-        item: item
-    }
-}
-
 export function trackingSelectedBlePatient2(item) {
     return {
         type: 'TRACKING_SELECTED_BLE_PATIENT2',
@@ -21,25 +9,12 @@ export function trackingSelectedBlePatient2(item) {
     }
 } 
 
-export function listAllBlePatients() {
-    return {
-        type: bleConstants.LIST_ALL_BLE_PATIENTS,
-    }
-}
-
 export function listAllBlePatients2(items) {
     return {
         type: 'LIST_ALL_BLE_PATIENTS2',
         items: items
     }
 }
-
-// export function updateData(items){
-//     return {
-//         type: bleConstants.UPDATE_DATA,
-//         items: items
-//     }
-// }
 
 export function updateAllPatient(){
     return function(dispatch){
@@ -50,7 +25,6 @@ export function updateAllPatient(){
         })
     }
 }
-
 
 export function updateTrackingPatient(key){
     return function(dispatch){

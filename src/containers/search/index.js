@@ -16,7 +16,7 @@ class Search extends Component {
 
   constructor(props) {
     super(props);
-    this.props.updateData()
+    // this.props.updateData()
   }
 
   state = {
@@ -62,7 +62,7 @@ class Search extends Component {
 
   handleSearch2 = (text) => {
     const formatQuery = text.toLowerCase();
-    console.log(formatQuery)
+    // console.log(formatQuery)
     const data = _.filter(this.props.ble.data2, user => {
       return this.contains2(user, formatQuery);
     })
@@ -82,7 +82,7 @@ class Search extends Component {
     this.props.selectTracking(item);
     Actions.jump('tf');
 
-    console.log('this is selected key:', this.props.ble.selected2)
+    // console.log('this is selected key:', this.props.ble.selected2)
 
   }
 
@@ -140,7 +140,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   selectTracking: item => dispatch(selectPatientToTrack(item)),
-  updateData: () => dispatch(updateAllPatient())
+  // updateData: () => dispatch(updateAllPatient())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search)
