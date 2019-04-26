@@ -58,7 +58,7 @@ class App extends Component {
           >
 
             <Scene
-              title="TF"
+              title="TF-BLE"
               key="tf"
               component={TestFeature}
             />

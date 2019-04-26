@@ -2,48 +2,48 @@ import { bleConstants } from '../_constants';
 import { db }  from '../services/firebase_demo'
 
 
-export function trackingSelectedBlePatient2(item) {
+export function trackingSelectedPatientBle(item) {
     return {
-        type: 'TRACKING_SELECTED_BLE_PATIENT2',
+        type: 'TRACKING_SELECTED_PATIENT_BLE',
         item: item
     }
 } 
 
-export function listAllBlePatients2(items) {
+export function listAllPatientsBle(items) {
     return {
-        type: 'LIST_ALL_BLE_PATIENTS2',
+        type: 'LIST_ALL_PATIENTS_BLE',
         items: items
     }
 }
 
-export function updateAllPatient(){
+export function updateAllPatientBle(){
     return function(dispatch){
         db.ref('/patients').on("value", function(snapshot){
             let data = snapshot.val()
             let items = Object.values(data)
-            dispatch(listAllBlePatients2(items))
+            dispatch(listAllPatientsBle(items))
         })
     }
 }
 
-export function updateTrackingPatient(key){
+export function updateTrackingPatientBle(key){
     return function(dispatch){
         db.ref('/patients').child(key).on('value', function(snapshot){
             let item = snapshot.val()
-            dispatch(trackingSelectedBlePatient2(item))
+            dispatch(trackingSelectedPatientBle(item))
         })
     }
 }
 
-export function selectPatientToTrack(key){
+export function selectPatientToTrackBle(key){
     return {
-        type: 'SELECT_PATIENT_TO_TRACK',
+        type: 'SELECT_PATIENT_TO_TRACK_BLE',
         key: key
     }
 }
 
-export function cancelSelectedTracking(){
+export function cancelSelectedTrackingBle(){
     return {
-        type: 'CANCEL_SELECTED_TRACKING'
+        type: 'CANCEL_SELECTED_TRACKING_BLE'
     }
 }

@@ -5,7 +5,7 @@ import { ListItem, SearchBar } from "react-native-elements";
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 
-import { selectPatientToTrackBle } from '../../actions/ble.action'
+import { selectPatientToTrack, updateAllPatient } from '../../actions/ble.action'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -20,17 +20,17 @@ class Search extends Component {
   }
 
   state = {
-    // fullData: this.props.ble.data,
-    // filteredData: this.props.ble.data,
+    fullData: this.props.ble.data,
+    filteredData: this.props.ble.data,
     query: '',
 
-    fullData2: this.props.ble.data_ble,
-    filteredData2: this.props.ble.data_ble,
+    fullData2: this.props.ble.data2,
+    filteredData2: this.props.ble.data2,
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (this.state.query === '') {
-      this.setState({ filteredData2: nextProps.ble.data_ble })
+      this.setState({ filteredData2: nextProps.ble.data2 })
     }
   }
 
@@ -63,7 +63,7 @@ class Search extends Component {
   handleSearch2 = (text) => {
     const formatQuery = text.toLowerCase();
     // console.log(formatQuery)
-    const data = _.filter(this.props.ble.data_ble, user => {
+    const data = _.filter(this.props.ble.data2, user => {
       return this.contains2(user, formatQuery);
     })
     this.setState({ query: formatQuery, filteredData2: data });
@@ -139,7 +139,7 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  selectTracking: item => dispatch(selectPatientToTrackBle(item)),
+  selectTracking: item => dispatch(selectPatientToTrack(item)),
   // updateData: () => dispatch(updateAllPatient())
 })
 

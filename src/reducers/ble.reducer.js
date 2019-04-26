@@ -1,49 +1,40 @@
 import { bleConstants } from '../_constants';
 import users from '../services/demo_users'
 
+// const defaultState = {
+//   selected: null,
+//   selected2: null,
+//   data: users,
+//   data2: null,
+//   selectedData: null
+// }
+
 const defaultState = {
-  selected: null,
-  selected2: null,
-  data: users,
-  data2: null,
-  selectedData: null
+  selected_ble: null,
+  data_ble: null,
+  selected_data_ble: null
 }
 
 export function ble(state = defaultState, action) {
   switch (action.type) {
 
-    // case bleConstants.TRACKING_SELECTED_BLE_PATIENT: {
-    //   const nextState = {selected: action.item, selected2: null, data: [...state.data], data2: [...state.data2]}
-    //   return nextState;
-    // } break;
-
-    case 'TRACKING_SELECTED_BLE_PATIENT2': {
-      const nextState = {...state, selected2: state.selected2, selectedData: action.item}
+    case 'TRACKING_SELECTED_PATIENT_BLE': {
+      const nextState = {...state, selected_data_ble: action.item}
       return nextState;
     } break;
 
-    // case bleConstants.LIST_ALL_BLE_PATIENTS: {
-    //   const nextState = {selected: null, selected2: null, data: [...state.data], data2: [...state.data2]}
-    //   return nextState
-    // } break;
-
-    case 'LIST_ALL_BLE_PATIENTS2': {
-      const nextState = {...state, data2: action.items}
+    case 'LIST_ALL_PATIENTS_BLE': {
+      const nextState = {...state, data_ble: action.items}
       return nextState
     } break;
 
-    // case bleConstants.UPDATE_DATA:{
-    //   const nextState = {selected: null, data:[...state.data], data2: action.items}
-    //   return nextState
-    // }break;
-
-    case 'SELECT_PATIENT_TO_TRACK': {
-      const nextState = {...state, selected: null, selected2: action.key}
+    case 'SELECT_PATIENT_TO_TRACK_BLE': {
+      const nextState = {...state, selected_ble: action.key}
       return nextState
     } break;
 
-    case 'CANCEL_SELECTED_TRACKING': {
-      const nextState = {...state, selected2: null, selectedData: null}
+    case 'CANCEL_SELECTED_TRACKING_BLE': {
+      const nextState = {...state, selected_ble: null, selected_data_ble: null}
       return nextState
     } break;
 

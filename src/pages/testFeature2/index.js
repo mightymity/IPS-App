@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { updateAllPatientBle, cancelSelectedTrackingBle } from '../../actions/ble.action'
+import { updateAllPatient, cancelSelectedTracking } from '../../actions/gps.action'
 
 import { db } from '../../services/firebase_demo'
 
@@ -15,7 +15,7 @@ import _ from "lodash";
 
 
 
-export class TestFeature extends Component {
+export class TestFeature2 extends Component {
 
   constructor(props) {
     super(props);
@@ -27,15 +27,15 @@ export class TestFeature extends Component {
   }
 
   componentWillReceiveProps = (nextprops) => {
-    if (nextprops.ble.selected_ble != null) {
-      const item = _.filter(nextprops.ble.data_ble, user => {
-        return this.checkEqualPL(user, nextprops.ble.selected_ble);
+    if (nextprops.ble.selected2 != null) {
+      const item = _.filter(nextprops.ble.data2, user => {
+        return this.checkEqualPL(user, nextprops.ble.selected2);
       })
       this.setState({ trackedPatient: item[0] })
     }
 
-    else {
-      this.setState({ trackedPatient: null })
+    else{
+      this.setState({trackedPatient: null})
     }
   }
 
@@ -57,16 +57,8 @@ export class TestFeature extends Component {
     })
   }
 
-  checkFilterFirebase = () => {
-    db.ref('/patients').orderByChild('/status').equalTo('in').on('value', snapshot => {
-      let data = snapshot.val()
-      let items = Object.values(data);
-      console.log(items)
-    })
-  }
-
   showTrackedPatient2 = () => {
-    if (this.props.ble.selected_ble === null) {
+    if (this.props.ble.selected2 === null) {
       return <Text>
         Show all ble patient
       </Text>
@@ -83,7 +75,7 @@ export class TestFeature extends Component {
   }
 
   showCancelButton = () => {
-    if (this.props.ble.selected_ble === null) {
+    if (this.props.ble.selected2 === null) {
       return null
     }
 
@@ -97,7 +89,7 @@ export class TestFeature extends Component {
   }
 
   showRoom = () => {
-    if (this.props.ble.selected_ble === null) {
+    if (this.props.ble.selected2 === null) {
       return (<Text>
         -
       </Text>)
@@ -106,7 +98,7 @@ export class TestFeature extends Component {
     else {
       if (this.state.trackedPatient != null) {
         return <Text>
-          {this.state.trackedPatient.BLE.room}
+          {this.state.trackedPatient.room}
         </Text>
       }
     }
@@ -122,11 +114,12 @@ export class TestFeature extends Component {
 
 
   render() {
+    console.log('this is trackedpatient pos2', this.state.trackedPatient)
     return (
       <View>
 
         <View style={local.card}>
-          <TouchableOpacity onPress={() => { this.checkFilterFirebase() }}>
+          <TouchableOpacity onPress={() => { Actions.jump('realSearch') }}>
             <Text>
               Try this
             </Text>
@@ -155,6 +148,9 @@ export class TestFeature extends Component {
 
         </View>
 
+        <Text>
+          BLE
+        </Text>
       </View>
     )
   }
@@ -165,8 +161,8 @@ const mapStateToProps = (state) => ({
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  cancel: () => dispatch(cancelSelectedTrackingBle()),
-  updateData: () => dispatch(updateAllPatientBle())
+  cancel: () => dispatch(cancelSelectedTracking()),
+  updateData: () => dispatch(updateAllPatient())
 })
 
 
@@ -182,4 +178,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestFeature)
+export default connect(mapStateToProps, mapDispatchToProps)(TestFeature2)
