@@ -1,5 +1,5 @@
 
-import { db }  from '../services/firebase_demo'
+// import { db }  from '../services/firebase_demo'
 
 
 export function trackingSelectedPatientGps(item) {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import Search from "../../containers/search"
 import { local } from "./style";
@@ -20,9 +20,10 @@ export class TestFeature extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      trackedPatient: null,
+      trackedPatient: 'no',
     }
 
+    console.log('tf ble')
     this.props.updateData()
   }
 
@@ -44,7 +45,6 @@ export class TestFeature extends Component {
     db.ref('/patients').on('value', snapshot => {
       let data = snapshot.val()
       let items = Object.values(data);
-      // this.setGlobalData(items)
       console.log(items)
     })
   }
@@ -65,6 +65,10 @@ export class TestFeature extends Component {
     })
   }
 
+  goToSearchPage = () => {
+    Actions.jump('realSearch')
+  }
+
   showTrackedPatient2 = () => {
     if (this.props.ble.selected_ble === null) {
       return <Text>
@@ -74,12 +78,23 @@ export class TestFeature extends Component {
 
     else {
       if (this.state.trackedPatient != null) {
-        let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
-        return <Text>
-          {name}
-        </Text>
+        if (this.state.trackedPatient != 'no') {
+          console.log('trackPatient', this.state.trackedPatient)
+          let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+          return <Text>
+            {name}
+          </Text>
+        }
+      }
+      else {
+        if (this.state.trackedPatient != 'no') {
+          Alert.alert('title', 'Patient is out of area')
+          this.setState({ trackedPatient: 'no' })
+          this.props.cancel()
+        }
       }
     }
+
   }
 
   showCancelButton = () => {
@@ -105,9 +120,16 @@ export class TestFeature extends Component {
 
     else {
       if (this.state.trackedPatient != null) {
-        return <Text>
-          {this.state.trackedPatient.BLE.room}
-        </Text>
+        if (this.state.trackedPatient != 'no')
+          return <Text>
+            {this.state.trackedPatient.BLE.room}
+          </Text>
+      }
+
+      else {
+        return (<Text>
+          -
+        </Text>)
       }
     }
   }
@@ -126,7 +148,7 @@ export class TestFeature extends Component {
       <View>
 
         <View style={local.card}>
-          <TouchableOpacity onPress={() => { this.checkFilterFirebase() }}>
+          <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
             <Text>
               Try this
             </Text>

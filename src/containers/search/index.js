@@ -5,7 +5,7 @@ import { ListItem, SearchBar } from "react-native-elements";
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 
-import { selectPatientToTrackBle } from '../../actions/ble.action'
+import { selectPatientToTrackBle, collectSelectedPatientDataBle } from '../../actions/ble.action'
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
@@ -17,6 +17,8 @@ class Search extends Component {
   constructor(props) {
     super(props);
     // this.props.updateData()
+    // console.log('search naja')
+    // this.props.dumpData()
   }
 
   state = {
@@ -34,14 +36,6 @@ class Search extends Component {
     }
   }
 
-  // contains = ({ name, email }, query) => {
-  //   const { first, last } = name;
-  //   if (first.includes(query) || last.includes(query) || email.includes(query)) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // };
 
   contains2 = ({ name, last, email }, query) => {
     if (name.includes(query) || last.includes(query) || email.includes(query)) {
@@ -50,15 +44,6 @@ class Search extends Component {
 
     return false;
   };
-
-  // handleSearch = (text) => {
-  //   const formatQuery = text.toLowerCase();
-  //   console.log(formatQuery)
-  //   const data = _.filter(this.state.fullData, user => {
-  //     return this.contains(user, formatQuery);
-  //   })
-  //   this.setState({ query: formatQuery, filteredData: data });
-  // }
 
   handleSearch2 = (text) => {
     const formatQuery = text.toLowerCase();
@@ -70,18 +55,12 @@ class Search extends Component {
   }
 
 
-  // selectPatient = (item) => {
-  //   // console.log("This is item name: ", item.name.first)
-  //   this.props.tracking(item);
-  //   Actions.jump('tf');
-  //   // console.log('this is selected index: ', this.props.ble.selected);
-  // }
+  selectPatient2 = (key) => {
 
-  selectPatient2 = (item) => {
-
-    this.props.selectTracking(item);
-    Actions.jump('tf');
-
+    this.props.selectTracking(key);
+    // this.collectSelectedtData(key);
+    setTimeout(() => { Actions.jump('tf') }, 1000)
+    // Actions.jump('tf')
     // console.log('this is selected key:', this.props.ble.selected2)
 
   }
@@ -140,6 +119,7 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   selectTracking: item => dispatch(selectPatientToTrackBle(item)),
+  collectData: item => dispatch(collectSelectedPatientDataBle(item))
   // updateData: () => dispatch(updateAllPatient())
 })
 
