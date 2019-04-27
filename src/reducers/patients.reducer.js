@@ -25,7 +25,7 @@ export function patients(state = defaultState, action) {
   switch (action.type) {
 
     case "LIST_ALL_PATIENTS": {
-      const nextState = {current:{...state.current}, data: action.patients };
+      const nextState = {current:{...state}.current, data: action.patients };
       // nextState.data = [...action.patients]
       // const nextState = {data:{newData}, current:{...state.current}}
       return nextState;

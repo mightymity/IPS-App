@@ -4,9 +4,7 @@ import {colors} from "../../theme/colors";
 export const local = StyleSheet.create({
   heading1: {
     fontSize: 24,
-    fontWeight: 'bold',
-    marginTop: 30,
-    marginBottom: 30,
+    fontWeight: 'bold'
   },
   header: {
     fontSize: 24,
@@ -15,15 +13,18 @@ export const local = StyleSheet.create({
     marginBottom: 40,
     borderBottomColor: '#199187',
     borderBottomWidth: 1,
-    
   },
   textInput: {
-    alignSelf: 'stretch',
-    //height: 40,
-    marginTop: 4,
-    color: '#11294f',
-    borderBottomColor: '#199187',
-    borderBottomWidth: 1
+    marginTop: 50,
+    borderBottomColor: '#F5FCFF',
+    backgroundColor: '#FFFFFF',
+    borderRadius:30,
+    borderBottomWidth: 1,
+    width:350,
+    height:45,
+    //marginBottom:20,
+    flexDirection: 'row',
+    alignItems:'center'
   },
 
   button: {
@@ -58,9 +59,5 @@ export const local = StyleSheet.create({
     marginLeft:16,
     borderBottomColor: '#FFFFFF',
     flex:1,
-  },
-
-  input: {
-    marginTop: 4,
-  },
+}
 });

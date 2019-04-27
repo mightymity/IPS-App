@@ -22,6 +22,7 @@ import patient_regis from "./src/pages/patient-register"
 import caretaker_regis from "./src/pages/caretaker-register"
 import patient_edit from "./src/pages/patient-edit"
 import caretaker_edit from "./src/pages/caretaker-edit"
+import Login from "./src/pages/login"
 
 
 // Components
@@ -47,6 +48,7 @@ import { Actions } from "react-native-router-flux";
 
 // firebase.initializeApp(firebaseConfig);
 
+console.disableYellowBox = true;
 
 class App extends Component {
   state = {}
@@ -73,9 +75,9 @@ class App extends Component {
           >
             
             <Scene
-              title="Caretaker"
-              key="caretaker"
-              component={Caretaker}
+              title="Login"
+              key="login"
+              component={Login}
             />
 
             <Scene
@@ -96,11 +98,11 @@ class App extends Component {
               component={Patient}
             />
 
-            {/* <Scene
+            <Scene
               title="Caretaker"
               key="caretaker"
               component={Caretaker}
-            /> */}
+            />
 
             <Scene
               title="Edit Map"
@@ -149,6 +151,8 @@ class App extends Component {
             key = "caretaker_edit" 
             component = {caretaker_edit}  
             />
+
+
 
           </Drawer>
         </Router>

@@ -29,11 +29,11 @@ export const local = StyleSheet.create({
   image:{
     padding: 10,
     margin: 5,
-    height: 30,
-    width: 30,
+    height: 25,
+    width: 25,
     resizeMode: 'stretch',
     alignItems: 'center',
-    marginTop: 26,
+    //marginTop: 26,
   }
 
 });
