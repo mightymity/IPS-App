@@ -5,43 +5,32 @@ import { ListItem, SearchBar } from "react-native-elements";
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 
-import { selectPatientToTrack, updateAllPatient } from '../../actions/ble.action'
-
 import Icon from 'react-native-vector-icons/FontAwesome'
 
 import _ from "lodash";
+import { selectPatientToTrackGps } from '../../actions/gps.action';
 
 
-class Search extends Component {
+class Search_GPS extends Component {
 
   constructor(props) {
     super(props);
-    // this.props.updateData()
   }
 
   state = {
-    fullData: this.props.ble.data,
-    filteredData: this.props.ble.data,
+    // fullData: this.props.ble.data,
+    // filteredData: this.props.ble.data,
     query: '',
 
-    fullData2: this.props.ble.data2,
-    filteredData2: this.props.ble.data2,
+    fullData2: this.props.gps.data_gps,
+    filteredData2: this.props.gps.data_gps,
   }
 
   componentWillReceiveProps = (nextProps) => {
     if (this.state.query === '') {
-      this.setState({ filteredData2: nextProps.ble.data2 })
+      this.setState({ filteredData2: nextProps.gps.data_gps })
     }
   }
-
-  // contains = ({ name, email }, query) => {
-  //   const { first, last } = name;
-  //   if (first.includes(query) || last.includes(query) || email.includes(query)) {
-  //     return true;
-  //   }
-
-  //   return false;
-  // };
 
   contains2 = ({ name, last, email }, query) => {
     if (name.includes(query) || last.includes(query) || email.includes(query)) {
@@ -51,39 +40,27 @@ class Search extends Component {
     return false;
   };
 
-  // handleSearch = (text) => {
-  //   const formatQuery = text.toLowerCase();
-  //   console.log(formatQuery)
-  //   const data = _.filter(this.state.fullData, user => {
-  //     return this.contains(user, formatQuery);
-  //   })
-  //   this.setState({ query: formatQuery, filteredData: data });
-  // }
 
   handleSearch2 = (text) => {
     const formatQuery = text.toLowerCase();
     // console.log(formatQuery)
-    const data = _.filter(this.props.ble.data2, user => {
+    const data = _.filter(this.props.gps.data_gps, user => {
       return this.contains2(user, formatQuery);
     })
     this.setState({ query: formatQuery, filteredData2: data });
   }
 
 
-  // selectPatient = (item) => {
-  //   // console.log("This is item name: ", item.name.first)
-  //   this.props.tracking(item);
-  //   Actions.jump('tf');
-  //   // console.log('this is selected index: ', this.props.ble.selected);
-  // }
-
   selectPatient2 = (item) => {
 
     this.props.selectTracking(item);
-    Actions.jump('tf');
+    Actions.jump('tf2');
 
-    // console.log('this is selected key:', this.props.ble.selected2)
+  }
 
+  goBack = () => {
+    this.setState({query:''})
+    Actions.jump('tf2')
   }
 
   renderSeparator = () => {
@@ -101,15 +78,22 @@ class Search extends Component {
 
   renderHeader = () => {
     const { query } = this.state
-    return <SearchBar placeholder="Type Here..." lightTheme round onChangeText={this.handleSearch2} value={query} />
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal:10 }}>
+        <View>
+          <TouchableOpacity onPress={() => { this.goBack() }}>
+            <Icon name="arrow-left" size={25} />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1 }}>
+          <SearchBar placeholder="Type Here..." lightTheme round onChangeText={this.handleSearch2} value={query} />
+        </View>
+      </View>
+    )
   };
 
 
   render() {
-    const { ble } = this.props;
-    // console.log('this is loaded data2: ', ble.data2)
-    // console.log('this is state data2: ', this.state.fullData2)
-
     return (
       <ScrollView>
 
@@ -135,12 +119,11 @@ class Search extends Component {
 }
 
 const mapStateToProps = (state) => ({
-  ble: state.ble
+  gps: state.gps
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  selectTracking: item => dispatch(selectPatientToTrack(item)),
-  // updateData: () => dispatch(updateAllPatient())
+  selectTracking: item => dispatch(selectPatientToTrackGps(item)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search)
+export default connect(mapStateToProps, mapDispatchToProps)(Search_GPS)

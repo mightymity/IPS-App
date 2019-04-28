@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 
 import { selectPatientToTrackBle, collectSelectedPatientDataBle } from '../../actions/ble.action'
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import _ from "lodash";
 
@@ -56,13 +56,13 @@ class Search extends Component {
 
 
   selectPatient2 = (key) => {
-
     this.props.selectTracking(key);
-    // this.collectSelectedtData(key);
     setTimeout(() => { Actions.jump('tf') }, 1000)
-    // Actions.jump('tf')
-    // console.log('this is selected key:', this.props.ble.selected2)
+  }
 
+  goBack = () => {
+    this.setState({query:''})
+    Actions.jump('tf')
   }
 
   renderSeparator = () => {
@@ -80,7 +80,18 @@ class Search extends Component {
 
   renderHeader = () => {
     const { query } = this.state
-    return <SearchBar placeholder="Type Here..." lightTheme round onChangeText={this.handleSearch2} value={query} />
+    return (
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal:10 }}>
+        <View>
+          <TouchableOpacity onPress={() => { this.goBack() }}>
+            <Icon name="arrow-left" size={25} />
+          </TouchableOpacity>
+        </View>
+        <View style={{ flex: 1 }}>
+          <SearchBar placeholder="Type Here..." lightTheme round onChangeText={this.handleSearch2} value={query} />
+        </View>
+      </View>
+    )
   };
 
 
@@ -119,7 +130,6 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   selectTracking: item => dispatch(selectPatientToTrackBle(item)),
-  collectData: item => dispatch(collectSelectedPatientDataBle(item))
   // updateData: () => dispatch(updateAllPatient())
 })
 

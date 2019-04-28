@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Dimensions, Alert } from 'react-native'
 import { connect } from 'react-redux'
 import Search from "../../containers/search"
 import { local } from "./style";
@@ -7,11 +7,13 @@ import { Actions } from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { updateAllPatient, cancelSelectedTracking } from '../../actions/gps.action'
+import { updateAllPatientGps, cancelSelectedTrackingGps } from '../../actions/gps.action'
 
 import { db } from '../../services/firebase_demo'
 
 import _ from "lodash";
+
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 
 
@@ -20,22 +22,50 @@ export class TestFeature2 extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      trackedPatient: null,
+      trackedPatient: 'no',
+
+      focusedLocation: {
+        latitude: 13.669557,
+        longitude: 100.634628,
+        latitudeDelta: 0.0122,
+        longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+      },
+
+      locationChosen: false,
+
+      markers: [{
+        title: 'Big C',
+        coordinates: {
+          latitude: 13.668866,
+          longitude: 100.635654
+        },
+      },
+      {
+        title: 'BITEC',
+        coordinates: {
+          latitude: 13.669696,
+          longitude: 100.610179
+        },
+      }],
+
+      markerSet: null
     }
 
+    console.log('tf gps')
     this.props.updateData()
   }
 
   componentWillReceiveProps = (nextprops) => {
-    if (nextprops.ble.selected2 != null) {
-      const item = _.filter(nextprops.ble.data2, user => {
-        return this.checkEqualPL(user, nextprops.ble.selected2);
+    
+    if (nextprops.gps.selected_gps != null) {
+      const item = _.filter(nextprops.gps.data_gps, user => {
+        return this.checkEqualPL(user, nextprops.gps.selected_gps);
       })
       this.setState({ trackedPatient: item[0] })
     }
 
-    else{
-      this.setState({trackedPatient: null})
+    else {
+      this.setState({ trackedPatient: null })
     }
   }
 
@@ -44,7 +74,6 @@ export class TestFeature2 extends Component {
     db.ref('/patients').on('value', snapshot => {
       let data = snapshot.val()
       let items = Object.values(data);
-      // this.setGlobalData(items)
       console.log(items)
     })
   }
@@ -57,8 +86,20 @@ export class TestFeature2 extends Component {
     })
   }
 
+  checkFilterFirebase = () => {
+    db.ref('/patients').orderByChild('/status').equalTo('out').on('value', snapshot => {
+      let data = snapshot.val()
+      let items = Object.values(data);
+      console.log(items)
+    })
+  }
+
+  goToSearchPage = () => {
+    Actions.jump('search_gps')
+  }
+
   showTrackedPatient2 = () => {
-    if (this.props.ble.selected2 === null) {
+    if (this.props.gps.selected_gps === null) {
       return <Text>
         Show all ble patient
       </Text>
@@ -66,16 +107,27 @@ export class TestFeature2 extends Component {
 
     else {
       if (this.state.trackedPatient != null) {
-        let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
-        return <Text>
-          {name}
-        </Text>
+        if (this.state.trackedPatient != 'no') {
+          console.log('trackPatient', this.state.trackedPatient)
+          let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+          return <Text>
+            {name}
+          </Text>
+        }
+      }
+      else {
+        if (this.state.trackedPatient != 'no') {
+          Alert.alert('title', 'Patient is inside the hospital now')
+          this.setState({ trackedPatient: 'no' })
+          this.props.cancel()
+        }
       }
     }
+
   }
 
   showCancelButton = () => {
-    if (this.props.ble.selected2 === null) {
+    if (this.props.gps.selected_gps === null) {
       return null
     }
 
@@ -89,7 +141,7 @@ export class TestFeature2 extends Component {
   }
 
   showRoom = () => {
-    if (this.props.ble.selected2 === null) {
+    if (this.props.gps.selected_gps === null) {
       return (<Text>
         -
       </Text>)
@@ -97,9 +149,16 @@ export class TestFeature2 extends Component {
 
     else {
       if (this.state.trackedPatient != null) {
-        return <Text>
-          {this.state.trackedPatient.room}
-        </Text>
+        if (this.state.trackedPatient != 'no')
+          return <Text>
+            {this.state.trackedPatient.BLE.room}
+          </Text>
+      }
+
+      else {
+        return (<Text>
+          -
+        </Text>)
       }
     }
   }
@@ -112,14 +171,34 @@ export class TestFeature2 extends Component {
     return false;
   };
 
+  renderMarker = () =>{
+
+    if(this.props.gps.data_gps !== null){
+      const markers = this.props.gps.data_gps.map(m => (
+        <MapView.Marker
+          coordinate={m.GPS}
+          title={m.name}
+        />
+      ))
+
+      return markers
+    }
+    
+  }
+
 
   render() {
-    console.log('this is trackedpatient pos2', this.state.trackedPatient)
+    let marker = null;
+
+    if (this.state.locationChosen) {
+      marker = <MapView.Marker coordinate={this.state.focusedLocation} />
+    }
+    
     return (
       <View>
 
         <View style={local.card}>
-          <TouchableOpacity onPress={() => { Actions.jump('realSearch') }}>
+          <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
             <Text>
               Try this
             </Text>
@@ -137,32 +216,42 @@ export class TestFeature2 extends Component {
           </View>
 
         </View>
-        <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-          <Text>
-            Room:
-            </Text>
-          {this.showRoom()}
-        </View>
 
         <View>
+          <MapView
+            initialRegion={this.state.focusedLocation}
 
+            style={{ width: '100%', height: '100%' }}
+            onPress={this.pickLocationHandler}
+            ref={ref => this.map = ref}
+          >
+
+            {marker}
+
+            {/* {this.state.markers.map(m => (
+              <MapView.Marker
+                coordinate={m.coordinates}
+                title={m.title}
+              />
+            ))} */}
+
+            {this.renderMarker()}
+
+          </MapView>
         </View>
 
-        <Text>
-          BLE
-        </Text>
       </View>
     )
   }
 }
 
 const mapStateToProps = (state) => ({
-  ble: state.ble
+  gps: state.gps
 })
 
 const mapDispatchToProps = (dispatch) => ({
-  cancel: () => dispatch(cancelSelectedTracking()),
-  updateData: () => dispatch(updateAllPatient())
+  cancel: () => dispatch(cancelSelectedTrackingGps()),
+  updateData: () => dispatch(updateAllPatientGps())
 })
 
 

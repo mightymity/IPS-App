@@ -2,13 +2,6 @@ import { bleConstants } from '../_constants';
 import { db }  from '../services/firebase_demo'
 
 
-export function trackingSelectedPatientBle(item) {
-    return {
-        type: 'TRACKING_SELECTED_PATIENT_BLE',
-        item: item
-    }
-}
-
 export function listAllPatientsBle(items) {
     return {
         type: 'LIST_ALL_PATIENTS_BLE',
@@ -49,12 +42,5 @@ export function selectPatientToTrackBle(key) {
 export function cancelSelectedTrackingBle() {
     return {
         type: 'CANCEL_SELECTED_TRACKING_BLE'
-    }
-}
-
-export function collectSelectedPatientDataBle(item){
-    return {
-        type: 'COLLECT_SELECTED_PATIENT_DATA_BLE',
-        item: item
     }
 }

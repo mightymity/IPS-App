@@ -22,6 +22,8 @@ import patient_regis from "./src/pages/patient-register"
 import caretaker_regis from "./src/pages/caretaker-register"
 import TestFeature from "./src/pages/testFeature"
 import RealSearch from "./src/containers/search"
+import TestFeature2 from "./src/pages/testFeature2"
+import Search_GPS from "./src/containers/search-gps"
 
 
 // Components
@@ -56,6 +58,12 @@ class App extends Component {
             backButtonTintColor={colors.whiteA}
             rightButtonTintColor={colors.whiteB}
           >
+          
+            <Scene
+              title="TF-GPS"
+              key="tf2"
+              component={TestFeature2}
+            />
 
             <Scene
               title="TF-BLE"
@@ -126,6 +134,11 @@ class App extends Component {
             <Scene
               key="realSearch"
               component={RealSearch}
+            />
+
+            <Scene
+              key="search_gps"
+              component={Search_GPS}
             />
             
 
