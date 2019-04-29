@@ -56,7 +56,7 @@ export class TestFeature2 extends Component {
   }
 
   componentWillReceiveProps = (nextprops) => {
-    
+
     if (nextprops.gps.selected_gps != null) {
       const item = _.filter(nextprops.gps.data_gps, user => {
         return this.checkEqualPL(user, nextprops.gps.selected_gps);
@@ -108,7 +108,7 @@ export class TestFeature2 extends Component {
     else {
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          console.log('trackPatient', this.state.trackedPatient)
+          // console.log('trackPatient', this.state.trackedPatient)
           let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
           return <Text>
             {name}
@@ -171,19 +171,47 @@ export class TestFeature2 extends Component {
     return false;
   };
 
-  renderMarker = () =>{
+  renderMarker = () => {
 
-    if(this.props.gps.data_gps !== null){
-      const markers = this.props.gps.data_gps.map(m => (
-        <MapView.Marker
-          coordinate={m.GPS}
-          title={m.name}
-        />
-      ))
+    if (this.props.gps.selected_gps === null) {
 
-      return markers
+      if (this.props.gps.data_gps !== null) {
+
+        const markers = this.props.gps.data_gps.map(m => (
+          <MapView.Marker
+            coordinate={m.GPS}
+            title={m.name}
+          />
+        ))
+        return markers
+      }
+
     }
-    
+
+    else {
+      const trackedPatient = this.state.trackedPatient
+
+      const newLatitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.latitude : null
+      const newLongitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.longitude : null
+
+      console.log('newLatitude', newLatitude)
+      console.log('newLongitude', newLongitude)
+
+      console.log(typeof (this.map2))
+
+      // this.map2.animateToRegion({
+      //   latitude: newLatitude,
+      //   longitude: newLongitude,
+      //   latitudeDelta: 0.0122,
+      //   longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+      // });
+
+
+      return <MapView.Marker
+        coordinate={trackedPatient.GPS}
+        title={trackedPatient.name}
+      />
+    }
   }
 
 
@@ -193,7 +221,7 @@ export class TestFeature2 extends Component {
     if (this.state.locationChosen) {
       marker = <MapView.Marker coordinate={this.state.focusedLocation} />
     }
-    
+
     return (
       <View>
 
@@ -223,10 +251,10 @@ export class TestFeature2 extends Component {
 
             style={{ width: '100%', height: '100%' }}
             onPress={this.pickLocationHandler}
-            ref={ref => this.map = ref}
+            ref={ref => this.map2 = ref}
           >
 
-            {marker}
+            {/* {marker} */}
 
             {/* {this.state.markers.map(m => (
               <MapView.Marker
