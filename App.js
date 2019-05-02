@@ -23,7 +23,8 @@ import caretaker_regis from "./src/pages/caretaker-register"
 import patient_edit from "./src/pages/patient-edit"
 import caretaker_edit from "./src/pages/caretaker-edit"
 import Login from "./src/pages/login"
-
+import test_map from "./src/pages/test_map"
+import search_hospital from "./src/pages/search-hospital"
 
 // Components
 import SideMenu from "./src/components/side-menu";
@@ -73,6 +74,12 @@ class App extends Component {
             backButtonTintColor={colors.whiteA}
             rightButtonTintColor={colors.whiteB}
           >
+
+            {/* <Scene 
+              title="test"
+              key="test_map"
+              component={test_map}
+            /> */}
             
             <Scene
               title="Login"
@@ -150,6 +157,12 @@ class App extends Component {
             title = "Caretaker Edit"
             key = "caretaker_edit" 
             component = {caretaker_edit}  
+            />
+
+            <Scene 
+            title = "Search from Hospital"
+            key = "search_hospital" 
+            component = {search_hospital}  
             />
 
 

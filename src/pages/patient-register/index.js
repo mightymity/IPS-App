@@ -26,6 +26,7 @@ import { colors } from "../../theme/colors";
 
 
 
+
 // let addItem = item => {  
 //     db.ref('/patients').push({
 //       name: item.name,
@@ -47,11 +48,13 @@ export class patientRegist extends Component {
   }
 
   state = {
-    id: '',
-    name: '',
+    id: this.props.patients.selectedId,
+    name: this.props.patients.selectedName,
     ble: '',
     gps: ''
   }
+
+
 
   saveNewPatient = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
@@ -92,11 +95,13 @@ export class patientRegist extends Component {
   }
 
   onSearch = () => {
-
+    Actions.jump('search_hospital')
   }
 
   render() {
     const { id, name, ble, gps } = this.state
+    console.log('name registered: ', this.props.patients.selectedName)
+    console.log('id registered: ', this.props.patients.selectedId)
     //const avatar = '../../assets/images/default.png'  
     return (
       <View style={{ alignSelf: 'stretch' }}>
@@ -120,10 +125,12 @@ export class patientRegist extends Component {
             inputPadding={16}
             onChangeText={(value) => this.onChangeId(value)}
             //editable={false}
+            value={id ? String(id) : null}
           />
 
           <Hoshi
             style={local.textInput}
+            
             label={'Name'}
             // this is used as active border color
             borderColor={'#b76c94'}
@@ -131,6 +138,7 @@ export class patientRegist extends Component {
             borderHeight={3}
             inputPadding={16}
             onChangeText={(value) => this.onChangeName(value)}
+            value={ name }
             //editable={false}
           />
 

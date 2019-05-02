@@ -34,6 +34,14 @@ export const local = StyleSheet.create({
     resizeMode: 'stretch',
     alignItems: 'center',
     //marginTop: 26,
+  },
+
+  logout:{
+    alignSelf: 'center',
+    //alignItems: 'flex-end',
+    padding: 20,
+    backgroundColor: colors.purpleA,
+    marginTop: 30,
   }
 
 });

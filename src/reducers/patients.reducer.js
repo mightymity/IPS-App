@@ -7,7 +7,9 @@ import { Actions } from 'react-native-router-flux';
 
 const defaultState = {
   current: null,
-  data: null
+  data: null,
+  selectedName: '',
+  selectedId: null
 }
 
 // const initState = {
@@ -33,6 +35,11 @@ export function patients(state = defaultState, action) {
 
     case "SELECT_EDIT_PATIENT": {
       const nextState = {current: action.current, data: {...state.data}}
+      return nextState;
+    } break;
+
+    case "SELECT_HOSPITAL_PATIENT": {
+      const nextState = {current: {...state.current}, data: {...state.data}, selectedName: action.name, selectedId: action.id}
       return nextState;
     } break;
 

@@ -13,6 +13,7 @@ export const patientActions = {
     editPatientByIndex,
     selectEditPatient,
     updatePatientList,
+    selectHospitalPatient
 };
 
 function listAllPatients(data) {
@@ -54,6 +55,14 @@ function selectEditPatient(data){
     return {
         type: "SELECT_EDIT_PATIENT",
         current: data,
+    }
+}
+
+function selectHospitalPatient(name, id){
+    return {
+        type: "SELECT_HOSPITAL_PATIENT",
+        name: name,
+        id: id
     }
 }
 
