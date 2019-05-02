@@ -21,6 +21,7 @@ export class TestFeature2 extends Component {
 
   constructor(props) {
     super(props);
+    // this.map2 = createRef()
     this.state = {
       trackedPatient: 'no',
 
@@ -228,7 +229,7 @@ export class TestFeature2 extends Component {
         <View style={local.card}>
           <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
             <Text>
-              Try this
+              Search
             </Text>
           </TouchableOpacity>
         </View>

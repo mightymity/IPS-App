@@ -5,7 +5,7 @@ import { ListItem, SearchBar } from "react-native-elements";
 import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 
-import { selectPatientToTrackBle, collectSelectedPatientDataBle } from '../../actions/ble.action'
+import { selectPatientToTrackBle } from '../../actions/ble.action'
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
