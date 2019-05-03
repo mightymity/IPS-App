@@ -124,7 +124,7 @@ export class patientRegist extends Component {
             borderHeight={3}
             inputPadding={16}
             onChangeText={(value) => this.onChangeId(value)}
-            //editable={false}
+            editable={false}
             value={id ? String(id) : null}
           />
 
@@ -139,7 +139,7 @@ export class patientRegist extends Component {
             inputPadding={16}
             onChangeText={(value) => this.onChangeName(value)}
             value={ name }
-            //editable={false}
+            editable={false}
           />
 
           <Hoshi
