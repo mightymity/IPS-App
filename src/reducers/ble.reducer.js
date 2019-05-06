@@ -38,8 +38,13 @@ export function ble(state = defaultState, action) {
       }
     } break;
 
-    case 'SET_CURRENT_LOCATION': {
-      const nextState = { ...state, building_index: action.index, floor_number: action.number }
+    case 'SET_CURRENT_BUILDING': {
+      const nextState = { ...state, building_index: action.index }
+      return nextState
+    } break;
+
+    case 'SET_CURRENT_FLOOR': {
+      const nextState = { ...state, floor_number: action.number }
       return nextState
     } break;
 

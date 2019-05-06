@@ -7,7 +7,7 @@ import { Actions } from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { updateAllPatientBle, cancelSelectedTrackingBle, updateMap } from '../../actions/ble.action'
+import { updateAllPatientBle, cancelSelectedTrackingBle, updateMap, setCurrentBuilding, setCurrentFloor } from '../../actions/ble.action'
 
 import { db } from '../../services/firebase_demo'
 
@@ -44,14 +44,14 @@ export class TestFeature extends Component {
   componentWillReceiveProps = (nextprops) => {
     if (this.props.ble.ble_map !== null) {
       this.setState({ indoorMaps: this.props.ble.ble_map })
-      if (this.props.ble.building_name !== null && this.props.ble.floor_number !== null) {
-        const buildingIndex = this.props.ble.building_index
-        const buildingName = this.props.ble.ble_map[buildingIndex].name
-        const floorNumber = this.props.ble.floor_number
-        // console.log('initialBuildingName-TF', buildingIndex)
-        // console.log('initialFloorNumber-TF', floorNumber)
-        // console.log('floors data', this.props.ble.ble_map[buildingIndex].floors[floorNumber])
-        this.setState({ buildingName: buildingName, buildingIndex: buildingIndex, floorNumber: floorNumber })
+      if (this.props.ble.building_index !== null && this.props.ble.floor_number !== null) {
+        if (this.state.buildingIndex === null && this.state.floorNumber === null) {
+          console.log('in')
+          const buildingIndex2 = this.props.ble.building_index
+          const buildingName2 = this.props.ble.ble_map[buildingIndex2].name
+          const floorNumber2 = this.props.ble.floor_number
+          this.setState({ buildingName: buildingName2, buildingIndex: buildingIndex2, floorNumber: floorNumber2 })
+        }
       }
     }
 
@@ -199,15 +199,15 @@ export class TestFeature extends Component {
 
   selectBuildingIndex = (index) => {
     const name = this.state.indoorMaps[index].name
-    console.log('bn',name)
     this.setState({ buildingName: name, buildingIndex: index })
+    this.props.setBuilding(index)
   }
 
   selectFloorIndex = (index) => {
     const fs = this.state.indoorMaps[this.state.buildingIndex].floors
-    const floor = Object.keys(fs)[index]
-    console.log('fl',floor)
-    this.setState({ floorNumber: floor })
+    const number = Object.keys(fs)[index]
+    this.setState({ floorNumber: number })
+    this.props.setFloor(number)
   }
 
   renderBuildingPicker = () => {
@@ -222,12 +222,21 @@ export class TestFeature extends Component {
     if (this.state.floorNumber !== null) {
       const f = this.state.indoorMaps[this.state.buildingIndex].floors
       const set = []
-      // console.log(f)
-      for (x in f){
+
+      for (x in f) {
         set.push(<Picker.Item label={f[x].number.toString()} value={f[x].number.toString()} style={{ fontSize: 16 }} />)
       }
-      // console.log('set',set)
+ 
       return set
+    }
+  }
+
+  renderFloorImage = () => {
+    if (this.state.indoorMaps !== null) {
+      const selectedLocation = this.state.indoorMaps[this.state.buildingIndex].floors[this.state.floorNumber]
+      if (typeof (selectedLocation) != 'undefined' ){
+        return <Image resizeMode='center' style={{ width: 800, height: 400 }} source={{ uri: selectedLocation.img }}></Image>
+      }
     }
   }
 
@@ -237,13 +246,14 @@ export class TestFeature extends Component {
     const { buildingName, floorNumber } = this.state;
     const black = '#000000';
 
+
     return (
 
       // new v.2
       <View style={{ flex: 1 }}>
         <View style={{}}>
           <View style={local.card}>
-            <TouchableOpacity onPress={() => { this.debugEverything() }}>
+            <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
               <Text>
                 Try this
                 </Text>
@@ -310,13 +320,13 @@ export class TestFeature extends Component {
           </View>
 
           <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
-            {/* <Image resizeMode='center' style={{ width: 800, height: 400 }} source={this.state.buildings[this.state.nameIndex].floors[this.state.floorsIndex].img}></Image> */}
+  
+            {this.renderFloorImage()}
+
           </View>
         </View>
 
-        {/* <View style={{ flex: 1 }}>
-              <NewIndoorMap/>
-            </View> */}
+        {this.renderPatient()}
 
       </View>
     )
@@ -330,7 +340,9 @@ const mapStateToProps = (state) => ({
 const mapDispatchToProps = (dispatch) => ({
   cancel: () => dispatch(cancelSelectedTrackingBle()),
   updateData: () => dispatch(updateAllPatientBle()),
-  updateMap: () => dispatch(updateMap())
+  updateMap: () => dispatch(updateMap()),
+  setBuilding: (index) => dispatch(setCurrentBuilding(index)),
+  setFloor: (number) => dispatch(setCurrentFloor(number))
 })
 
 

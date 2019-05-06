@@ -20,10 +20,16 @@ export function loadMap(items){
     }
 }
 
-export function setCurrentLocation(index, number){
+export function setCurrentBuilding(index){
     return {
-        type: 'SET_CURRENT_LOCATION',
-        index: index,
+        type: 'SET_CURRENT_BUILDING',
+        index: index
+    }
+}
+
+export function setCurrentFloor(number){
+    return {
+        type: 'SET_CURRENT_FLOOR',
         number: number
     }
 }
