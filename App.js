@@ -60,15 +60,15 @@ class App extends Component {
           >
           
             <Scene
-              title="TF-GPS"
-              key="tf2"
-              component={TestFeature2}
-            />
-
-            <Scene
               title="TF-BLE"
               key="tf"
               component={TestFeature}
+            />
+
+            <Scene
+              title="TF-GPS"
+              key="tf2"
+              component={TestFeature2}
             />
 
             <Scene

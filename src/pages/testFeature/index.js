@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Alert } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Picker } from 'react-native'
 import { connect } from 'react-redux'
 import Search from "../../containers/search"
 import { local } from "./style";
@@ -7,11 +7,17 @@ import { Actions } from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome'
 
-import { updateAllPatientBle, cancelSelectedTrackingBle } from '../../actions/ble.action'
+import { updateAllPatientBle, cancelSelectedTrackingBle, updateMap } from '../../actions/ble.action'
 
 import { db } from '../../services/firebase_demo'
 
 import _ from "lodash";
+
+import buildings from '../../services/demo_buildings'
+import NewIndoorMap from '../../containers/new-indoor-map'
+
+import AppText from '../../components/app-text'
+
 
 
 
@@ -21,13 +27,37 @@ export class TestFeature extends Component {
     super(props);
     this.state = {
       trackedPatient: 'no',
+      filteredLocationData: null,
+
+      // buildings: buildings,
+      // name: buildings[0].name,
+      // nameIndex: 0,
+      // floorsIndex: 0,
+      // floorsNo: buildings[0].floors[0].number,
+
+      indoorMaps: null,
+      buildingName: null,
+      floorNumber: null
     }
 
-    console.log('tf ble')
+    // console.log('tf ble')
+    this.props.updateMap()
     this.props.updateData()
+
   }
 
   componentWillReceiveProps = (nextprops) => {
+    if (this.props.ble.ble_map !== null) {
+      this.setState({ indoorMaps: this.props.ble.ble_map })
+      if (this.props.ble.building_name !== null && this.props.ble.floor_number !== null) {
+        const buildingName = this.props.ble.building_name
+        const floorNumber = this.props.ble.floor_number
+        // console.log('initialBuildingName-TF',initialBuildingName)
+        // console.log('initialFloorNumber-TF',initialFloorNumber)
+        this.setState({ buildingName: buildingName, floorNumber: floorNumber })
+      }
+    }
+
     if (nextprops.ble.selected_ble != null) {
       const item = _.filter(nextprops.ble.data_ble, user => {
         return this.checkEqualPL(user, nextprops.ble.selected_ble);
@@ -36,7 +66,7 @@ export class TestFeature extends Component {
     }
 
     else {
-      this.setState({ trackedPatient: null })
+      this.setState({ trackedPatient: 'no' })
     }
   }
 
@@ -142,11 +172,57 @@ export class TestFeature extends Component {
     return false;
   };
 
+  checkBuilding = () => {
+    console.log(buildings[0].floors)
+  }
+
+  renderPatient = () => {
+    if (this.state.buildingName !== null && this.state.floorNumber !== null) {
+      const data = _.filter(this.props.ble.data_ble, user => {
+        return this.checkPatientLocation(user, this.state.buildingName, this.state.floorNumber);
+      })
+      // this.setState({ filteredLocationData: data });
+      console.log('filteredLocationData', data)
+    }
+  }
+
+  checkPatientLocation = ({ BLE }, name, floor) => {
+    const buildingName = BLE.building
+    const buildingFloor = BLE.floor.toString()
+    if (buildingName === name && buildingFloor === floor) {
+      return true;
+    }
+
+    return false;
+  };
+
+  debugEverything = () => {
+    // this.setState({name:buildings[0].name, floorsNo:buildings[0].floors[1].number})
+    db.ref('/buildings').on("value", function (snapshot) {
+      let data = snapshot.val()
+      let items = Object.values(data)
+      console.log(items)
+    })
+  }
+
 
   render() {
-    return (
-      <View>
+    const { name, floorsNo, } = this.state;
+    const black = '#000000';
 
+    // console.log('this is a tempX', this.state.tempX)
+    // console.log('this is ble_map',this.props.ble.ble_map)
+    // console.log('trackedPatient', this.state.trackedPatient)
+
+    // console.log('reducer', this.props.ble)
+    // console.log('maps', this.state.indoorMaps)
+    // console.log('buildName',this.state.buildingName)
+    // console.log('floorNumber',this.state.floorNumber)
+
+
+    return (
+      // old
+      <View style={{}}>
         <View style={local.card}>
           <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
             <Text>
@@ -172,11 +248,10 @@ export class TestFeature extends Component {
             </Text>
           {this.showRoom()}
         </View>
-
         <View>
-
         </View>
 
+        {this.renderPatient()}
       </View>
     )
   }
@@ -188,7 +263,8 @@ const mapStateToProps = (state) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   cancel: () => dispatch(cancelSelectedTrackingBle()),
-  updateData: () => dispatch(updateAllPatientBle())
+  updateData: () => dispatch(updateAllPatientBle()),
+  updateMap: () => dispatch(updateMap())
 })
 
 

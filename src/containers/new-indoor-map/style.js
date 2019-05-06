@@ -4,6 +4,7 @@ import { colors } from "../../theme";
 export const local = StyleSheet.create({
   container: {
     justifyContent: 'center',
+    flex: 1,
   },
  
   card: {
@@ -20,7 +21,6 @@ export const local = StyleSheet.create({
     elevation: 2,
     marginBottom: 8,
   },
-
   picker: {
     backgroundColor: colors.whiteC,
     borderColor: colors.whiteD,
@@ -38,5 +38,4 @@ export const local = StyleSheet.create({
       { translateY: -4 }
     ],
   },
-
 });

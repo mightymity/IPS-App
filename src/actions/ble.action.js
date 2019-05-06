@@ -1,5 +1,5 @@
 import { bleConstants } from '../_constants';
-import { db }  from '../services/firebase_demo'
+import { db } from '../services/firebase_demo'
 
 
 export function listAllPatientsBle(items) {
@@ -9,12 +9,27 @@ export function listAllPatientsBle(items) {
     }
 }
 
+export function loadMap(items){
+    const initialBuildingName = items[1].name
+    const initialfloorNumber = Object.keys(items[1].floors)[0]
+    return {
+        type: 'LOAD_MAP',
+        items: items,
+        name: initialBuildingName,
+        number: initialfloorNumber
+    }
+}
+
+export function setCurrentLocation(name, number){
+    return {
+        type: 'SET_CURRENT_LOCATION',
+        name: name,
+        number: number
+    }
+}
+
 export function updateAllPatientBle() {
     return function (dispatch) {
-        // db.ref('/patients').on("value", function(snapshot){
-        //     let data = snapshot.val()
-        //     let items = Object.values(data)
-
         db.ref('/patients').orderByChild('/status').equalTo('in').on('value', snapshot => {
             let data = snapshot.val()
             let items = Object.values(data);
@@ -28,6 +43,16 @@ export function updateTrackingPatientBle(key) {
         db.ref('/patients').child(key).on('value', function (snapshot) {
             let item = snapshot.val()
             dispatch(trackingSelectedPatientBle(item))
+        })
+    }
+}
+
+export function updateMap() {
+    return function (dispatch) {
+        db.ref('/buildings').on("value", function (snapshot) {
+            let data = snapshot.val()
+            let items = Object.values(data)
+            dispatch(loadMap(items))
         })
     }
 }
