@@ -20,7 +20,6 @@ import AppText from '../../components/app-text'
 
 
 
-
 export class TestFeature extends Component {
 
   constructor(props) {
@@ -29,15 +28,11 @@ export class TestFeature extends Component {
       trackedPatient: 'no',
       filteredLocationData: null,
 
-      // buildings: buildings,
-      // name: buildings[0].name,
-      // nameIndex: 0,
-      // floorsIndex: 0,
-      // floorsNo: buildings[0].floors[0].number,
-
       indoorMaps: null,
       buildingName: null,
-      floorNumber: null
+      buildingIndex: null,
+      floorNumber: null,
+
     }
 
     // console.log('tf ble')
@@ -50,11 +45,13 @@ export class TestFeature extends Component {
     if (this.props.ble.ble_map !== null) {
       this.setState({ indoorMaps: this.props.ble.ble_map })
       if (this.props.ble.building_name !== null && this.props.ble.floor_number !== null) {
-        const buildingName = this.props.ble.building_name
+        const buildingIndex = this.props.ble.building_index
+        const buildingName = this.props.ble.ble_map[buildingIndex].name
         const floorNumber = this.props.ble.floor_number
-        // console.log('initialBuildingName-TF',initialBuildingName)
-        // console.log('initialFloorNumber-TF',initialFloorNumber)
-        this.setState({ buildingName: buildingName, floorNumber: floorNumber })
+        // console.log('initialBuildingName-TF', buildingIndex)
+        // console.log('initialFloorNumber-TF', floorNumber)
+        // console.log('floors data', this.props.ble.ble_map[buildingIndex].floors[floorNumber])
+        this.setState({ buildingName: buildingName, buildingIndex: buildingIndex, floorNumber: floorNumber })
       }
     }
 
@@ -198,60 +195,129 @@ export class TestFeature extends Component {
 
   debugEverything = () => {
     // this.setState({name:buildings[0].name, floorsNo:buildings[0].floors[1].number})
-    db.ref('/buildings').on("value", function (snapshot) {
-      let data = snapshot.val()
-      let items = Object.values(data)
-      console.log(items)
-    })
+  }
+
+  selectBuildingIndex = (index) => {
+    const name = this.state.indoorMaps[index].name
+    console.log('bn',name)
+    this.setState({ buildingName: name, buildingIndex: index })
+  }
+
+  selectFloorIndex = (index) => {
+    const fs = this.state.indoorMaps[this.state.buildingIndex].floors
+    const floor = Object.keys(fs)[index]
+    console.log('fl',floor)
+    this.setState({ floorNumber: floor })
+  }
+
+  renderBuildingPicker = () => {
+    if (this.state.buildingIndex !== null) {
+      return this.state.indoorMaps.map((item, index) => (
+        <Picker.Item label={item.name} value={item.name} style={{ fontSize: 16 }} />
+      ))
+    }
+  }
+
+  renderFloorPicker = () => {
+    if (this.state.floorNumber !== null) {
+      const f = this.state.indoorMaps[this.state.buildingIndex].floors
+      const set = []
+      // console.log(f)
+      for (x in f){
+        set.push(<Picker.Item label={f[x].number.toString()} value={f[x].number.toString()} style={{ fontSize: 16 }} />)
+      }
+      // console.log('set',set)
+      return set
+    }
   }
 
 
   render() {
-    const { name, floorsNo, } = this.state;
+    // const { name, floorsNo, } = this.state;
+    const { buildingName, floorNumber } = this.state;
     const black = '#000000';
 
-    // console.log('this is a tempX', this.state.tempX)
-    // console.log('this is ble_map',this.props.ble.ble_map)
-    // console.log('trackedPatient', this.state.trackedPatient)
-
-    // console.log('reducer', this.props.ble)
-    // console.log('maps', this.state.indoorMaps)
-    // console.log('buildName',this.state.buildingName)
-    // console.log('floorNumber',this.state.floorNumber)
-
-
     return (
-      // old
-      <View style={{}}>
-        <View style={local.card}>
-          <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
-            <Text>
-              Try this
-            </Text>
-          </TouchableOpacity>
+
+      // new v.2
+      <View style={{ flex: 1 }}>
+        <View style={{}}>
+          <View style={local.card}>
+            <TouchableOpacity onPress={() => { this.debugEverything() }}>
+              <Text>
+                Try this
+                </Text>
+            </TouchableOpacity>
+          </View>
+
+          <View>
+            <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
+              <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                {this.showTrackedPatient2()}
+              </View>
+              <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+                {this.showCancelButton()}
+              </View>
+            </View>
+
+          </View>
+          {/* <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
+                <Text>
+                  Room:
+                </Text>
+                {this.showRoom()}
+              </View> */}
+          <View>
+          </View>
         </View>
 
-        <View>
-          <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-              {this.showTrackedPatient2()}
+
+
+        <View style={[local.container, local.card, local.customCard, { flex: 1 }]}>
+          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: '' }}>
+            <AppText size="xxl" value="Overview" center bold color={black} />
+          </View>
+
+          <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', }}>
+            <View style={{ flex: 3, justifyContent: 'center' }}>
+
+              <Picker
+                style={local.x}
+                mode="dropdown"
+                selectedValue={buildingName}
+                onValueChange={(item, index) => { this.selectBuildingIndex(index) }}>
+
+                {this.renderBuildingPicker()}
+
+              </Picker>
+              <View style={local.pickerUnderline} />
             </View>
-            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-              {this.showCancelButton()}
+
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+
+              <Picker
+                style={local.x}
+                mode="dropdown"
+                selectedValue={floorNumber}
+                onValueChange={(item, index) => { this.selectFloorIndex(index) }}>
+
+                {this.renderFloorPicker()}
+
+              </Picker>
+              <View style={local.pickerUnderline} />
+
             </View>
           </View>
 
-        </View>
-        <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-          <Text>
-            Room:
-            </Text>
-          {this.showRoom()}
-        </View>
-        <View>
+          <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
+            {/* <Image resizeMode='center' style={{ width: 800, height: 400 }} source={this.state.buildings[this.state.nameIndex].floors[this.state.floorsIndex].img}></Image> */}
+          </View>
         </View>
 
-        {this.renderPatient()}
+        {/* <View style={{ flex: 1 }}>
+              <NewIndoorMap/>
+            </View> */}
+
       </View>
     )
   }

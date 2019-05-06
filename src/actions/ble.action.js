@@ -10,20 +10,20 @@ export function listAllPatientsBle(items) {
 }
 
 export function loadMap(items){
-    const initialBuildingName = items[1].name
-    const initialfloorNumber = Object.keys(items[1].floors)[0]
+    const initialBuildingIndex = 1
+    const initialfloorNumber = Object.keys(items[initialBuildingIndex].floors)[0]
     return {
         type: 'LOAD_MAP',
         items: items,
-        name: initialBuildingName,
+        index: initialBuildingIndex,
         number: initialfloorNumber
     }
 }
 
-export function setCurrentLocation(name, number){
+export function setCurrentLocation(index, number){
     return {
         type: 'SET_CURRENT_LOCATION',
-        name: name,
+        index: index,
         number: number
     }
 }

@@ -5,7 +5,7 @@ const defaultState = {
   selected_ble: null,
   data_ble: null,
   ble_map: null,
-  building_name: null,
+  building_index: null,
   floor_number: null,
 }
 
@@ -28,8 +28,8 @@ export function ble(state = defaultState, action) {
     } break;
 
     case 'LOAD_MAP': {
-      if (state.building_name === null && state.floor_number === null) {
-        const nextState = { ...state, ble_map: action.items, building_name: action.name, floor_number: action.number }
+      if (state.building_index === null && state.floor_number === null) {
+        const nextState = { ...state, ble_map: action.items, building_index: action.index, floor_number: action.number }
         return nextState
       }
       else{
@@ -39,7 +39,7 @@ export function ble(state = defaultState, action) {
     } break;
 
     case 'SET_CURRENT_LOCATION': {
-      const nextState = { ...state, building_name: action.name, floor_number: action.number }
+      const nextState = { ...state, building_index: action.index, floor_number: action.number }
       return nextState
     } break;
 
