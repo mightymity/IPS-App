@@ -46,10 +46,10 @@ export class TestFeature extends Component {
       this.setState({ indoorMaps: this.props.ble.ble_map })
       if (this.props.ble.building_index !== null && this.props.ble.floor_number !== null) {
         if (this.state.buildingIndex === null && this.state.floorNumber === null) {
-          const buildingIndex2 = this.props.ble.building_index
-          const buildingName2 = this.props.ble.ble_map[buildingIndex2].name
-          const floorNumber2 = this.props.ble.floor_number
-          this.setState({ buildingName: buildingName2, buildingIndex: buildingIndex2, floorNumber: floorNumber2 })
+          const buildingIndex = this.props.ble.building_index
+          const buildingName = this.props.ble.ble_map[buildingIndex].name
+          const floorNumber = this.props.ble.floor_number
+          this.setState({ buildingName, buildingIndex, floorNumber })
         }
       }
     }
@@ -58,37 +58,21 @@ export class TestFeature extends Component {
       const item = _.filter(nextprops.ble.data_ble, user => {
         return this.checkEqualPL(user, nextprops.ble.selected_ble);
       })
-      this.setState({ trackedPatient: item[0] })
+
+      const trackedPatient = item[0]
+      const trackedBuildingName = trackedPatient.BLE.building
+      const trackedFloorNumber = trackedPatient.BLE.floor.toString()
+      const trackedBuildingIndex = _.findIndex(this.props.ble.ble_map, function (o) {
+        return o.name === trackedBuildingName
+      })
+      // this.setState({ trackedPatient: item[0] })
+      this.setState({trackedPatient, buildingName: trackedBuildingName, buildingIndex: trackedBuildingIndex,
+      floorNumber: trackedFloorNumber})
     }
 
     else {
       this.setState({ trackedPatient: 'no' })
     }
-  }
-
-  checkFirebase = () => {
-
-    db.ref('/patients').on('value', snapshot => {
-      let data = snapshot.val()
-      let items = Object.values(data);
-      console.log(items)
-    })
-  }
-
-  checkFirebase2 = () => {
-
-    db.ref('/patients').child('patient01').on('value', snapshot => {
-      let item = snapshot.val()
-      console.log(item)
-    })
-  }
-
-  checkFilterFirebase = () => {
-    db.ref('/patients').orderByChild('/status').equalTo('in').on('value', snapshot => {
-      let data = snapshot.val()
-      let items = Object.values(data);
-      console.log(items)
-    })
   }
 
   goToSearchPage = () => {
@@ -224,17 +208,6 @@ export class TestFeature extends Component {
       }
       else {
         console.log('trackedPatient', this.state.trackedPatient)
-        const trackedPatient = this.state.trackedPatient
-        const trackedBuildingName = trackedPatient.BLE.building
-        const trackedFloorNumber = trackedPatient.BLE.floor.toString()
-        const trackedBuildingIndex = _.findIndex(this.state.indoorMaps, function(o){
-          return o.name === trackedBuildingName
-        })
-
-        // console.log('trackedBuildingIndex',trackedBuildingIndex)
-        // console.log('trackedFloorNumber',trackedFloorNumber)
-
-        // this.setState({ buildingName: trackedBuildingName, buildingIndex: trackedBuildingIndex, floorNumber: trackedFloorNumber })
       }
     }
   }
@@ -258,6 +231,10 @@ export class TestFeature extends Component {
     // const { name, floorsNo, } = this.state;
     const { buildingName, floorNumber } = this.state;
     const black = '#000000';
+
+    console.log('buildingName',buildingName)
+    console.log('floorNumber',floorNumber)
+    console.log('buildingIndex', this.state.buildingIndex)
 
 
     return (
