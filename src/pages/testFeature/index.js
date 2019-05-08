@@ -46,7 +46,6 @@ export class TestFeature extends Component {
       this.setState({ indoorMaps: this.props.ble.ble_map })
       if (this.props.ble.building_index !== null && this.props.ble.floor_number !== null) {
         if (this.state.buildingIndex === null && this.state.floorNumber === null) {
-          console.log('in')
           const buildingIndex2 = this.props.ble.building_index
           const buildingName2 = this.props.ble.ble_map[buildingIndex2].name
           const floorNumber2 = this.props.ble.floor_number
@@ -106,7 +105,7 @@ export class TestFeature extends Component {
     else {
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          console.log('trackPatient', this.state.trackedPatient)
+          // console.log('trackedPatient', this.state.trackedPatient)
           let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
           return <Text>
             {name}
@@ -169,34 +168,6 @@ export class TestFeature extends Component {
     return false;
   };
 
-  checkBuilding = () => {
-    console.log(buildings[0].floors)
-  }
-
-  renderPatient = () => {
-    if (this.state.buildingName !== null && this.state.floorNumber !== null) {
-      const data = _.filter(this.props.ble.data_ble, user => {
-        return this.checkPatientLocation(user, this.state.buildingName, this.state.floorNumber);
-      })
-      // this.setState({ filteredLocationData: data });
-      console.log('filteredLocationData', data)
-    }
-  }
-
-  checkPatientLocation = ({ BLE }, name, floor) => {
-    const buildingName = BLE.building
-    const buildingFloor = BLE.floor.toString()
-    if (buildingName === name && buildingFloor === floor) {
-      return true;
-    }
-
-    return false;
-  };
-
-  debugEverything = () => {
-    // this.setState({name:buildings[0].name, floorsNo:buildings[0].floors[1].number})
-  }
-
   selectBuildingIndex = (index) => {
     const name = this.state.indoorMaps[index].name
     this.setState({ buildingName: name, buildingIndex: index })
@@ -226,7 +197,7 @@ export class TestFeature extends Component {
       for (x in f) {
         set.push(<Picker.Item label={f[x].number.toString()} value={f[x].number.toString()} style={{ fontSize: 16 }} />)
       }
- 
+
       return set
     }
   }
@@ -234,10 +205,52 @@ export class TestFeature extends Component {
   renderFloorImage = () => {
     if (this.state.indoorMaps !== null) {
       const selectedLocation = this.state.indoorMaps[this.state.buildingIndex].floors[this.state.floorNumber]
-      if (typeof (selectedLocation) != 'undefined' ){
+      if (typeof (selectedLocation) != 'undefined') {
         return <Image resizeMode='center' style={{ width: 800, height: 400 }} source={{ uri: selectedLocation.img }}></Image>
       }
     }
+  }
+
+  renderPatient = () => {
+    if (this.state.trackedPatient !== null) {
+      if (this.state.trackedPatient === 'no') {
+        if (this.state.buildingName !== null && this.state.floorNumber !== null) {
+          const data = _.filter(this.props.ble.data_ble, user => {
+            return this.checkPatientLocation(user, this.state.buildingName, this.state.floorNumber);
+          })
+          // this.setState({ filteredLocationData: data });
+          console.log('filteredLocationData', data)
+        }
+      }
+      else {
+        console.log('trackedPatient', this.state.trackedPatient)
+        const trackedPatient = this.state.trackedPatient
+        const trackedBuildingName = trackedPatient.BLE.building
+        const trackedFloorNumber = trackedPatient.BLE.floor.toString()
+        const trackedBuildingIndex = _.findIndex(this.state.indoorMaps, function(o){
+          return o.name === trackedBuildingName
+        })
+
+        // console.log('trackedBuildingIndex',trackedBuildingIndex)
+        // console.log('trackedFloorNumber',trackedFloorNumber)
+
+        // this.setState({ buildingName: trackedBuildingName, buildingIndex: trackedBuildingIndex, floorNumber: trackedFloorNumber })
+      }
+    }
+  }
+
+  checkPatientLocation = ({ BLE }, name, floor) => {
+    const buildingName = BLE.building
+    const buildingFloor = BLE.floor.toString()
+    if (buildingName === name && buildingFloor === floor) {
+      return true;
+    }
+
+    return false;
+  };
+
+  debugEverything = () => {
+    // this.setState({name:buildings[0].name, floorsNo:buildings[0].floors[1].number})
   }
 
 
@@ -320,7 +333,7 @@ export class TestFeature extends Component {
           </View>
 
           <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
-  
+
             {this.renderFloorImage()}
 
           </View>
