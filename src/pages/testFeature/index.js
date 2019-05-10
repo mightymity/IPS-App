@@ -59,15 +59,22 @@ export class TestFeature extends Component {
         return this.checkEqualPL(user, nextprops.ble.selected_ble);
       })
 
-      const trackedPatient = item[0]
-      const trackedBuildingName = trackedPatient.BLE.building
-      const trackedFloorNumber = trackedPatient.BLE.floor.toString()
-      const trackedBuildingIndex = _.findIndex(this.props.ble.ble_map, function (o) {
-        return o.name === trackedBuildingName
-      })
-      // this.setState({ trackedPatient: item[0] })
-      this.setState({trackedPatient, buildingName: trackedBuildingName, buildingIndex: trackedBuildingIndex,
-      floorNumber: trackedFloorNumber})
+      if (typeof (item[0]) !== 'undefined') {
+        const trackedPatient = item[0]
+        const trackedBuildingName = trackedPatient.BLE.building
+        const trackedFloorNumber = trackedPatient.BLE.floor.toString()
+        const trackedBuildingIndex = _.findIndex(this.props.ble.ble_map, function (o) {
+          return o.name === trackedBuildingName
+        })
+        this.setState({
+          trackedPatient, buildingName: trackedBuildingName, buildingIndex: trackedBuildingIndex,
+          floorNumber: trackedFloorNumber
+        })
+      }
+
+      else{
+        this.setState({ trackedPatient: item[0] })
+      }
     }
 
     else {
@@ -89,7 +96,6 @@ export class TestFeature extends Component {
     else {
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          // console.log('trackedPatient', this.state.trackedPatient)
           let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
           return <Text>
             {name}
@@ -100,6 +106,12 @@ export class TestFeature extends Component {
         if (this.state.trackedPatient != 'no') {
           Alert.alert('title', 'Patient is out of area')
           this.setState({ trackedPatient: 'no' })
+
+          const buildingIndex = this.props.ble.building_index
+          const buildingName = this.props.ble.ble_map[buildingIndex].name
+          const floorNumber = this.props.ble.floor_number
+          this.setState({ buildingName, buildingIndex, floorNumber })
+          
           this.props.cancel()
         }
       }
@@ -118,6 +130,10 @@ export class TestFeature extends Component {
   }
 
   cancelTracking = () => {
+    const buildingIndex = this.props.ble.building_index
+    const buildingName = this.props.ble.ble_map[buildingIndex].name
+    const floorNumber = this.props.ble.floor_number
+    this.setState({ buildingName, buildingIndex, floorNumber })
     this.props.cancel()
   }
 
@@ -143,7 +159,6 @@ export class TestFeature extends Component {
       }
     }
   }
-
 
   checkEqualPL = ({ id }, query) => {
     if (id === query) {
@@ -226,15 +241,86 @@ export class TestFeature extends Component {
     // this.setState({name:buildings[0].name, floorsNo:buildings[0].floors[1].number})
   }
 
+  renderMiddleZone = () => {
+    const { buildingName, floorNumber, trackedPatient } = this.state;
+    const black = '#000000';
+
+    if (this.props.ble.selected_ble === null) {
+      console.log('in 1')
+      return (
+        <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', }}>
+          <View style={{ flex: 3, justifyContent: 'center' }}>
+
+            <Picker
+              style={local.x}
+              mode="dropdown"
+              selectedValue={buildingName}
+              onValueChange={(item, index) => { this.selectBuildingIndex(index) }}>
+
+              {this.renderBuildingPicker()}
+
+            </Picker>
+            <View style={local.pickerUnderline} />
+          </View>
+
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+
+            <Picker
+              style={local.x}
+              mode="dropdown"
+              selectedValue={floorNumber}
+              onValueChange={(item, index) => { this.selectFloorIndex(index) }}>
+
+              {this.renderFloorPicker()}
+
+            </Picker>
+            <View style={local.pickerUnderline} />
+
+          </View>
+        </View>
+      )
+    }
+
+    else {
+      if (trackedPatient !== null && trackedPatient !== 'no' && typeof (trackedPatient) !== 'undefined') {
+        console.log('in 2')
+        return (
+          <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', }}>
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <AppText size="xl" value="Buidling: " center bold color={black} />
+              <AppText size="xl" value={this.state.buildingName} center color={black} />
+            </View>
+
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <AppText size="xl" value="Floor: " center bold color={black} />
+              <AppText size="xl" value={this.state.floorNumber} center color={black} />
+            </View>
+
+            <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+              <AppText size="xl" value="Room: " center bold color={black} />
+              <AppText size="xl" value={trackedPatient.BLE.room.toString()} center color={black} />
+            </View>
+
+          </View>
+        )
+      }
+    }
+  }
+
+
 
   render() {
     // const { name, floorsNo, } = this.state;
     const { buildingName, floorNumber } = this.state;
     const black = '#000000';
 
-    console.log('buildingName',buildingName)
-    console.log('floorNumber',floorNumber)
-    console.log('buildingIndex', this.state.buildingIndex)
+    // console.log('buildingName', buildingName)
+    // console.log('floorNumber', floorNumber)
+    // console.log('buildingIndex', this.state.buildingIndex)
+
+    // console.log('ble', this.props.ble)
+
+    console.log('trackPatient', this.state.trackedPatient)
 
 
     return (
@@ -262,52 +348,21 @@ export class TestFeature extends Component {
 
           </View>
           {/* <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-                <Text>
-                  Room:
+            <Text>
+              Room:
                 </Text>
-                {this.showRoom()}
-              </View> */}
+            {this.showRoom()}
+          </View> */}
           <View>
           </View>
         </View>
-
-
 
         <View style={[local.container, local.card, local.customCard, { flex: 1 }]}>
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: '' }}>
             <AppText size="xxl" value="Overview" center bold color={black} />
           </View>
 
-          <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', }}>
-            <View style={{ flex: 3, justifyContent: 'center' }}>
-
-              <Picker
-                style={local.x}
-                mode="dropdown"
-                selectedValue={buildingName}
-                onValueChange={(item, index) => { this.selectBuildingIndex(index) }}>
-
-                {this.renderBuildingPicker()}
-
-              </Picker>
-              <View style={local.pickerUnderline} />
-            </View>
-
-            <View style={{ flex: 1, justifyContent: 'center' }}>
-
-              <Picker
-                style={local.x}
-                mode="dropdown"
-                selectedValue={floorNumber}
-                onValueChange={(item, index) => { this.selectFloorIndex(index) }}>
-
-                {this.renderFloorPicker()}
-
-              </Picker>
-              <View style={local.pickerUnderline} />
-
-            </View>
-          </View>
+          {this.renderMiddleZone()}
 
           <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
 

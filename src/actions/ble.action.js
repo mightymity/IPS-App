@@ -36,6 +36,12 @@ export function setCurrentFloor(number){
 
 export function updateAllPatientBle() {
     return function (dispatch) {
+        // db.ref('/patients').on('value', snapshot => {
+        //     let data = snapshot.val()
+        //     let items = Object.values(data);
+        //     dispatch(listAllPatientsBle(items))
+        // })
+
         db.ref('/patients').orderByChild('/status').equalTo('in').on('value', snapshot => {
             let data = snapshot.val()
             let items = Object.values(data);
