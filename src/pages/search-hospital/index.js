@@ -11,7 +11,7 @@ import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import _ from "lodash";
 
-import { db } from '../../firebase';
+import { db } from '../../services/firebase_demo';
 
 import { patientActions } from '../../actions'
 

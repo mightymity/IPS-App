@@ -1,5 +1,5 @@
 import { patientConstants } from '../_constants';
-import { db } from '../firebase';
+import { db } from '../services/firebase_demo';
 import { Actions } from 'react-native-router-flux';
 
 
@@ -27,7 +27,30 @@ export function patients(state = defaultState, action) {
   switch (action.type) {
 
     case "LIST_ALL_PATIENTS": {
-      const nextState = {current:{...state}.current, data: action.patients };
+      const patients = action.patients;
+
+      const newArray = patients.map((patient, index) => {
+        return {
+          name: patient.name,
+          id: patient.id,
+          ble: patient.BLE.name,
+          gps: patient.GPS.name,
+        }
+      });
+
+
+      //nextState.data = newArray;
+
+      
+      // const p = {
+      //     name: patient.name,
+      //     id: patient.id,
+      //     ble: patient.ble.name,
+      //     gps: patient.gps.name,
+
+      // }
+
+      const nextState = {current:{...state}.current, data: newArray};
       // nextState.data = [...action.patients]
       // const nextState = {data:{newData}, current:{...state.current}}
       return nextState;

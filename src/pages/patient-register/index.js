@@ -19,7 +19,7 @@ import { Input } from 'react-native-elements';
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Sae, Hoshi, Akira } from 'react-native-textinput-effects';
 
-import { db } from '../../firebase'
+import { db } from '../../services/firebase_demo'
 
 import { colors } from "../../theme/colors";
 

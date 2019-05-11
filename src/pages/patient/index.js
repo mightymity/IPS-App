@@ -16,7 +16,7 @@ import PatientList from '../../components/patient-list'
 
 import { patientActions } from '../../actions/patient.action';
 
-import { db, auth } from '../../firebase';
+import { db, auth } from '../../services/firebase_demo';
 
 
 export class Patient extends Component {

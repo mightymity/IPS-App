@@ -1,5 +1,5 @@
 import { caretakerConstants } from '../_constants';
-import { db } from '../firebase';
+import { db } from '../services/firebase_demo';
 export const caretakerActions = {
     createNewCaretaker,
     listAllCaretakers,

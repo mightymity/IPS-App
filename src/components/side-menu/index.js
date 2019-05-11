@@ -76,6 +76,10 @@ class SideMenu extends Component {
           icon={require('../../assets/icons/save.png')} />
           <NavItem name="Edit Map" onPress={() => { Actions.jump('edit-map') }}
           icon={require('../../assets/icons/save.png')} />
+          <NavItem name="TF" onPress={() => { Actions.jump('tf') }}
+          icon={require('../../assets/icons/save.png')} />
+          <NavItem name="TF2" onPress={() => { Actions.jump('tf2') }}
+          icon={require('../../assets/icons/save.png')} />
       </View>
     );
   }

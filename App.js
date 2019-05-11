@@ -26,6 +26,11 @@ import Login from "./src/pages/login"
 import test_map from "./src/pages/test_map"
 import search_hospital from "./src/pages/search-hospital"
 
+import TestFeature from "./src/pages/testFeature"
+import RealSearch from "./src/containers/search"
+import TestFeature2 from "./src/pages/testFeature2"
+import Search_GPS from "./src/containers/search-gps"
+
 // Components
 import SideMenu from "./src/components/side-menu";
 import TabBar from "./src/components/tab-bar";
@@ -57,7 +62,7 @@ class App extends Component {
     return (
       <Provider store={appStore}>
         <Router >
-        
+
           <Drawer
             key="Root"
             drawerPosition="left"
@@ -80,11 +85,23 @@ class App extends Component {
               key="test_map"
               component={test_map}
             /> */}
-            
+
             <Scene
               title="Login"
               key="login"
               component={Login}
+            />
+
+            <Scene
+              title="TF-GPS"
+              key="tf2"
+              component={TestFeature2}
+            />
+
+            <Scene
+              title="TF-BLE"
+              key="tf"
+              component={TestFeature}
             />
 
             <Scene
@@ -135,34 +152,44 @@ class App extends Component {
               component={CreateTodo}
             />
 
-            <Scene 
-            title = "Caretaker Registration"
-            key = "caretaker_regis" 
-            component = {caretaker_regis} 
+            <Scene
+              title="Caretaker Registration"
+              key="caretaker_regis"
+              component={caretaker_regis}
             />
 
-            <Scene 
-            title = "Patient Registration"
-            key = "patient_regis" 
-            component = {patient_regis}  
+            <Scene
+              title="Patient Registration"
+              key="patient_regis"
+              component={patient_regis}
             />
 
-            <Scene 
-            title = "Patient Edit"
-            key = "patient_edit" 
-            component = {patient_edit}  
+            <Scene
+              title="Patient Edit"
+              key="patient_edit"
+              component={patient_edit}
             />
 
-            <Scene 
-            title = "Caretaker Edit"
-            key = "caretaker_edit" 
-            component = {caretaker_edit}  
+            <Scene
+              title="Caretaker Edit"
+              key="caretaker_edit"
+              component={caretaker_edit}
             />
 
-            <Scene 
-            title = "Search from Hospital"
-            key = "search_hospital" 
-            component = {search_hospital}  
+            <Scene
+              title="Search from Hospital"
+              key="search_hospital"
+              component={search_hospital}
+            />
+
+            <Scene
+              key="realSearch"
+              component={RealSearch}
+            />
+
+            <Scene
+              key="search_gps"
+              component={Search_GPS}
             />
 
 

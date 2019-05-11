@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, Dimensions } from 'react-native'
+import { View, Text, FlatList, Dimensions, ScrollView } from 'react-native'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -8,19 +8,40 @@ import { global } from '../../theme'
 
 import TodoItem from '../../components/todo-item'
 
-import MapView , {PROVIDER_GOOGLE} from 'react-native-maps';
+import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
+import SearchPatient from "../../containers/search-patient";
 
 export class GPS extends Component {
 
     state = {
         focusedLocation: {
-            latitude: 37.7900352,
-            longitude: -122.4013726,
+            latitude: 13.669557,
+            longitude: 100.634628,
             latitudeDelta: 0.0122,
             longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
         },
 
-        locationChosen: false
+        locationChosen: false,
+
+        markers: [{
+            title: 'Big C',
+            coordinates: {
+                latitude: 13.668866,
+                longitude: 100.635654
+            },
+        },
+        {
+            title: 'BITEC',
+            coordinates: {
+                latitude: 13.669696,
+                longitude: 100.610179
+            },
+        }],
+
+        patientss:[{ name: "Prayut JunOK", duty: "Uncle near home" },
+        { name: "Pravitt TheWatch", duty: "Watcher" },
+        { name: "Suthep T.", duty: "Karawa Land" }]
+
     }
 
     pickLocationHandler = event => {
@@ -38,7 +59,7 @@ export class GPS extends Component {
                     longitude: coords.longitude
                 },
 
-                locationChosen: true 
+                locationChosen: true
             }
         })
     }
@@ -48,42 +69,63 @@ export class GPS extends Component {
 
         let marker = null;
 
-        if(this.state.locationChosen){
-            marker = <MapView.Marker coordinate={this.state.focusedLocation}/>
+        if (this.state.locationChosen) {
+            marker = <MapView.Marker coordinate={this.state.focusedLocation} />
         }
 
-        return (
-            <View style={[global.pageContainer,{justifyContent:'center',alignItems: 'center',}]}>
-                <Text>Bright</Text>
-
-                 <MapView
-                    initialRegion={this.state.focusedLocation}
     
-                    style={{width:'100%', height: 400}}
-                    onPress={this.pickLocationHandler}
-                    ref = {ref => this.map = ref}
-                 >
 
-                  {marker}
-                
-                
-                 </MapView>
+        return (
+            // <ScrollView contentContainerStyle={global.pageScrollView}>
+            //     <View>
+            //         <SearchPatient/>
+            //     </View>
+            //     <View>
+            //      <MapView
+            //         initialRegion={this.state.focusedLocation}
 
-            </View>
+            //         style={{width:'100%', height:'100%'}}
+            //         onPress={this.pickLocationHandler}
+            //         ref = {ref => this.map = ref}
+            //      >
 
-            // <View style={local.container}>
-            //     <MapView
-            //         provider={PROVIDER_GOOGLE} // remove if not using Google Maps
-            //         style={local.map}
-            //         region={{
-            //             latitude: 37.78825,
-            //             longitude: -122.4324,
-            //             latitudeDelta: 0.015,
-            //             longitudeDelta: 0.0121,
-            //         }}
-            //     >
-            //     </MapView>
-            // </View>
+            //       {marker}
+
+
+            //      </MapView>
+            //     </View>
+            //     </ScrollView>
+
+            <ScrollView contentContainerStyle={global.pageScrollView}>
+                <View>
+                    {/* <SearchPatient patientss={this.state.patientss}/> */}
+                    <SearchPatient patientss={this.state.patientss}/>
+                </View>
+                <View>
+                    <MapView
+                        initialRegion={this.state.focusedLocation}
+
+                        style={{ width: '100%', height: '100%' }}
+                        onPress={this.pickLocationHandler}
+                        ref={ref => this.map = ref}
+                    >
+
+                        {marker}
+
+                        {this.state.markers.map(m => (
+                            <MapView.Marker
+                                coordinate={m.coordinates}
+                                title={m.title}
+                            />
+                        ))}
+
+
+
+
+                    </MapView>
+                </View>
+            </ScrollView>
+
         )
     }
 }

@@ -20,10 +20,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import { Sae, Hoshi, Akira } from 'react-native-textinput-effects';
 
-import { db, auth } from '../../firebase'
-import image from '../../assets/images/artgrid.jpg'
 
 
 
