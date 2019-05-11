@@ -39,4 +39,15 @@ export const local = StyleSheet.create({
     ],
   },
 
+  pickerUnderline2: {
+
+    height: 1,
+    marginHorizontal: 2,
+    marginBottom: 2,
+    backgroundColor: colors.whiteE,
+    transform: [
+      { translateY: -4 }
+    ],
+  },
+
 });

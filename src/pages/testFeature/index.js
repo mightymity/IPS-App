@@ -18,6 +18,8 @@ import NewIndoorMap from '../../containers/new-indoor-map'
 
 import AppText from '../../components/app-text'
 
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
 
 
 export class TestFeature extends Component {
@@ -72,7 +74,7 @@ export class TestFeature extends Component {
         })
       }
 
-      else{
+      else {
         this.setState({ trackedPatient: item[0] })
       }
     }
@@ -111,7 +113,7 @@ export class TestFeature extends Component {
           const buildingName = this.props.ble.ble_map[buildingIndex].name
           const floorNumber = this.props.ble.floor_number
           this.setState({ buildingName, buildingIndex, floorNumber })
-          
+
           this.props.cancel()
         }
       }
@@ -205,7 +207,7 @@ export class TestFeature extends Component {
     if (this.state.indoorMaps !== null) {
       const selectedLocation = this.state.indoorMaps[this.state.buildingIndex].floors[this.state.floorNumber]
       if (typeof (selectedLocation) != 'undefined') {
-        return <Image resizeMode='center' style={{ width: 800, height: 400 }} source={{ uri: selectedLocation.img }}></Image>
+        return <Image resizeMode='center' style={{ width: 1500, height: 420 }} source={{ uri: selectedLocation.img }}></Image>
       }
     }
   }
@@ -307,6 +309,50 @@ export class TestFeature extends Component {
     }
   }
 
+  renderSearchZone = () => {
+    const black = '#000000';
+    if (this.props.ble.selected_ble === null) {
+      return (
+        <TouchableOpacity onPress={() => {this.goToSearchPage()}}>
+          <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
+            <AppText size="l" value="Search BLE patient" center color={black} />
+            {/* <View style={local.pickerUnderline2} /> */}
+          </View>
+        </TouchableOpacity>
+      )
+    }
+
+    else {
+      return(
+      <View>
+        <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
+          <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+            {this.showTrackedPatient2()}
+          </View>
+          <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+            {this.showCancelButton()}
+          </View>
+        </View>
+
+      </View>
+      )
+    }
+  }
+
+  renderPatientMarker = () => {
+    <Ionicons style={{
+      margin: 50,
+      position: "absolute",
+      // top: 70,
+      // left: 125,
+      width: 25,
+      height: 25,
+      color: "tomato",
+      top: 70,
+      left: 125
+    }} name="ios-close-circle" size={25} />
+  }
+
 
 
   render() {
@@ -327,7 +373,7 @@ export class TestFeature extends Component {
 
       // new v.2
       <View style={{ flex: 1 }}>
-        <View style={{}}>
+        {/* <View style={{}}>
           <View style={local.card}>
             <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
               <Text>
@@ -347,15 +393,15 @@ export class TestFeature extends Component {
             </View>
 
           </View>
-          {/* <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
+          <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
             <Text>
               Room:
                 </Text>
             {this.showRoom()}
-          </View> */}
-          <View>
           </View>
-        </View>
+        </View> */}
+
+        {this.renderSearchZone()}
 
         <View style={[local.container, local.card, local.customCard, { flex: 1 }]}>
           <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: '' }}>
@@ -367,6 +413,7 @@ export class TestFeature extends Component {
           <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
 
             {this.renderFloorImage()}
+            {/* {this.renderPatientMarker()} */}
 
           </View>
         </View>

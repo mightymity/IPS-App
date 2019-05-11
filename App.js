@@ -25,6 +25,8 @@ import RealSearch from "./src/containers/search"
 import TestFeature2 from "./src/pages/testFeature2"
 import Search_GPS from "./src/containers/search-gps"
 
+// import testMap from "./src/pages/testFeature3"
+
 
 // Components
 import SideMenu from "./src/components/side-menu";
@@ -58,7 +60,7 @@ class App extends Component {
             backButtonTintColor={colors.whiteA}
             rightButtonTintColor={colors.whiteB}
           >
-          
+
             <Scene
               title="TF-BLE"
               key="tf"
@@ -140,7 +142,7 @@ class App extends Component {
               key="search_gps"
               component={Search_GPS}
             />
-            
+
 
           </Drawer>
         </Router>
