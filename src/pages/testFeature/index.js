@@ -139,29 +139,6 @@ export class TestFeature extends Component {
     this.props.cancel()
   }
 
-  showRoom = () => {
-    if (this.props.ble.selected_ble === null) {
-      return (<Text>
-        -
-      </Text>)
-    }
-
-    else {
-      if (this.state.trackedPatient != null) {
-        if (this.state.trackedPatient != 'no')
-          return <Text>
-            {this.state.trackedPatient.BLE.room}
-          </Text>
-      }
-
-      else {
-        return (<Text>
-          -
-        </Text>)
-      }
-    }
-  }
-
   checkEqualPL = ({ id }, query) => {
     if (id === query) {
       return true;
@@ -206,8 +183,30 @@ export class TestFeature extends Component {
   renderFloorImage = () => {
     if (this.state.indoorMaps !== null) {
       const selectedLocation = this.state.indoorMaps[this.state.buildingIndex].floors[this.state.floorNumber]
+      if (this.state.trackedPatient !== null && this.state.trackedPatient !== 'no') {
+        console.log('grid', this.state.trackedPatient.BLE.room)
+        console.log('grid', this.state.trackedPatient.BLE.grid)
+        console.log('map-room', selectedLocation.rooms[this.state.trackedPatient.BLE.room])
+        console.log('map-grid', selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid])
+        // mapGrid = selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid]
+      }
       if (typeof (selectedLocation) != 'undefined') {
-        return <Image resizeMode='center' style={{ width: 1500, height: 420 }} source={{ uri: selectedLocation.img }}></Image>
+        return (
+          <View style={{ backgroundColor: '', width: 800, height: 500 }}>
+            <Image resizeMode='contain' style={{ width: 800, height: 500 }} source={{ uri: selectedLocation.img }} />
+            {/* <Ionicons style={{
+              position: "absolute",
+              // top: 70,
+              // left: 125,
+              width: 25,
+              height: 25,
+              color: "tomato",
+              top: 113,
+              left: 695
+            }} name="ios-close-circle" size={25} /> */}
+            {this.renderPatientMarker()}
+          </View>
+        )
       }
     }
   }
@@ -248,7 +247,6 @@ export class TestFeature extends Component {
     const black = '#000000';
 
     if (this.props.ble.selected_ble === null) {
-      console.log('in 1')
       return (
         <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', }}>
           <View style={{ flex: 3, justifyContent: 'center' }}>
@@ -285,7 +283,6 @@ export class TestFeature extends Component {
 
     else {
       if (trackedPatient !== null && trackedPatient !== 'no' && typeof (trackedPatient) !== 'undefined') {
-        console.log('in 2')
         return (
           <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', }}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
@@ -313,7 +310,7 @@ export class TestFeature extends Component {
     const black = '#000000';
     if (this.props.ble.selected_ble === null) {
       return (
-        <TouchableOpacity onPress={() => {this.goToSearchPage()}}>
+        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
           <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
             <AppText size="l" value="Search BLE patient" center color={black} />
             {/* <View style={local.pickerUnderline2} /> */}
@@ -323,34 +320,44 @@ export class TestFeature extends Component {
     }
 
     else {
-      return(
-      <View>
-        <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-          <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-            {this.showTrackedPatient2()}
+      return (
+        <View>
+          <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
+            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+              {this.showTrackedPatient2()}
+            </View>
+            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+              {this.showCancelButton()}
+            </View>
           </View>
-          <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-            {this.showCancelButton()}
-          </View>
-        </View>
 
-      </View>
+        </View>
       )
     }
   }
 
   renderPatientMarker = () => {
-    <Ionicons style={{
-      margin: 50,
-      position: "absolute",
-      // top: 70,
-      // left: 125,
-      width: 25,
-      height: 25,
-      color: "tomato",
-      top: 70,
-      left: 125
-    }} name="ios-close-circle" size={25} />
+    if (this.state.trackedPatient === null || this.state.trackedPatient === 'no') {
+      return null
+    }
+
+    else {
+      const selectedLocation = this.state.indoorMaps[this.state.buildingIndex].floors[this.state.floorNumber]
+      if (typeof (selectedLocation) != 'undefined') {
+        const patientGrid = selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid]
+        return (<Ionicons style={{
+          position: "absolute",
+          // top: 70,
+          // left: 125,
+          width: 25,
+          height: 25,
+          color: "tomato",
+          top: patientGrid.top,
+          left: patientGrid.left
+        }} name="ios-close-circle" size={25} />
+        )
+      }
+    }
   }
 
 
@@ -360,61 +367,25 @@ export class TestFeature extends Component {
     const { buildingName, floorNumber } = this.state;
     const black = '#000000';
 
-    // console.log('buildingName', buildingName)
-    // console.log('floorNumber', floorNumber)
-    // console.log('buildingIndex', this.state.buildingIndex)
-
-    // console.log('ble', this.props.ble)
-
-    console.log('trackPatient', this.state.trackedPatient)
-
+    // console.log('indoorMaps', this.state.indoorMaps)
+    // console.log('trackPatient', this.state.trackedPatient)
 
     return (
 
       // new v.2
       <View style={{ flex: 1 }}>
-        {/* <View style={{}}>
-          <View style={local.card}>
-            <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
-              <Text>
-                Try this
-                </Text>
-            </TouchableOpacity>
-          </View>
-
-          <View>
-            <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-              <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                {this.showTrackedPatient2()}
-              </View>
-              <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-                {this.showCancelButton()}
-              </View>
-            </View>
-
-          </View>
-          <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-            <Text>
-              Room:
-                </Text>
-            {this.showRoom()}
-          </View>
-        </View> */}
 
         {this.renderSearchZone()}
 
         <View style={[local.container, local.card, local.customCard, { flex: 1 }]}>
-          <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: '' }}>
+          {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: '' }}>
             <AppText size="xxl" value="Overview" center bold color={black} />
-          </View>
+          </View> */}
 
           {this.renderMiddleZone()}
 
           <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
-
             {this.renderFloorImage()}
-            {/* {this.renderPatientMarker()} */}
-
           </View>
         </View>
 
