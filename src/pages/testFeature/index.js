@@ -37,7 +37,6 @@ export class TestFeature extends Component {
 
     }
 
-    // console.log('tf ble')
     this.props.updateMap()
     this.props.updateData()
 
@@ -180,66 +179,34 @@ export class TestFeature extends Component {
     }
   }
 
-  renderFloorImage = () => {
-    if (this.state.indoorMaps !== null) {
-      const selectedLocation = this.state.indoorMaps[this.state.buildingIndex].floors[this.state.floorNumber]
-      if (this.state.trackedPatient !== null && this.state.trackedPatient !== 'no') {
-        console.log('grid', this.state.trackedPatient.BLE.room)
-        console.log('grid', this.state.trackedPatient.BLE.grid)
-        console.log('map-room', selectedLocation.rooms[this.state.trackedPatient.BLE.room])
-        console.log('map-grid', selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid])
-        // mapGrid = selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid]
-      }
-      if (typeof (selectedLocation) != 'undefined') {
-        return (
-          <View style={{ backgroundColor: '', width: 800, height: 500 }}>
-            <Image resizeMode='contain' style={{ width: 800, height: 500 }} source={{ uri: selectedLocation.img }} />
-            {/* <Ionicons style={{
-              position: "absolute",
-              // top: 70,
-              // left: 125,
-              width: 25,
-              height: 25,
-              color: "tomato",
-              top: 113,
-              left: 695
-            }} name="ios-close-circle" size={25} /> */}
-            {this.renderPatientMarker()}
+  renderSearchZone = () => {
+    const black = '#000000';
+    if (this.props.ble.selected_ble === null) {
+      return (
+        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+          <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
+            <AppText size="l" value="Search BLE patient" center color={black} />
+            {/* <View style={local.pickerUnderline2} /> */}
           </View>
-        )
-      }
-    }
-  }
-
-  renderPatient = () => {
-    if (this.state.trackedPatient !== null) {
-      if (this.state.trackedPatient === 'no') {
-        if (this.state.buildingName !== null && this.state.floorNumber !== null) {
-          const data = _.filter(this.props.ble.data_ble, user => {
-            return this.checkPatientLocation(user, this.state.buildingName, this.state.floorNumber);
-          })
-          // this.setState({ filteredLocationData: data });
-          console.log('filteredLocationData', data)
-        }
-      }
-      else {
-        console.log('trackedPatient', this.state.trackedPatient)
-      }
-    }
-  }
-
-  checkPatientLocation = ({ BLE }, name, floor) => {
-    const buildingName = BLE.building
-    const buildingFloor = BLE.floor.toString()
-    if (buildingName === name && buildingFloor === floor) {
-      return true;
+        </TouchableOpacity>
+      )
     }
 
-    return false;
-  };
+    else {
+      return (
+        <View>
+          <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
+            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+              {this.showTrackedPatient2()}
+            </View>
+            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+              {this.showCancelButton()}
+            </View>
+          </View>
 
-  debugEverything = () => {
-    // this.setState({name:buildings[0].name, floorsNo:buildings[0].floors[1].number})
+        </View>
+      )
+    }
   }
 
   renderMiddleZone = () => {
@@ -306,49 +273,63 @@ export class TestFeature extends Component {
     }
   }
 
-  renderSearchZone = () => {
-    const black = '#000000';
-    if (this.props.ble.selected_ble === null) {
-      return (
-        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
-          <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
-            <AppText size="l" value="Search BLE patient" center color={black} />
-            {/* <View style={local.pickerUnderline2} /> */}
-          </View>
-        </TouchableOpacity>
-      )
+  checkPatientLocation = ({ BLE }, name, floor) => {
+    const buildingName = BLE.building
+    const buildingFloor = BLE.floor.toString()
+    if (buildingName === name && buildingFloor === floor) {
+      return true;
     }
 
-    else {
-      return (
-        <View>
-          <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-              {this.showTrackedPatient2()}
-            </View>
-            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-              {this.showCancelButton()}
-            </View>
-          </View>
+    return false;
+  };
 
-        </View>
-      )
+  renderFloorImage = () => {
+    if (this.state.indoorMaps !== null) {
+      const selectedLocation = this.state.indoorMaps[this.state.buildingIndex].floors[this.state.floorNumber]
+
+      if (typeof (selectedLocation) != 'undefined') {
+        return (
+          <View style={{ backgroundColor: '', width: 800, height: 500 }}>
+            <Image resizeMode='contain' style={{ width: 800, height: 500 }} source={{ uri: selectedLocation.img }} />
+
+            {this.renderPatientMarker(selectedLocation)}
+
+          </View>
+        )
+      }
     }
   }
 
-  renderPatientMarker = () => {
-    if (this.state.trackedPatient === null || this.state.trackedPatient === 'no') {
-      return null
-    }
+  renderPatientMarker = (selectedLocation) => {
+    const trackedPatient = this.state.trackedPatient;
+    if (trackedPatient !== null) {
+      if (trackedPatient === 'no') {
+        if (this.state.buildingName !== null && this.state.floorNumber !== null) {
+          const data = _.filter(this.props.ble.data_ble, user => {
+            return this.checkPatientLocation(user, this.state.buildingName, this.state.floorNumber);
+          })
+          
+          console.log('filteredLocationData', data)
 
-    else {
-      const selectedLocation = this.state.indoorMaps[this.state.buildingIndex].floors[this.state.floorNumber]
-      if (typeof (selectedLocation) != 'undefined') {
+          if (data !== []) {
+            return data.map((item, index) => (
+              <Ionicons style={{
+                position: "absolute",
+                width: 25,
+                height: 25,
+                color: "tomato",
+                top: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].top,
+                left: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].left
+              }} name="ios-close-circle" size={25} />
+            ))
+          }
+        }
+      }
+
+      else {
         const patientGrid = selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid]
         return (<Ionicons style={{
           position: "absolute",
-          // top: 70,
-          // left: 125,
           width: 25,
           height: 25,
           color: "tomato",
@@ -363,34 +344,25 @@ export class TestFeature extends Component {
 
 
   render() {
-    // const { name, floorsNo, } = this.state;
-    const { buildingName, floorNumber } = this.state;
-    const black = '#000000';
-
-    // console.log('indoorMaps', this.state.indoorMaps)
-    // console.log('trackPatient', this.state.trackedPatient)
 
     return (
 
-      // new v.2
       <View style={{ flex: 1 }}>
 
         {this.renderSearchZone()}
 
         <View style={[local.container, local.card, local.customCard, { flex: 1 }]}>
-          {/* <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-start', backgroundColor: '' }}>
-            <AppText size="xxl" value="Overview" center bold color={black} />
-          </View> */}
 
           {this.renderMiddleZone()}
 
           <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
+
             {this.renderFloorImage()}
+
           </View>
+
         </View>
-
-        {this.renderPatient()}
-
+      
       </View>
     )
   }
