@@ -5,12 +5,14 @@ import { caretakers } from './caretakers.reducer';
 import { ble } from './ble.reducer'
 import { gps } from './gps.reducer'
 
+
 const rootReducer = combineReducers({
   todos,
   patients,
   caretakers,
   ble,
-  gps
+  gps,
+
 });
 
 export default rootReducer;

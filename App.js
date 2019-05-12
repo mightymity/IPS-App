@@ -59,12 +59,29 @@ console.disableYellowBox = true;
 class App extends Component {
   state = {}
   render() {
+
+    // if (this.props.user.loggedIn == false){
+    //   const clickable = false
+    // }
+
+    // else if (this.props.user.loggedIn == true){
+    //   const clickable = true
+    // }
     return (
       <Provider store={appStore}>
         <Router >
+          <Scene key="Root" hideNavBar={true} >
+          
+          <Scene
+              title="Login"
+              key="login"
+              component={Login}
+              
+          />
+          
 
           <Drawer
-            key="Root"
+            key="drawer"
             drawerPosition="left"
             headerMode="float"
             drawerWidth={200}
@@ -78,6 +95,7 @@ class App extends Component {
             navigationBarStyle={{ backgroundColor: colors.purpleA }}
             backButtonTintColor={colors.whiteA}
             rightButtonTintColor={colors.whiteB}
+            
           >
 
             {/* <Scene 
@@ -86,16 +104,13 @@ class App extends Component {
               component={test_map}
             /> */}
 
-            <Scene
-              title="Login"
-              key="login"
-              component={Login}
-            />
+            
 
             <Scene
               title="TF-GPS"
               key="tf2"
               component={TestFeature2}
+              
             />
 
             <Scene
@@ -120,6 +135,7 @@ class App extends Component {
               title="Patient"
               key="patient"
               component={Patient}
+        
             />
 
             <Scene
@@ -192,9 +208,11 @@ class App extends Component {
               component={Search_GPS}
             />
 
-
+            
 
           </Drawer>
+          </Scene>
+          
         </Router>
       </Provider >
     );

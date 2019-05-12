@@ -13,6 +13,7 @@ import SearchPatient from "../../containers/search-patient"
 
 import { patientActions } from '../../actions'
 
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { Input } from 'react-native-elements';
 
@@ -87,6 +88,7 @@ export class logIn extends Component {
       .then(() => {
         alert("Signed In with \nUsername: "+username+"\nPassword: "+password);
         this.setState({ loading: false });
+        //this.props.dispatch(patientActions.logIn(username, password))
         Actions.jump('patient')
       })
       .catch((msgError) => { alert(msgError.message); });
@@ -114,7 +116,7 @@ export class logIn extends Component {
         <ScrollView>
           <SearchPatient />
         </ScrollView>
-        <View style={{ padding: 5, alignSelf: 'center' }}>
+        <View style={{ padding: 5, alignSelf: 'center', marginTop: 100}}>
           <Text style={local.heading1}> Login  </Text>
 
 
