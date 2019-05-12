@@ -24,6 +24,7 @@ import TestFeature from "./src/pages/testFeature"
 import RealSearch from "./src/containers/search"
 import TestFeature2 from "./src/pages/testFeature2"
 import Search_GPS from "./src/containers/search-gps"
+import TestFeature3 from "./src/pages/testFeature3"
 
 // import testMap from "./src/pages/testFeature3"
 
@@ -141,6 +142,12 @@ class App extends Component {
             <Scene
               key="search_gps"
               component={Search_GPS}
+            />
+
+            <Scene
+              title="TF3"
+              key="tf3"
+              component={TestFeature3}
             />
 
 

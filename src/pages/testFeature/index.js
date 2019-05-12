@@ -5,7 +5,7 @@ import Search from "../../containers/search"
 import { local } from "./style";
 import { Actions } from 'react-native-router-flux';
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+// import Icon from 'react-native-vector-icons/FontAwesome'
 
 import { updateAllPatientBle, cancelSelectedTrackingBle, updateMap, setCurrentBuilding, setCurrentFloor } from '../../actions/ble.action'
 
@@ -19,6 +19,8 @@ import NewIndoorMap from '../../containers/new-indoor-map'
 import AppText from '../../components/app-text'
 
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 
 
@@ -87,20 +89,19 @@ export class TestFeature extends Component {
     Actions.jump('realSearch')
   }
 
-  showTrackedPatient2 = () => {
+  showTrackedPatientInfo = () => {
     if (this.props.ble.selected_ble === null) {
-      return <Text>
-        Show all ble patient
-      </Text>
+      return null
     }
 
     else {
+      const black = '#000000';
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
-          return <Text>
-            {name}
-          </Text>
+          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+          return (
+            <AppText size="l" value={name} center bold color={black} />
+          )
         }
       }
       else {
@@ -126,7 +127,18 @@ export class TestFeature extends Component {
     }
 
     else {
-      return <Icon.Button name="times" size={22} onPress={() => { this.cancelTracking() }} />
+      return (
+        <TouchableOpacity onPress={() => { this.cancelTracking() }}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ marginRight: 15 }}>
+              <Icon name="times" size={23} color="#FF0000" />
+            </View>
+            <View>
+              <AppText size="l" value="Cancel" center bold color="#808080" />
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
     }
   }
 
@@ -185,8 +197,10 @@ export class TestFeature extends Component {
       return (
         <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
           <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
-            <AppText size="l" value="Search BLE patient" center color={black} />
-            {/* <View style={local.pickerUnderline2} /> */}
+            <View style={{ marginRight: 15, marginLeft: 5 }}>
+              <Icon name="search" size={20} />
+            </View>
+            <AppText size="l" value="Search for BLE patient..." center color="#808080" />
           </View>
         </TouchableOpacity>
       )
@@ -194,16 +208,33 @@ export class TestFeature extends Component {
 
     else {
       return (
-        <View>
-          <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-              {this.showTrackedPatient2()}
+        <View style={[local.card, { flexDirection: 'row', alignItems: 'center', }]}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: '' }}>
+      
+              {this.showTrackedPatientInfo()}
+
             </View>
-            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
+
+            <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '' }}>
+             
               {this.showCancelButton()}
+
+            </View>
+
+            <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
+              <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ marginRight: 15 }}>
+                    <Icon name="search" size={23} />
+                  </View>
+                  <View>
+                    <AppText size="l" value="Search for BLE patient..." center bold color="#808080" />
+                  </View>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
-
         </View>
       )
     }
@@ -251,7 +282,7 @@ export class TestFeature extends Component {
     else {
       if (trackedPatient !== null && trackedPatient !== 'no' && typeof (trackedPatient) !== 'undefined') {
         return (
-          <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', }}>
+          <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', alignItems:'center'}}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <AppText size="xl" value="Buidling: " center bold color={black} />
               <AppText size="xl" value={this.state.buildingName} center color={black} />
@@ -308,7 +339,7 @@ export class TestFeature extends Component {
           const data = _.filter(this.props.ble.data_ble, user => {
             return this.checkPatientLocation(user, this.state.buildingName, this.state.floorNumber);
           })
-          
+
           console.log('filteredLocationData', data)
 
           if (data !== []) {
@@ -362,7 +393,7 @@ export class TestFeature extends Component {
           </View>
 
         </View>
-      
+
       </View>
     )
   }
