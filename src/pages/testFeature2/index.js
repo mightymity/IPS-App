@@ -5,7 +5,7 @@ import Search from "../../containers/search"
 import { local } from "./style";
 import { Actions } from 'react-native-router-flux';
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { updateAllPatientGps, cancelSelectedTrackingGps } from '../../actions/gps.action'
 
@@ -15,7 +15,7 @@ import _ from "lodash";
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
-
+import AppText from '../../components/app-text'
 
 export class TestFeature2 extends Component {
 
@@ -118,13 +118,37 @@ export class TestFeature2 extends Component {
       }
       else {
         if (this.state.trackedPatient != 'no') {
-          Alert.alert('title', 'Patient is inside the hospital now')
+          Alert.alert('Notification', 'Patient is inside the hospital now')
           this.setState({ trackedPatient: 'no' })
           this.props.cancel()
         }
       }
     }
+  }
 
+  showTrackedPatientInfo = () => {
+    if (this.props.gps.selected_gps === null) {
+      return null
+    }
+
+    else {
+      const black = '#000000';
+      if (this.state.trackedPatient != null) {
+        if (this.state.trackedPatient != 'no') {
+          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+          return (
+            <AppText size="l" value={name} center bold color={black} />
+          )
+        }
+      }
+      else {
+        if (this.state.trackedPatient != 'no') {
+          Alert.alert('title', 'Patient is out of area')
+          this.setState({ trackedPatient: 'no' })
+          this.props.cancel()
+        }
+      }
+    }
   }
 
   showCancelButton = () => {
@@ -137,33 +161,30 @@ export class TestFeature2 extends Component {
     }
   }
 
-  cancelTracking = () => {
-    this.props.cancel()
-  }
-
-  showRoom = () => {
+  showCancelButton2 = () => {
     if (this.props.gps.selected_gps === null) {
-      return (<Text>
-        -
-      </Text>)
+      return null
     }
 
     else {
-      if (this.state.trackedPatient != null) {
-        if (this.state.trackedPatient != 'no')
-          return <Text>
-            {this.state.trackedPatient.BLE.room}
-          </Text>
-      }
-
-      else {
-        return (<Text>
-          -
-        </Text>)
-      }
+      return (
+        <TouchableOpacity onPress={() => { this.cancelTracking() }}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ marginRight: 15 }}>
+              <Icon name="times" size={23} color="#FF0000" />
+            </View>
+            <View>
+              <AppText size="l" value="Cancel" center bold color="#808080" />
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
     }
   }
 
+  cancelTracking = () => {
+    this.props.cancel()
+  }
 
   checkEqualPL = ({ id }, query) => {
     if (id === query) {
@@ -176,7 +197,7 @@ export class TestFeature2 extends Component {
 
     if (this.props.gps.selected_gps === null) {
 
-      if (this.props.gps.data_gps !== null) {
+      if (this.props.gps.data_gps !== null && this.props.gps.data_gps !== 'no') {
 
         const markers = this.props.gps.data_gps.map(m => (
           <MapView.Marker
@@ -185,6 +206,10 @@ export class TestFeature2 extends Component {
           />
         ))
         return markers
+      }
+
+      else if(this.props.gps.data_gps === 'no'){
+        Alert.alert('Notification', 'No Patient outside')
       }
 
     }
@@ -215,6 +240,55 @@ export class TestFeature2 extends Component {
     }
   }
 
+  renderSearchZone = () => {
+    const black = '#000000';
+    if (this.props.gps.selected_gps === null) {
+      return (
+        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+          <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
+            <View style={{ marginRight: 15, marginLeft: 5 }}>
+              <Icon name="search" size={20} />
+            </View>
+            <AppText size="l" value="Search for GPS patient..." center color="#808080" />
+          </View>
+        </TouchableOpacity>
+      )
+    }
+
+    else {
+      return (
+        <View style={[local.card, { flexDirection: 'row', alignItems: 'center', }]}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: '' }}>
+
+              {this.showTrackedPatientInfo()}
+
+            </View>
+
+            <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '' }}>
+
+              {this.showCancelButton()}
+
+            </View>
+
+            <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
+              <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ marginRight: 15 }}>
+                    <Icon name="search" size={23} />
+                  </View>
+                  <View>
+                    <AppText size="l" value="Search for BLE patient..." center bold color="#808080" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )
+    }
+  }
+
 
   render() {
     let marker = null;
@@ -226,7 +300,7 @@ export class TestFeature2 extends Component {
     return (
       <View>
 
-        <View style={local.card}>
+        {/* <View style={local.card}>
           <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
             <Text>
               Search
@@ -244,7 +318,9 @@ export class TestFeature2 extends Component {
             </View>
           </View>
 
-        </View>
+        </View> */}
+
+        {this.renderSearchZone()}
 
         <View>
           <MapView
@@ -254,15 +330,6 @@ export class TestFeature2 extends Component {
             onPress={this.pickLocationHandler}
             ref={ref => this.map2 = ref}
           >
-
-            {/* {marker} */}
-
-            {/* {this.state.markers.map(m => (
-              <MapView.Marker
-                coordinate={m.coordinates}
-                title={m.title}
-              />
-            ))} */}
 
             {this.renderMarker()}
 

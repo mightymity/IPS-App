@@ -118,7 +118,6 @@ export class TestFeature extends Component {
         }
       }
     }
-
   }
 
   showCancelButton = () => {
@@ -211,13 +210,13 @@ export class TestFeature extends Component {
         <View style={[local.card, { flexDirection: 'row', alignItems: 'center', }]}>
           <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
             <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: '' }}>
-      
+
               {this.showTrackedPatientInfo()}
 
             </View>
 
             <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '' }}>
-             
+
               {this.showCancelButton()}
 
             </View>
@@ -282,7 +281,7 @@ export class TestFeature extends Component {
     else {
       if (trackedPatient !== null && trackedPatient !== 'no' && typeof (trackedPatient) !== 'undefined') {
         return (
-          <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', alignItems:'center'}}>
+          <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '', alignItems: 'center' }}>
             <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
               <AppText size="xl" value="Buidling: " center bold color={black} />
               <AppText size="xl" value={this.state.buildingName} center color={black} />
@@ -333,7 +332,7 @@ export class TestFeature extends Component {
 
   renderPatientMarker = (selectedLocation) => {
     const trackedPatient = this.state.trackedPatient;
-    if (trackedPatient !== null) {
+    if (trackedPatient !== null && typeof(trackedPatient) !== 'undefined') {
       if (trackedPatient === 'no') {
         if (this.state.buildingName !== null && this.state.floorNumber !== null) {
           const data = _.filter(this.props.ble.data_ble, user => {
@@ -372,9 +371,9 @@ export class TestFeature extends Component {
     }
   }
 
-
-
   render() {
+
+    console.log('trackedPatient', this.state.trackedPatient)
 
     return (
 
