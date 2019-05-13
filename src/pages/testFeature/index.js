@@ -106,7 +106,7 @@ export class TestFeature extends Component {
       }
       else {
         if (this.state.trackedPatient != 'no') {
-          Alert.alert('title', 'Patient is out of area')
+          Alert.alert('Notification', 'Patient is out of the hospital area')
           this.setState({ trackedPatient: 'no' })
 
           const buildingIndex = this.props.ble.building_index
@@ -331,43 +331,48 @@ export class TestFeature extends Component {
   }
 
   renderPatientMarker = (selectedLocation) => {
-    const trackedPatient = this.state.trackedPatient;
-    if (trackedPatient !== null && typeof(trackedPatient) !== 'undefined') {
-      if (trackedPatient === 'no') {
-        if (this.state.buildingName !== null && this.state.floorNumber !== null) {
-          const data = _.filter(this.props.ble.data_ble, user => {
-            return this.checkPatientLocation(user, this.state.buildingName, this.state.floorNumber);
-          })
+    if (this.props.ble.data_ble !== 'N/A') {
+      const trackedPatient = this.state.trackedPatient;
+      if (trackedPatient !== null && typeof (trackedPatient) !== 'undefined') {
+        if (trackedPatient === 'no') {
+          if (this.state.buildingName !== null && this.state.floorNumber !== null) {
+            const data = _.filter(this.props.ble.data_ble, user => {
+              return this.checkPatientLocation(user, this.state.buildingName, this.state.floorNumber);
+            })
 
-          console.log('filteredLocationData', data)
+            // console.log('filteredLocationData', data)
 
-          if (data !== []) {
-            return data.map((item, index) => (
-              <Ionicons style={{
-                position: "absolute",
-                width: 25,
-                height: 25,
-                color: "tomato",
-                top: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].top,
-                left: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].left
-              }} name="ios-close-circle" size={25} />
-            ))
+            if (data !== []) {
+              return data.map((item, index) => (
+                <Ionicons style={{
+                  position: "absolute",
+                  width: 25,
+                  height: 25,
+                  color: "tomato",
+                  top: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].top,
+                  left: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].left
+                }} name="ios-close-circle" size={25} />
+              ))
+            }
           }
         }
-      }
 
-      else {
-        const patientGrid = selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid]
-        return (<Ionicons style={{
-          position: "absolute",
-          width: 25,
-          height: 25,
-          color: "tomato",
-          top: patientGrid.top,
-          left: patientGrid.left
-        }} name="ios-close-circle" size={25} />
-        )
+        else {
+          const patientGrid = selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid]
+          return (<Ionicons style={{
+            position: "absolute",
+            width: 25,
+            height: 25,
+            color: "tomato",
+            top: patientGrid.top,
+            left: patientGrid.left
+          }} name="ios-close-circle" size={25} />
+          )
+        }
       }
+    }
+    else {
+      Alert.alert('title', 'No patients inside the hospital area')
     }
   }
 

@@ -21,18 +21,16 @@ class Search_GPS extends Component {
       fullData2: this.props.gps.data_gps,
       filteredData2: this.props.gps.data_gps,
     }
-
-   
   }
 
   componentWillMount = () =>{
-    if (this.props.gps.data_gps === 'no') {
+    if (this.props.gps.data_gps === 'N/A') {
       this.setState({ fullData2: null, filteredData2: null })
     }
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if (nextProps.gps.data_gps === 'no') {
+    if (nextProps.gps.data_gps === 'N/A') {
       this.setState({ fullData2: null, filteredData2: null })
     }
     else {

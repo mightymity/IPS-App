@@ -17,7 +17,7 @@ export function updateAllPatientGps() {
                 dispatch(listAllPatientsGps(items))
             }
             else {
-                const items = 'no'
+                const items = 'N/A'
                 dispatch(listAllPatientsGps(items))
             }
         })

@@ -16,23 +16,40 @@ class Search extends Component {
 
   constructor(props) {
     super(props);
-    // this.props.updateData()
-    // console.log('search naja')
-    // this.props.dumpData()
+    this.state = {
+      // fullData: this.props.ble.data,
+      // filteredData: this.props.ble.data,
+      query: '',
+  
+      fullData2: this.props.ble.data_ble,
+      filteredData2: this.props.ble.data_ble,
+    }
   }
 
-  state = {
-    // fullData: this.props.ble.data,
-    // filteredData: this.props.ble.data,
-    query: '',
+  // state = {
+  //   // fullData: this.props.ble.data,
+  //   // filteredData: this.props.ble.data,
+  //   query: '',
 
-    fullData2: this.props.ble.data_ble,
-    filteredData2: this.props.ble.data_ble,
+  //   fullData2: this.props.ble.data_ble,
+  //   filteredData2: this.props.ble.data_ble,
+  // }
+
+  componentWillMount = () =>{
+    if (this.props.ble.data_ble === 'N/A') {
+      this.setState({ fullData2: null, filteredData2: null })
+    }
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if (this.state.query === '') {
-      this.setState({ filteredData2: nextProps.ble.data_ble })
+    // if (this.state.query === '') {
+    //   this.setState({ filteredData2: nextProps.ble.data_ble })
+    // }
+    if (nextProps.ble.data_ble === 'N/A') {
+      this.setState({ fullData2: null, filteredData2: null })
+    }
+    else {
+      this.setState({ fullData2: nextProps.ble.data_ble })
     }
   }
 

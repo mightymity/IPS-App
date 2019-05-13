@@ -38,8 +38,14 @@ export function updateAllPatientBle() {
     return function (dispatch) {
         db.ref('/patients').orderByChild('/status').equalTo('in').on('value', snapshot => {
             let data = snapshot.val()
-            let items = Object.values(data);
-            dispatch(listAllPatientsBle(items))
+            if (data !== null) {
+                let items = Object.values(data);
+                dispatch(listAllPatientsBle(items))
+            }
+            else {
+                const items = 'N/A'
+                dispatch(listAllPatientsBle(items))
+            }
         })
     }
 }

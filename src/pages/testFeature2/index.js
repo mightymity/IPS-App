@@ -99,33 +99,6 @@ export class TestFeature2 extends Component {
     Actions.jump('search_gps')
   }
 
-  showTrackedPatient2 = () => {
-    if (this.props.gps.selected_gps === null) {
-      return <Text>
-        Show all ble patient
-      </Text>
-    }
-
-    else {
-      if (this.state.trackedPatient != null) {
-        if (this.state.trackedPatient != 'no') {
-          // console.log('trackPatient', this.state.trackedPatient)
-          let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
-          return <Text>
-            {name}
-          </Text>
-        }
-      }
-      else {
-        if (this.state.trackedPatient != 'no') {
-          Alert.alert('Notification', 'Patient is inside the hospital now')
-          this.setState({ trackedPatient: 'no' })
-          this.props.cancel()
-        }
-      }
-    }
-  }
-
   showTrackedPatientInfo = () => {
     if (this.props.gps.selected_gps === null) {
       return null
@@ -143,7 +116,7 @@ export class TestFeature2 extends Component {
       }
       else {
         if (this.state.trackedPatient != 'no') {
-          Alert.alert('title', 'Patient is out of area')
+          Alert.alert('Notification', 'Patient is now inside the hospital')
           this.setState({ trackedPatient: 'no' })
           this.props.cancel()
         }
@@ -152,16 +125,6 @@ export class TestFeature2 extends Component {
   }
 
   showCancelButton = () => {
-    if (this.props.gps.selected_gps === null) {
-      return null
-    }
-
-    else {
-      return <Icon.Button name="times" size={22} onPress={() => { this.cancelTracking() }} />
-    }
-  }
-
-  showCancelButton2 = () => {
     if (this.props.gps.selected_gps === null) {
       return null
     }
@@ -197,7 +160,7 @@ export class TestFeature2 extends Component {
 
     if (this.props.gps.selected_gps === null) {
 
-      if (this.props.gps.data_gps !== null && this.props.gps.data_gps !== 'no') {
+      if (this.props.gps.data_gps !== null && this.props.gps.data_gps !== 'N/A') {
 
         const markers = this.props.gps.data_gps.map(m => (
           <MapView.Marker
@@ -208,35 +171,37 @@ export class TestFeature2 extends Component {
         return markers
       }
 
-      else if(this.props.gps.data_gps === 'no'){
-        Alert.alert('Notification', 'No Patient outside')
+      else if (this.props.gps.data_gps === 'N/A') {
+        Alert.alert('Notification', 'No patients outside, please check out BLE mode')
       }
 
     }
 
     else {
-      const trackedPatient = this.state.trackedPatient
+      if (typeof (this.state.trackedPatient) !== 'undefined') {
+        const trackedPatient = this.state.trackedPatient
 
-      const newLatitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.latitude : null
-      const newLongitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.longitude : null
+        const newLatitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.latitude : null
+        const newLongitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.longitude : null
 
-      console.log('newLatitude', newLatitude)
-      console.log('newLongitude', newLongitude)
+        console.log('newLatitude', newLatitude)
+        console.log('newLongitude', newLongitude)
 
-      console.log(typeof (this.map2))
+        console.log(typeof (this.map2))
 
-      // this.map2.animateToRegion({
-      //   latitude: newLatitude,
-      //   longitude: newLongitude,
-      //   latitudeDelta: 0.0122,
-      //   longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
-      // });
+        // this.map2.animateToRegion({
+        //   latitude: newLatitude,
+        //   longitude: newLongitude,
+        //   latitudeDelta: 0.0122,
+        //   longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+        // });
 
 
-      return <MapView.Marker
-        coordinate={trackedPatient.GPS}
-        title={trackedPatient.name}
-      />
+        return <MapView.Marker
+          coordinate={trackedPatient.GPS}
+          title={trackedPatient.name}
+        />
+      }
     }
   }
 
