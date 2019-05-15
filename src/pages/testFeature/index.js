@@ -342,6 +342,7 @@ export class TestFeature extends Component {
 
             // console.log('filteredLocationData', data)
 
+            // ส่ง item
             if (data !== []) {
               return data.map((item, index) => (
                 <Ionicons style={{
@@ -358,6 +359,7 @@ export class TestFeature extends Component {
         }
 
         else {
+          // ส่ง this.state.trackedPatient
           const patientGrid = selectedLocation.rooms[this.state.trackedPatient.BLE.room].grids[this.state.trackedPatient.BLE.grid]
           return (<Ionicons style={{
             position: "absolute",

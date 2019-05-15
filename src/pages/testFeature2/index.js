@@ -292,7 +292,7 @@ export class TestFeature2 extends Component {
             initialRegion={this.state.focusedLocation}
 
             style={{ width: '100%', height: '100%' }}
-            onPress={this.pickLocationHandler}
+            // onPress={this.pickLocationHandler}
             ref={ref => this.map2 = ref}
           >
 

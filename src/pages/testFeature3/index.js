@@ -10,7 +10,7 @@ import { local } from './style'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import AppText from '../../components/app-text'
 
-export class testFeature3 extends Component {
+export class TestFeature3 extends Component {
 
   state = {
     top: 70,
@@ -60,4 +60,4 @@ export class testFeature3 extends Component {
   }
 }
 
-export default testFeature3
+export default TestFeature3
