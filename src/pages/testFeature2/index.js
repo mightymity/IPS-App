@@ -21,39 +21,24 @@ export class TestFeature2 extends Component {
 
   constructor(props) {
     super(props);
-    // this.map2 = createRef()
     this.state = {
       trackedPatient: 'no',
 
       focusedLocation: {
-        latitude: 13.669557,
-        longitude: 100.634628,
+        latitude: this.initialLocation.latitude,
+        longitude: this.initialLocation.longitude,
         latitudeDelta: 0.0122,
         longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
-      },
-
-      locationChosen: false,
-
-      markers: [{
-        title: 'Big C',
-        coordinates: {
-          latitude: 13.668866,
-          longitude: 100.635654
-        },
-      },
-      {
-        title: 'BITEC',
-        coordinates: {
-          latitude: 13.669696,
-          longitude: 100.610179
-        },
-      }],
-
-      markerSet: null
+      }
     }
 
-    console.log('tf gps')
     this.props.updateData()
+
+  }
+
+  initialLocation = {
+    latitude: 13.669557,
+    longitude: 100.634628,
   }
 
   componentWillReceiveProps = (nextprops) => {
@@ -63,10 +48,11 @@ export class TestFeature2 extends Component {
         return this.checkEqualPL(user, nextprops.gps.selected_gps);
       })
       this.setState({ trackedPatient: item[0] })
+      this.changeLocation(item[0])
     }
 
     else {
-      this.setState({ trackedPatient: null })
+      this.setState({ trackedPatient: 'no' })
     }
   }
 
@@ -146,6 +132,25 @@ export class TestFeature2 extends Component {
   }
 
   cancelTracking = () => {
+    this.setState(prevState => {
+      return {
+        focusedLocation: {
+          ...prevState.focusedLocation,
+          latitude: this.initialLocation.latitude,
+          longitude: this.initialLocation.longitude
+        }
+      }
+    })
+
+    if(typeof (this.map) !== 'undefined'){
+    this.map.animateToRegion({
+      latitude: this.initialLocation.latitude,
+      longitude: this.initialLocation.longitude,
+      latitudeDelta: 0.0122,
+      longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+    }, 1000);
+  }
+
     this.props.cancel()
   }
 
@@ -155,6 +160,19 @@ export class TestFeature2 extends Component {
     }
     return false;
   };
+
+  changeLocation = (item) => {
+    this.setState(prevState => {
+      return {
+        focusedLocation: {
+          ...prevState.focusedLocation,
+          latitude: item.GPS.latitude,
+          longitude: item.GPS.longitude
+        },
+        title: item.id
+      }
+    })
+  }
 
   renderMarker = () => {
 
@@ -184,17 +202,14 @@ export class TestFeature2 extends Component {
         const newLatitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.latitude : null
         const newLongitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.longitude : null
 
-        console.log('newLatitude', newLatitude)
-        console.log('newLongitude', newLongitude)
-
-        console.log(typeof (this.map2))
-
-        // this.map2.animateToRegion({
-        //   latitude: newLatitude,
-        //   longitude: newLongitude,
-        //   latitudeDelta: 0.0122,
-        //   longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
-        // });
+        if (typeof (this.map) !== 'undefined') {
+          this.map.animateToRegion({
+            latitude: newLatitude,
+            longitude: newLongitude,
+            latitudeDelta: 0.0122,
+            longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+          }, 1000);
+        }
 
 
         return <MapView.Marker
@@ -263,37 +278,15 @@ export class TestFeature2 extends Component {
     }
 
     return (
-      <View>
-
-        {/* <View style={local.card}>
-          <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
-            <Text>
-              Search
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View>
-          <View style={[local.card, { flexDirection: 'row', alignItems: 'center' }]}>
-            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-              {this.showTrackedPatient2()}
-            </View>
-            <View stlye={{ flex: 1, flexDirection: 'row', justifyContent: 'center', alignItems: 'center', }}>
-              {this.showCancelButton()}
-            </View>
-          </View>
-
-        </View> */}
+      <View style={{padding: 7}}>
 
         {this.renderSearchZone()}
 
         <View>
           <MapView
             initialRegion={this.state.focusedLocation}
-
             style={{ width: '100%', height: '100%' }}
-            // onPress={this.pickLocationHandler}
-            ref={ref => this.map2 = ref}
+            ref={ref => this.map = ref}
           >
 
             {this.renderMarker()}
