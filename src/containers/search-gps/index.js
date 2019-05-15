@@ -15,20 +15,26 @@ class Search_GPS extends Component {
 
   constructor(props) {
     super(props);
+    this.state = {
+      query: '',
+
+      fullData2: this.props.gps.data_gps,
+      filteredData2: this.props.gps.data_gps,
+    }
   }
 
-  state = {
-    // fullData: this.props.ble.data,
-    // filteredData: this.props.ble.data,
-    query: '',
-
-    fullData2: this.props.gps.data_gps,
-    filteredData2: this.props.gps.data_gps,
+  componentWillMount = () =>{
+    if (this.props.gps.data_gps === 'N/A') {
+      this.setState({ fullData2: null, filteredData2: null })
+    }
   }
 
   componentWillReceiveProps = (nextProps) => {
-    if (this.state.query === '') {
-      this.setState({ filteredData2: nextProps.gps.data_gps })
+    if (nextProps.gps.data_gps === 'N/A') {
+      this.setState({ fullData2: null, filteredData2: null })
+    }
+    else {
+      this.setState({ fullData2: nextProps.gps.data_gps })
     }
   }
 
@@ -59,7 +65,7 @@ class Search_GPS extends Component {
   }
 
   goBack = () => {
-    this.setState({query:''})
+    this.setState({ query: '' })
     Actions.jump('tf2')
   }
 
@@ -79,7 +85,7 @@ class Search_GPS extends Component {
   renderHeader = () => {
     const { query } = this.state
     return (
-      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal:10 }}>
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10 }}>
         <View>
           <TouchableOpacity onPress={() => { this.goBack() }}>
             <Icon name="arrow-left" size={25} />

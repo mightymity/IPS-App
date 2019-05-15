@@ -12,7 +12,7 @@ export const local = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 20,
     backgroundColor: colors.purpleA,
-    marginTop: 30,
+    marginTop: 100,
     
   },
 

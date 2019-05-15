@@ -1,5 +1,5 @@
 import { bleConstants } from '../_constants';
-import { db }  from '../services/firebase_demo'
+import { db } from '../services/firebase_demo'
 
 
 export function listAllPatientsBle(items) {
@@ -9,16 +9,43 @@ export function listAllPatientsBle(items) {
     }
 }
 
+export function loadMap(items) {
+    const initialBuildingIndex = 1
+    const initialfloorNumber = Object.keys(items[initialBuildingIndex].floors)[0]
+    return {
+        type: 'LOAD_MAP',
+        items: items,
+        index: initialBuildingIndex,
+        number: initialfloorNumber
+    }
+}
+
+export function setCurrentBuilding(index) {
+    return {
+        type: 'SET_CURRENT_BUILDING',
+        index: index
+    }
+}
+
+export function setCurrentFloor(number) {
+    return {
+        type: 'SET_CURRENT_FLOOR',
+        number: number
+    }
+}
+
 export function updateAllPatientBle() {
     return function (dispatch) {
-        // db.ref('/patients').on("value", function(snapshot){
-        //     let data = snapshot.val()
-        //     let items = Object.values(data)
-
         db.ref('/patients').orderByChild('/status').equalTo('in').on('value', snapshot => {
             let data = snapshot.val()
-            let items = Object.values(data);
-            dispatch(listAllPatientsBle(items))
+            if (data !== null) {
+                let items = Object.values(data);
+                dispatch(listAllPatientsBle(items))
+            }
+            else {
+                const items = 'N/A'
+                dispatch(listAllPatientsBle(items))
+            }
         })
     }
 }
@@ -28,6 +55,16 @@ export function updateTrackingPatientBle(key) {
         db.ref('/patients').child(key).on('value', function (snapshot) {
             let item = snapshot.val()
             dispatch(trackingSelectedPatientBle(item))
+        })
+    }
+}
+
+export function updateMap() {
+    return function (dispatch) {
+        db.ref('/buildings').on("value", function (snapshot) {
+            let data = snapshot.val()
+            let items = Object.values(data)
+            dispatch(loadMap(items))
         })
     }
 }

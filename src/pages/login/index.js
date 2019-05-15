@@ -12,6 +12,7 @@ import { Actions } from 'react-native-router-flux'
 import SearchPatient from "../../containers/search-patient"
 
 import { patientActions } from '../../actions'
+import {colors} from "../../theme/colors";
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,6 +20,8 @@ import { Input } from 'react-native-elements';
 
 import FontAwesomeIcon from 'react-native-vector-icons/FontAwesome';
 import { Sae, Hoshi, Akira } from 'react-native-textinput-effects';
+import { updateAllPatientBle, updateMap } from '../../actions/ble.action'
+import { updateAllPatientGps } from '../../actions/gps.action'
 
 import { db, auth } from '../../services/firebase_demo'
 
@@ -42,7 +45,7 @@ export class logIn extends Component {
   }
 
   confirm = () => {
-    Actions.jump('patient')
+    Actions.jump('tf')
   }
 
   state = {
@@ -88,8 +91,11 @@ export class logIn extends Component {
       .then(() => {
         alert("Signed In with \nUsername: "+username+"\nPassword: "+password);
         this.setState({ loading: false });
+        this.props.dispatch(updateAllPatientBle())
+        this.props.dispatch(updateMap())
+        // this.props.dispatch(updateAllPatientGps())
         //this.props.dispatch(patientActions.logIn(username, password))
-        Actions.jump('patient')
+        Actions.jump('tf')
       })
       .catch((msgError) => { alert(msgError.message); });
   }
@@ -113,9 +119,9 @@ export class logIn extends Component {
     //const avatar = '../../assets/images/default.png'
     return (
       <View style={{ alignSelf: 'stretch' }}>
-        <ScrollView>
-          <SearchPatient />
-        </ScrollView>
+        <View style={{height: 60, backgroundColor: colors.purpleA}}>
+          
+        </View>
         <View style={{ padding: 5, alignSelf: 'center', marginTop: 100}}>
           <Text style={local.heading1}> Login  </Text>
 

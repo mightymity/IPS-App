@@ -80,6 +80,9 @@ class SideMenu extends Component {
           icon={require('../../assets/icons/save.png')} />
           <NavItem name="TF2" onPress={() => { Actions.jump('tf2') }}
           icon={require('../../assets/icons/save.png')} />
+          <NavItem name="Logout" onPress={() => { Actions.jump('login') }}
+          icon={require('../../assets/icons/save.png')} />
+
       </View>
     );
   }

@@ -19,5 +19,35 @@ export const local = StyleSheet.create({
     shadowRadius: 10,
     elevation: 2,
     marginBottom: 8,
-  }
+  },
+
+  picker: {
+    backgroundColor: colors.whiteC,
+    borderColor: colors.whiteD,
+    borderRadius: 2,
+    borderWidth: 1,
+  },
+
+  pickerUnderline: {
+
+    height: 1,
+    marginHorizontal: 5,
+    marginBottom: 5,
+    backgroundColor: colors.whiteE,
+    transform: [
+      { translateY: -4 }
+    ],
+  },
+
+  pickerUnderline2: {
+
+    height: 1,
+    marginHorizontal: 2,
+    marginBottom: 2,
+    backgroundColor: colors.whiteE,
+    transform: [
+      { translateY: -4 }
+    ],
+  },
+
 });

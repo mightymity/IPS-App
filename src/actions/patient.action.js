@@ -67,6 +67,11 @@ function createNewPatient(id, name, ble, gps) {
             name: name,
             status: "in"
         })
+
+        db.ref('/GPS_devices').child(gps).set({
+            id: gps,
+            patient: id
+        })
     }
 }
 

@@ -159,7 +159,7 @@ export class Patient extends Component {
     return (
 
       <ScrollView style={local.view} contentContainerStyle={global.pageScrollView}>
-        <SearchPatient />
+        {/* <SearchPatient /> */}
         <FlatList
           data={patients.data}
           renderItem={(this.renderItem)}
@@ -176,23 +176,37 @@ export class Patient extends Component {
             </TouchableOpacity>
           </View>
         } /> */}
+        
+        {/* <View style={{
+          alignSelf: 'flex-start',
+          // alignItems: 'flex-start',
+          // padding: 20,
+          marginTop: 100,
+          flexDirection: 'row'
+        }}>
+        <TouchableOpacity style={local.button} onPress={() => { this.logout() }}>
+            <Text style={local.btnText}>Logout</Text>
+          </TouchableOpacity>
+          </View> */}
+        
 
         <View style={{
           alignSelf: 'flex-end',
-          alignItems: 'flex-end',
-          padding: 20,
-          marginTop: 30,
-          flexDirection: 'row'
+          // alignItems: 'flex-end',
+          // padding: 20,
+          // marginTop: 30,
+          flexDirection: 'row',
         }}>
 
-          <TouchableOpacity style={local.button} onPress={() => { this.logout() }}>
+          {/* <TouchableOpacity style={local.button} onPress={() => { this.logout() }}>
             <Text style={local.btnText}>Logout</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity onPress={() => { this.goToReg() }}>
             <Image style={{ height: 40, width: 40 }} source={require('../../assets/icons/plus.png')} />
           </TouchableOpacity>
         </View>
+        
       </ScrollView>
     )
   }

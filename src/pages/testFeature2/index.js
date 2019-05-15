@@ -5,7 +5,7 @@ import Search from "../../containers/search"
 import { local } from "./style";
 import { Actions } from 'react-native-router-flux';
 
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { updateAllPatientGps, cancelSelectedTrackingGps } from '../../actions/gps.action'
 
@@ -15,7 +15,7 @@ import _ from "lodash";
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
-
+import AppText from '../../components/app-text'
 
 export class TestFeature2 extends Component {
 
@@ -99,32 +99,29 @@ export class TestFeature2 extends Component {
     Actions.jump('search_gps')
   }
 
-  showTrackedPatient2 = () => {
+  showTrackedPatientInfo = () => {
     if (this.props.gps.selected_gps === null) {
-      return <Text>
-        Show all ble patient
-      </Text>
+      return null
     }
 
     else {
+      const black = '#000000';
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          // console.log('trackPatient', this.state.trackedPatient)
-          let name = this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
-          return <Text>
-            {name}
-          </Text>
+          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name
+          return (
+            <AppText size="l" value={name} center bold color={black} />
+          )
         }
       }
       else {
         if (this.state.trackedPatient != 'no') {
-          Alert.alert('title', 'Patient is inside the hospital now')
+          Alert.alert('Notification', 'Patient is now inside the hospital')
           this.setState({ trackedPatient: 'no' })
           this.props.cancel()
         }
       }
     }
-
   }
 
   showCancelButton = () => {
@@ -133,37 +130,24 @@ export class TestFeature2 extends Component {
     }
 
     else {
-      return <Icon.Button name="times" size={22} onPress={() => { this.cancelTracking() }} />
+      return (
+        <TouchableOpacity onPress={() => { this.cancelTracking() }}>
+          <View style={{ flexDirection: 'row' }}>
+            <View style={{ marginRight: 15 }}>
+              <Icon name="times" size={23} color="#FF0000" />
+            </View>
+            <View>
+              <AppText size="l" value="Cancel" center bold color="#808080" />
+            </View>
+          </View>
+        </TouchableOpacity>
+      )
     }
   }
 
   cancelTracking = () => {
     this.props.cancel()
   }
-
-  showRoom = () => {
-    if (this.props.gps.selected_gps === null) {
-      return (<Text>
-        -
-      </Text>)
-    }
-
-    else {
-      if (this.state.trackedPatient != null) {
-        if (this.state.trackedPatient != 'no')
-          return <Text>
-            {this.state.trackedPatient.BLE.room}
-          </Text>
-      }
-
-      else {
-        return (<Text>
-          -
-        </Text>)
-      }
-    }
-  }
-
 
   checkEqualPL = ({ id }, query) => {
     if (id === query) {
@@ -176,7 +160,7 @@ export class TestFeature2 extends Component {
 
     if (this.props.gps.selected_gps === null) {
 
-      if (this.props.gps.data_gps !== null) {
+      if (this.props.gps.data_gps !== null && this.props.gps.data_gps !== 'N/A') {
 
         const markers = this.props.gps.data_gps.map(m => (
           <MapView.Marker
@@ -187,31 +171,86 @@ export class TestFeature2 extends Component {
         return markers
       }
 
+      else if (this.props.gps.data_gps === 'N/A') {
+        Alert.alert('Notification', 'No patients outside, please check out BLE mode')
+      }
+
     }
 
     else {
-      const trackedPatient = this.state.trackedPatient
+      if (typeof (this.state.trackedPatient) !== 'undefined') {
+        const trackedPatient = this.state.trackedPatient
 
-      const newLatitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.latitude : null
-      const newLongitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.longitude : null
+        const newLatitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.latitude : null
+        const newLongitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.longitude : null
 
-      console.log('newLatitude', newLatitude)
-      console.log('newLongitude', newLongitude)
+        console.log('newLatitude', newLatitude)
+        console.log('newLongitude', newLongitude)
 
-      console.log(typeof (this.map2))
+        console.log(typeof (this.map2))
 
-      // this.map2.animateToRegion({
-      //   latitude: newLatitude,
-      //   longitude: newLongitude,
-      //   latitudeDelta: 0.0122,
-      //   longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
-      // });
+        // this.map2.animateToRegion({
+        //   latitude: newLatitude,
+        //   longitude: newLongitude,
+        //   latitudeDelta: 0.0122,
+        //   longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+        // });
 
 
-      return <MapView.Marker
-        coordinate={trackedPatient.GPS}
-        title={trackedPatient.name}
-      />
+        return <MapView.Marker
+          coordinate={trackedPatient.GPS}
+          title={trackedPatient.name}
+        />
+      }
+    }
+  }
+
+  renderSearchZone = () => {
+    const black = '#000000';
+    if (this.props.gps.selected_gps === null) {
+      return (
+        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+          <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
+            <View style={{ marginRight: 15, marginLeft: 5 }}>
+              <Icon name="search" size={20} />
+            </View>
+            <AppText size="l" value="Search for GPS patient..." center color="#808080" />
+          </View>
+        </TouchableOpacity>
+      )
+    }
+
+    else {
+      return (
+        <View style={[local.card, { flexDirection: 'row', alignItems: 'center', }]}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: '' }}>
+
+              {this.showTrackedPatientInfo()}
+
+            </View>
+
+            <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '' }}>
+
+              {this.showCancelButton()}
+
+            </View>
+
+            <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
+              <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ marginRight: 15 }}>
+                    <Icon name="search" size={23} />
+                  </View>
+                  <View>
+                    <AppText size="l" value="Search for BLE patient..." center bold color="#808080" />
+                  </View>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      )
     }
   }
 
@@ -226,7 +265,7 @@ export class TestFeature2 extends Component {
     return (
       <View>
 
-        <View style={local.card}>
+        {/* <View style={local.card}>
           <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
             <Text>
               Search
@@ -244,7 +283,9 @@ export class TestFeature2 extends Component {
             </View>
           </View>
 
-        </View>
+        </View> */}
+
+        {this.renderSearchZone()}
 
         <View>
           <MapView
@@ -254,15 +295,6 @@ export class TestFeature2 extends Component {
             onPress={this.pickLocationHandler}
             ref={ref => this.map2 = ref}
           >
-
-            {/* {marker} */}
-
-            {/* {this.state.markers.map(m => (
-              <MapView.Marker
-                coordinate={m.coordinates}
-                title={m.title}
-              />
-            ))} */}
 
             {this.renderMarker()}
 

@@ -25,6 +25,7 @@ import caretaker_edit from "./src/pages/caretaker-edit"
 import Login from "./src/pages/login"
 import test_map from "./src/pages/test_map"
 import search_hospital from "./src/pages/search-hospital"
+import modal from "./src/pages/testModal"
 
 import TestFeature from "./src/pages/testFeature"
 import RealSearch from "./src/containers/search"
@@ -78,7 +79,15 @@ class App extends Component {
               component={Login}
               
           />
-          
+
+          {/* <Scene
+            title="Test Modal"
+            key="modal"
+            component={modal}
+          /> */}
+
+
+            
 
           <Drawer
             key="drawer"
@@ -104,7 +113,11 @@ class App extends Component {
               component={test_map}
             /> */}
 
-            
+            <Scene
+              title="TF-BLE"
+              key="tf"
+              component={TestFeature}
+            />  
 
             <Scene
               title="TF-GPS"
@@ -113,11 +126,11 @@ class App extends Component {
               
             />
 
-            <Scene
+            {/* <Scene
               title="TF-BLE"
               key="tf"
               component={TestFeature}
-            />
+            /> */}
 
             <Scene
               title="BLE"
