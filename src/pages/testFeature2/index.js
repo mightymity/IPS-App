@@ -17,12 +17,14 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import AppText from '../../components/app-text'
 
+
 export class TestFeature2 extends Component {
 
   constructor(props) {
     super(props);
     this.state = {
       trackedPatient: 'no',
+      focusing: false,
 
       focusedLocation: {
         latitude: this.initialLocation.latitude,
@@ -56,31 +58,6 @@ export class TestFeature2 extends Component {
     }
   }
 
-  checkFirebase = () => {
-
-    db.ref('/patients').on('value', snapshot => {
-      let data = snapshot.val()
-      let items = Object.values(data);
-      console.log(items)
-    })
-  }
-
-  checkFirebase2 = () => {
-
-    db.ref('/patients').child('patient01').on('value', snapshot => {
-      let item = snapshot.val()
-      console.log(item)
-    })
-  }
-
-  checkFilterFirebase = () => {
-    db.ref('/patients').orderByChild('/status').equalTo('out').on('value', snapshot => {
-      let data = snapshot.val()
-      let items = Object.values(data);
-      console.log(items)
-    })
-  }
-
   goToSearchPage = () => {
     Actions.jump('search_gps')
   }
@@ -103,7 +80,16 @@ export class TestFeature2 extends Component {
       else {
         if (this.state.trackedPatient != 'no') {
           Alert.alert('Notification', 'Patient is now inside the hospital')
-          this.setState({ trackedPatient: 'no' })
+          this.setState({
+            trackedPatient: 'no',
+            focusedLocation: {
+              latitude: this.initialLocation.latitude,
+              longitude: this.initialLocation.longitude,
+              latitudeDelta: 0.0122,
+              longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+            },
+          })
+          this.animateToHospital()
           this.props.cancel()
         }
       }
@@ -142,14 +128,14 @@ export class TestFeature2 extends Component {
       }
     })
 
-    if(typeof (this.map) !== 'undefined'){
-    this.map.animateToRegion({
-      latitude: this.initialLocation.latitude,
-      longitude: this.initialLocation.longitude,
-      latitudeDelta: 0.0122,
-      longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
-    }, 1000);
-  }
+    if (typeof (this.map) !== 'undefined') {
+      this.map.animateToRegion({
+        latitude: this.initialLocation.latitude,
+        longitude: this.initialLocation.longitude,
+        latitudeDelta: 0.0122,
+        longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+      }, 1000);
+    }
 
     this.props.cancel()
   }
@@ -162,16 +148,40 @@ export class TestFeature2 extends Component {
   };
 
   changeLocation = (item) => {
-    this.setState(prevState => {
-      return {
-        focusedLocation: {
-          ...prevState.focusedLocation,
-          latitude: item.GPS.latitude,
-          longitude: item.GPS.longitude
-        },
-        title: item.id
-      }
-    })
+    if (typeof (item) !== 'undefined') {
+      this.setState(prevState => {
+        return {
+          focusedLocation: {
+            ...prevState.focusedLocation,
+            latitude: Number(item.GPS.latitude),
+            longitude: Number(item.GPS.longitude)
+          },
+          title: item.id
+        }
+      })
+    }
+  }
+
+  animateToHospital = () => {
+    if (typeof (this.map) !== 'undefined') {
+      this.map.animateToRegion({
+        latitude: this.initialLocation.latitude,
+        longitude: this.initialLocation.longitude,
+        latitudeDelta: 0.0122,
+        longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+      }, 1000);
+    }
+  }
+
+  animateToTrackedPatient = () => {
+    if (typeof (this.map) !== 'undefined') {
+      this.map.animateToRegion({
+        latitude: this.state.focusedLocation.latitude,
+        longitude: this.state.focusedLocation.longitude,
+        latitudeDelta: 0.0122,
+        longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
+      }, 1000);
+    }
   }
 
   renderMarker = () => {
@@ -182,7 +192,11 @@ export class TestFeature2 extends Component {
 
         const markers = this.props.gps.data_gps.map(m => (
           <MapView.Marker
-            coordinate={m.GPS}
+            coordinate={{
+              latitude: Number(m.GPS.latitude),
+              longitude: Number(m.GPS.longitude)
+            }}
+
             title={m.name}
           />
         ))
@@ -202,20 +216,15 @@ export class TestFeature2 extends Component {
         const newLatitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.latitude : null
         const newLongitude = trackedPatient && trackedPatient.GPS ? trackedPatient.GPS.longitude : null
 
-        if (typeof (this.map) !== 'undefined') {
-          this.map.animateToRegion({
-            latitude: newLatitude,
-            longitude: newLongitude,
-            latitudeDelta: 0.0122,
-            longitudeDelta: Dimensions.get('window').width / Dimensions.get('window').height * 0.0122
-          }, 1000);
-        }
-
 
         return <MapView.Marker
-          coordinate={trackedPatient.GPS}
+          coordinate={{
+            latitude: Number(newLatitude),
+            longitude: Number(newLongitude)
+          }}
           title={trackedPatient.name}
         />
+
       }
     }
   }
@@ -269,6 +278,37 @@ export class TestFeature2 extends Component {
     }
   }
 
+  renderOverlay = () => {
+    if (this.props.gps.selected_gps === null) {
+      return (
+        <TouchableOpacity onPress={() => { this.animateToHospital() }}>
+          <View style={[local.card, { width: 56, height: 56, alignItems: 'center', justifyContent: 'center' }]}>
+            <Icon name="hospital-symbol" color="red" size={30} />
+          </View>
+        </TouchableOpacity>
+      )
+    }
+
+    else {
+      if (typeof (this.map) !== 'undefined') {
+        return (
+          <TouchableOpacity onPress={() => { this.animateToTrackedPatient() }}>
+            <View style={[local.card, { width: 56, height: 56, alignItems: 'center', justifyContent: 'center' }]}>
+              <Icon name="user" color="blue" size={30} solid />
+            </View>
+          </TouchableOpacity>
+        )
+      }
+    }
+  }
+
+  scrollMap = (event) => {
+    // console.log('yeah')
+    // if (this.state.focusing !== true) {
+    //    this.setState({ focusing: true })
+    // }
+  }
+
 
   render() {
     let marker = null;
@@ -278,7 +318,7 @@ export class TestFeature2 extends Component {
     }
 
     return (
-      <View style={{padding: 7}}>
+      <View style={{ padding: 7 }}>
 
         {this.renderSearchZone()}
 
@@ -286,12 +326,20 @@ export class TestFeature2 extends Component {
           <MapView
             initialRegion={this.state.focusedLocation}
             style={{ width: '100%', height: '100%' }}
+            onPanDrag={this.scrollMap}
             ref={ref => this.map = ref}
           >
 
             {this.renderMarker()}
 
           </MapView>
+
+          <View style={{ position: 'absolute', top: '75%', left: '94%' }}>
+
+            {this.renderOverlay()}
+
+          </View>
+
         </View>
 
       </View>

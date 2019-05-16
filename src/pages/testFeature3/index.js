@@ -21,41 +21,50 @@ export class TestFeature3 extends Component {
   render() {
     const black = '#000000'
     return (
-      <View style={[local.card, { flexDirection: 'row', alignItems: 'center', }]}>
-        <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: '' }}>
-            <AppText size="l" value="58090042      Sivut Mekareeya" center bold color={black} />
-          </View>
+      <View>
+        <View style={[local.card, { flexDirection: 'row', alignItems: 'center', }]}>
+          <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{ flex: 4, flexDirection: 'row', justifyContent: 'flex-start', backgroundColor: '' }}>
+              <AppText size="l" value="58090042      Sivut Mekareeya" center bold color={black} />
+            </View>
 
-          <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '' }}>
-            <TouchableOpacity onPress={() => { }}>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ marginRight: 15 }}>
-                  <Icon name="times" size={23} />
+            <View style={{ flex: 1, flexDirection: 'row', backgroundColor: '' }}>
+              <TouchableOpacity onPress={() => { }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ marginRight: 15 }}>
+                    <Icon name="times" size={23} />
+                  </View>
+                  <View>
+                    <AppText size="l" value="Cancel" center bold color={black} />
+                  </View>
                 </View>
-                <View>
-                  <AppText size="l" value="Cancel" center bold color={black} />
-                </View>
-              </View>
-            </TouchableOpacity>
-          </View>
+              </TouchableOpacity>
+            </View>
 
 
-          <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
-            <TouchableOpacity onPress={() => { }}>
-              <View style={{ flexDirection: 'row' }}>
-                <View style={{ marginRight: 15 }}>
-                  <Icon name="search" size={23} />
+            <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
+              <TouchableOpacity onPress={() => { }}>
+                <View style={{ flexDirection: 'row' }}>
+                  <View style={{ marginRight: 15 }}>
+                    <Icon name="search" size={23} />
+                  </View>
+                  <View>
+                    <AppText size="l" value="Search for BLE patient..." center bold color={black} />
+                  </View>
                 </View>
-                <View>
-                  <AppText size="l" value="Search for BLE patient..." center bold color={black} />
-                </View>
-              </View>
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
 
+        
+        <View style={[local.card,{width: 56, height: 56, alignItems:'center', justifyContent:'center'}]}>
+        <TouchableOpacity onPress={()=>{}}>
+            <Icon name="hospital-symbol" size={30} />
+          </TouchableOpacity>
+        </View>
+        
+      </View>
     )
   }
 }

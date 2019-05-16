@@ -61,6 +61,12 @@ class App extends Component {
             backButtonTintColor={colors.whiteA}
             rightButtonTintColor={colors.whiteB}
           >
+
+            <Scene
+              title="TF3"
+              key="tf3"
+              component={TestFeature3}
+            />
           
             <Scene
               title="GPS"
@@ -145,11 +151,7 @@ class App extends Component {
               component={Search_GPS}
             />
 
-            <Scene
-              title="TF3"
-              key="tf3"
-              component={TestFeature3}
-            />
+            
 
             
 
