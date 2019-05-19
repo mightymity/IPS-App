@@ -26,6 +26,10 @@ import Login from "./src/pages/login"
 import test_map from "./src/pages/test_map"
 import search_hospital from "./src/pages/search-hospital"
 import modal from "./src/pages/testModal"
+import search_patient from "./src/pages/search-patient"
+import patient_ble from "./src/pages/patient-ble"
+import patient_gps from "./src/pages/patient-gps"
+import search_caretaker from "./src/pages/search-caretaker"
 
 import TestFeature from "./src/pages/testFeature"
 import RealSearch from "./src/containers/search"
@@ -72,59 +76,20 @@ class App extends Component {
       <Provider store={appStore}>
         <Router >
           <Scene key="Root" hideNavBar={true} >
-          
-          <Scene
+
+            <Scene
               title="Login"
               key="login"
               component={Login}
-              
-          />
 
-          {/* <Scene
+            />
+
+            {/* <Scene
             title="Test Modal"
             key="modal"
             component={modal}
           /> */}
 
-
-            
-
-          <Drawer
-            key="drawer"
-            drawerPosition="left"
-            headerMode="float"
-            drawerWidth={200}
-            contentComponent={SideMenu}
-            titleStyle={{ color: colors.whiteB, fontFamily: 'Kanit-SemiBold', fontWeight: 'normal' }}
-            renderLeftButton={() =>
-              <IconButton size="sm"
-                onPress={() => Actions.drawerOpen()}
-                imgPath={require('./src/assets/icons/hamburger-light.png')}
-              />}
-            navigationBarStyle={{ backgroundColor: colors.purpleA }}
-            backButtonTintColor={colors.whiteA}
-            rightButtonTintColor={colors.whiteB}
-            
-          >
-
-            {/* <Scene 
-              title="test"
-              key="test_map"
-              component={test_map}
-            /> */}
-
-            <Scene
-              title="TF-BLE"
-              key="tf"
-              component={TestFeature}
-            />  
-
-            <Scene
-              title="TF-GPS"
-              key="tf2"
-              component={TestFeature2}
-              
-            />
 
             {/* <Scene
               title="TF-BLE"
@@ -132,100 +97,169 @@ class App extends Component {
               component={TestFeature}
             /> */}
 
-            <Scene
-              title="BLE"
-              key="ble"
-              component={BLE}
-            />
 
-            <Scene
-              title="GPS"
-              key="gps"
-              component={GPS}
-            />
 
-            <Scene
-              title="Patient"
-              key="patient"
-              component={Patient}
-        
-            />
+            <Drawer
+              key="drawer"
+              drawerPosition="left"
+              headerMode="float"
+              drawerWidth={200}
+              contentComponent={SideMenu}
+              titleStyle={{ color: colors.whiteB, fontFamily: 'Kanit-SemiBold', fontWeight: 'normal' }}
+              renderLeftButton={() =>
+                <IconButton size="sm"
+                  onPress={() => Actions.drawerOpen()}
+                  imgPath={require('./src/assets/icons/hamburger-light.png')}
+                />}
+              navigationBarStyle={{ backgroundColor: colors.purpleA }}
+              backButtonTintColor={colors.whiteA}
+              rightButtonTintColor={colors.whiteB}
 
-            <Scene
-              title="Caretaker"
-              key="caretaker"
-              component={Caretaker}
-            />
+            >
 
-            <Scene
-              title="Edit Map"
-              key="edit-map"
-              component={EditMap}
-            />
+              {/* <Scene 
+              title="test"
+              key="test_map"
+              component={test_map}
+            /> */}
 
-            <Scene
-              title="Home"
-              // drawerLockMode="locked-closed"
-              // renderRightButton={() => <View />}
-              // back={true} 
-              key="home"
-              component={Home}
-            // renderBackButton={() =>
-            //   <IconButton onPress={() => { Actions.pop() }}
-            //     imgPath={require('./src/assets/icons/back.png')} />}
-            />
+              <Scene
+                title="Patient"
+                key="search_patient"
+                component={search_patient}
+              />
 
-            <Scene
-              title="Create Todo"
-              key="create_todo"
-              component={CreateTodo}
-            />
+              <Scene
+                title="TF-BLE"
+                key="tf"
+                component={TestFeature}
+              />
 
-            <Scene
-              title="Caretaker Registration"
-              key="caretaker_regis"
-              component={caretaker_regis}
-            />
+              <Scene
+                title="TF-GPS"
+                key="tf2"
+                component={TestFeature2}
 
-            <Scene
-              title="Patient Registration"
-              key="patient_regis"
-              component={patient_regis}
-            />
+              />
 
-            <Scene
-              title="Patient Edit"
-              key="patient_edit"
-              component={patient_edit}
-            />
+              {/* <Scene
+              title="TF-BLE"
+              key="tf"
+              component={TestFeature}
+            /> */}
 
-            <Scene
-              title="Caretaker Edit"
-              key="caretaker_edit"
-              component={caretaker_edit}
-            />
+              <Scene
+                title="BLE"
+                key="ble"
+                component={BLE}
+              />
 
-            <Scene
-              title="Search from Hospital"
-              key="search_hospital"
-              component={search_hospital}
-            />
+              <Scene
+                title="GPS"
+                key="gps"
+                component={GPS}
+              />
 
-            <Scene
-              key="realSearch"
-              component={RealSearch}
-            />
+              <Scene
+                title="Patient"
+                key="patient"
+                component={Patient}
 
-            <Scene
-              key="search_gps"
-              component={Search_GPS}
-            />
+              />
 
-            
+              <Scene
+                title="Caretaker"
+                key="caretaker"
+                component={Caretaker}
+              />
 
-          </Drawer>
+              <Scene
+                title="Edit Map"
+                key="edit-map"
+                component={EditMap}
+              />
+
+              <Scene
+                title="Home"
+                // drawerLockMode="locked-closed"
+                // renderRightButton={() => <View />}
+                // back={true} 
+                key="home"
+                component={Home}
+              // renderBackButton={() =>
+              //   <IconButton onPress={() => { Actions.pop() }}
+              //     imgPath={require('./src/assets/icons/back.png')} />}
+              />
+
+              <Scene
+                title="Create Todo"
+                key="create_todo"
+                component={CreateTodo}
+              />
+
+              <Scene
+                title="Caretaker Registration"
+                key="caretaker_regis"
+                component={caretaker_regis}
+              />
+
+              <Scene
+                title="Patient Registration"
+                key="patient_regis"
+                component={patient_regis}
+              />
+
+              <Scene
+                title="Patient Edit"
+                key="patient_edit"
+                component={patient_edit}
+              />
+
+              <Scene
+                title="Caretaker Edit"
+                key="caretaker_edit"
+                component={caretaker_edit}
+              />
+
+              <Scene
+                title="Search from Hospital"
+                key="search_hospital"
+                component={search_hospital}
+              />
+
+              <Scene
+                key="realSearch"
+                component={RealSearch}
+              />
+
+              <Scene
+                key="search_gps"
+                component={Search_GPS}
+              />
+
+              <Scene
+                title="Patient"
+                key="patient_ble"
+                component={patient_ble}
+              />
+
+              <Scene
+                title="Patient"
+                key="patient_gps"
+                component={patient_gps}
+              />    
+
+              <Scene
+                title="Caretaker"
+                key="search_caretaker"
+                component={search_caretaker}
+              /> 
+
+
+
+            </Drawer>
           </Scene>
-          
+
         </Router>
       </Provider >
     );

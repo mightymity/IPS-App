@@ -70,9 +70,9 @@ class SideMenu extends Component {
           icon={require('../../assets/icons/save.png')} />
           <NavItem name="GPS" onPress={() => { Actions.jump('gps') }}
           icon={require('../../assets/icons/save.png')} />
-          <NavItem name="Patient" onPress={() => { Actions.jump('patient') }}
+          <NavItem name="Patient" onPress={() => { Actions.jump('search_patient') }}
           icon={require('../../assets/icons/save.png')} />
-          <NavItem name="Caretaker" onPress={() => { Actions.jump('caretaker') }}
+          <NavItem name="Caretaker" onPress={() => { Actions.jump('search_caretaker') }}
           icon={require('../../assets/icons/save.png')} />
           <NavItem name="Edit Map" onPress={() => { Actions.jump('edit-map') }}
           icon={require('../../assets/icons/save.png')} />

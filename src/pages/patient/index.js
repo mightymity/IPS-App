@@ -100,7 +100,9 @@ export class Patient extends Component {
 
 
 
-  onDeletePatient = (index) => {
+  onDeletePatient = (index, b, g) => {
+    console.log('this is b: ', b)
+    console.log('this is g: ', g)
     Alert.alert(
 
       // This is Alert Dialog Title
@@ -110,7 +112,7 @@ export class Patient extends Component {
       'Delete this patient?',
       [
         // First Text Button in Alert Dialog.
-        { text: 'YES', onPress: () => this.deletePatient(index) },
+        { text: 'YES', onPress: () => this.deletePatient(index, b, g) },
         { text: 'NO', onPress: () => console.log('Cancel Pressed!'), style: 'cancel' },
 
 
@@ -143,7 +145,7 @@ export class Patient extends Component {
           <TouchableOpacity onPress={() => this.onChangeId(item.id)}>
             <Image style={local.image} source={require('../../assets/icons/edit.png')} />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.onDeletePatient(item.id)}>
+          <TouchableOpacity onPress={() => this.onDeletePatient(item.id, item.ble, item.gps)}>
             <Image style={local.image} source={require('../../assets/icons/remove.png')} />
           </TouchableOpacity>
 

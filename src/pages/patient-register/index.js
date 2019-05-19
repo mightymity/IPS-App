@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, TextInput, TouchableOpacity, ScrollView, Alert } from 'react-native'
+import { View, Text, FlatList, TextInput, TouchableOpacity, ScrollView, Alert, Picker } from 'react-native'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -41,25 +41,29 @@ export class patientRegist extends Component {
 
     const { dispatch } = props;
     dispatch(patientActions.updatePatientList())
+
   }
 
   goToPatient = () => {
-    Actions.jump('patient')
+    Actions.jump('search_patient')
   }
 
   state = {
     id: this.props.patients.selectedId,
     name: this.props.patients.selectedName,
-    ble: '',
-    gps: ''
+    bleList: this.props.patients.ble,
+    gpsList: this.props.patients.gps,
+    ble: this.props.patients.ble[0].id,
+    gps: null
   }
 
 
 
   saveNewPatient = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
-    const { id, name, ble, gps } = this.state
+    const { id, name, bleList, gpsList, ble, gps } = this.state
     //addItem(this.state)
+    console.log('this is ble regist', ble)
     this.props.dispatch(patientActions.createNewPatient(id, name, ble, gps));
     //Actions.jump('patient')
     Alert.alert(
@@ -98,16 +102,47 @@ export class patientRegist extends Component {
     Actions.jump('search_hospital')
   }
 
+  blePicker = () => {
+    console.log('this is bleList: ', this.state.bleList)
+    if (this.state.bleList !== 'N/A') {
+      return this.state.bleList.map((item, index) => (
+        <Picker.Item label={item.id} value={item.id} style={{ fontSize: 16 }} />
+      ))
+    }
+
+    else {
+      Alert.alert(
+
+        // This is Alert Dialog Title
+        'Message',
+  
+        // This is Alert Dialog Message. 
+        'There is no BLE device available',
+        [
+          // First Text Button in Alert Dialog.
+          { text: 'OK' }
+  
+        ]
+  
+      )
+    }
+  }
+
+
+
+
   render() {
     const { id, name, ble, gps } = this.state
     console.log('name registered: ', this.props.patients.selectedName)
     console.log('id registered: ', this.props.patients.selectedId)
+    console.log('ble r: ', this.state.ble)
+  
     //const avatar = '../../assets/images/default.png'  
     return (
       <View style={{ alignSelf: 'stretch' }}>
-        <ScrollView>
+        {/* <ScrollView>
           <SearchPatient />
-        </ScrollView>
+        </ScrollView> */}
         <View style={{ padding: 5, alignSelf: 'center' }}>
           <Text style={local.heading1}> Registration </Text>
 
@@ -142,7 +177,17 @@ export class patientRegist extends Component {
             editable={false}
           />
 
-          <Hoshi
+          <Picker
+            style={local.textInput}
+            mode="dropdown"
+            selectedValue={ble}
+            onValueChange={(item, index) => { this.onChangeBle(item) }}>
+
+            {this.blePicker()}
+
+          </Picker>
+
+          {/* <Hoshi
             style={local.textInput}
             label={'BLE'}
             // this is used as active border color
@@ -152,7 +197,7 @@ export class patientRegist extends Component {
             inputPadding={16}
             onChangeText={(value) => this.onChangeBle(value)}
             //editable={false}
-          />
+          /> */}
 
           <Hoshi
             style={local.textInput}
@@ -166,85 +211,9 @@ export class patientRegist extends Component {
             //editable={false}
           />
 
-          {/* <View style={{ width: 100, alignSelf: 'center' }}>
-            <Sae
-              label={'ID'}
-              iconClass={FontAwesomeIcon}
-              iconName={'pencil'}
-              iconColor={'grey'}
-              inputPadding={16}
-              labelHeight={24}
-              // active border height
-              borderHeight={2}
-              // TextInput props
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={(value) => this.onChangeId(value)}
-              //editable={false}
-              style={local.textInput}
-            />
+          
 
-            <Sae
-              label={'Name'}
-              iconClass={FontAwesomeIcon}
-              iconName={'pencil'}
-              iconColor={'grey'}
-              inputPadding={16}
-              labelHeight={24}
-              // active border height
-              borderHeight={2}
-              // TextInput props
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={(value) => this.onChangeName(value)}
-              editable={false}
-            />
-
-            <Sae
-              label={'BLE'}
-              iconClass={FontAwesomeIcon}
-              iconName={'pencil'}
-              iconColor={'grey'}
-              inputPadding={16}
-              labelHeight={24}
-              // active border height
-              borderHeight={2}
-              // TextInput props
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={(value) => this.onChangeBle(value)}
-              editable={false}
-            />
-
-            <Sae
-              label={'GPS'}
-              iconClass={FontAwesomeIcon}
-              iconName={'pencil'}
-              iconColor={'grey'}
-              inputPadding={16}
-              labelHeight={24}
-              // active border height
-              borderHeight={2}
-              // TextInput props
-              autoCapitalize={'none'}
-              autoCorrect={false}
-              onChangeText={(value) => this.onChangeGps(value)}
-              editable={false}
-            
-            />
-          </View>  */}
-
-          {/* <TextInput value={id} style={local.textInput} placeholder="ID"
-            underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeId(value)}/>
-
-          <TextInput value={name} style={local.textInput} placeholder="Name"
-            underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeName(value)} />
-
-          <TextInput value={ble} style={local.textInput} placeholder="BLE"
-            underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeBle(value)} />
-
-          <TextInput value={gps} style={local.textInput} placeholder="GPS"
-            underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeGps(value)} />*/}
+          
 
           <TouchableOpacity style={local.button} onPress={() => { this.saveNewPatient() }}>
             <Text style={local.btnText}>Confirm</Text>

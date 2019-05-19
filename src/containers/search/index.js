@@ -54,8 +54,9 @@ class Search extends Component {
   }
 
 
-  contains2 = ({ name, last, email }, query) => {
-    if (name.includes(query) || last.includes(query) || email.includes(query)) {
+  contains2 = ({ name }, query) => {
+    const n = name.toLowerCase()
+    if (n.includes(query)) {
       return true;
     }
 
@@ -125,8 +126,8 @@ class Search extends Component {
           renderItem={({ item }) => (
             <ListItem
               //roundAvatar
-              title={`${item.name} ${item.last}`}
-              subtitle={item.email}
+              title={`${item.name}`}
+              // subtitle={item.email}
               //leftAvatar={{ source: { uri: item.picture.thumbnail } }}
               containerStyle={{ borderBottomWidth: 0 }}
               onPress={() => { this.selectPatient2(item.id) }}

@@ -9,7 +9,9 @@ const defaultState = {
   current: null,
   data: null,
   selectedName: '',
-  selectedId: null
+  selectedId: null,
+  ble: null,
+  gps: null,
 }
 
 // const initState = {
@@ -50,19 +52,57 @@ export function patients(state = defaultState, action) {
 
       // }
 
-      const nextState = {current:{...state}.current, data: newArray};
+      const nextState = {...state, data: newArray};
+      // nextState.data = [...action.patients]
+      // const nextState = {data:{newData}, current:{...state.current}}
+      return nextState;
+    } break;
+
+    case "LIST_ALL_BLE": {
+      const bles = action.ble;
+
+      const newArray = bles.map((ble, index) => {
+        return ble.id
+      });
+
+
+      const nextState = {...state, ble: action.ble};
+      // nextState.data = [...action.patients]
+      // const nextState = {data:{newData}, current:{...state.current}}
+      return nextState;
+    } break;
+
+    case "LIST_ALL_GPS": {
+      const gpss = action.gps;
+
+      const newArray = gpss.map((gps, index) => {
+        return gps.id
+      });
+
+      //nextState.data = newArray;
+
+      
+      // const p = {
+      //     name: patient.name,
+      //     id: patient.id,
+      //     ble: patient.ble.name,
+      //     gps: patient.gps.name,
+
+      // }
+
+      const nextState = {...state, gps: action.gps};
       // nextState.data = [...action.patients]
       // const nextState = {data:{newData}, current:{...state.current}}
       return nextState;
     } break;
 
     case "SELECT_EDIT_PATIENT": {
-      const nextState = {current: action.current, data: {...state.data}}
+      const nextState = {...state, current: action.current}
       return nextState;
     } break;
 
     case "SELECT_HOSPITAL_PATIENT": {
-      const nextState = {current: {...state.current}, data: {...state.data}, selectedName: action.name, selectedId: action.id}
+      const nextState = {...state, selectedName: action.name, selectedId: action.id}
       return nextState;
     } break;
 

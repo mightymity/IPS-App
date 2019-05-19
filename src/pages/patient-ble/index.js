@@ -119,6 +119,8 @@ export class TestFeature extends Component {
           this.setState({ buildingName, buildingIndex, floorNumber })
 
           this.props.cancel()
+          Actions.jump('patient_gps')
+          
         }
       }
     }
@@ -151,6 +153,7 @@ export class TestFeature extends Component {
     const floorNumber = this.props.ble.floor_number
     this.setState({ buildingName, buildingIndex, floorNumber })
     this.props.cancel()
+    Actions.jump('search_patient')
   }
 
   checkEqualPL = ({ id }, query) => {
@@ -225,7 +228,7 @@ export class TestFeature extends Component {
 
             </View>
 
-            <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
+            {/* <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
               <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{ marginRight: 15 }}>
@@ -236,7 +239,7 @@ export class TestFeature extends Component {
                   </View>
                 </View>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       )
@@ -338,7 +341,6 @@ export class TestFeature extends Component {
     const temp = this
     if (this.props.ble.data_ble !== 'N/A') {
       const trackedPatient = this.state.trackedPatient;
-      
       if (trackedPatient !== null && typeof (trackedPatient) !== 'undefined') {
         if (trackedPatient === 'no') {
           if (this.state.buildingName !== null && this.state.floorNumber !== null) {
@@ -355,7 +357,7 @@ export class TestFeature extends Component {
                   position: "absolute",
                   width: 25,
                   height: 25,
-                  color: item.color,
+                  color: "tomato",
                   top: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].top,
                   left: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].left
                 }} name="ios-close-circle" size={25} onPress={() => { temp.renderModal(item) }} />

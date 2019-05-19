@@ -59,7 +59,7 @@ export class caretakerEdit extends Component {
     }
 
     goBack = () =>{
-        Actions.jump('caretaker');
+        Actions.jump('search_caretaker');
     }
 
     // setCurrent = () => {
@@ -107,9 +107,9 @@ export class caretakerEdit extends Component {
         // const { name, ble, gps, current} = result
         return (
             <View style={{alignSelf:'stretch'}}>
-                <ScrollView>
+                {/* <ScrollView>
                 <SearchPatient />
-                </ScrollView>
+                </ScrollView> */}
                 <View style={{ padding: 5 }}>
                     <Text style={local.heading1}> Edit </Text>
 

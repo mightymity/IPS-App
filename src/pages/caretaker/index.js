@@ -89,25 +89,54 @@ export class Caretaker extends Component {
   }
 
 
+  renderItem = ({ item }) => (
+    <ListItem bottomDivider={true}
+      title={item.name}
+      subtitle={
+        <View>
+          <Text>Patient: {item.patient}</Text>
+        </View>
+      }
+      leftAvatar={{
+        source: item.avatar_url && { uri: item.avatar_url },
+        title: item.name[0]
+      }}
+      rightElement={
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={() => this.onChangeId(item.id)}>
+            <Image style={local.image} source={require('../../assets/icons/edit.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.onDeleteCaretaker(item.id)}>
+            <Image style={local.image} source={require('../../assets/icons/remove.png')} />
+          </TouchableOpacity>
+
+        </View>
+      }
+    />
+  )
+
 
   render() {
     const { caretakers } = this.props;
     return (
       <ScrollView style={local.view} contentContainerStyle={global.pageScrollView}>
         <SearchPatient />
-
-        <FlatList data={caretakers.data} renderItem={({ item, index }) =>
+        <FlatList
+          data={caretakers.data}
+          renderItem={(this.renderItem)}
+        />
+        {/* <FlatList data={caretakers.data} renderItem={({ item, index }) =>
           <View style={{ flexDirection: 'row' }}>
             <CaretakerList name={item.name} id={item.id} patient={item.patient} />
             <TouchableOpacity onPress={() => this.onDeleteCaretaker(item.id)}>
               <Image style={local.image} source={require('../../assets/icons/remove.png')} />
-              {/* <Text style={local.btnText}>Delete</Text> */}
+              
             </TouchableOpacity>
             <TouchableOpacity onPress={() => this.onChangeId(item.id)}>
               <Image style={local.image} source={require('../../assets/icons/edit.png')} />
             </TouchableOpacity>
           </View>
-        } />
+        } /> */}
         <View style={{
           alignSelf: 'flex-end',
           alignItems: 'flex-end',

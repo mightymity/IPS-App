@@ -17,7 +17,7 @@ import Axios from 'axios';
 
 export class patientEdit extends Component {
     confirm = () => {
-        Actions.jump('Patient')
+        Actions.jump('search_patient')
       }
     // const n = this.props.name
     // const b = this.props.ble
@@ -58,7 +58,7 @@ export class patientEdit extends Component {
     }
 
     goBack = () =>{
-        Actions.jump('patient');
+        Actions.jump('search_patient');
     }
 
     // setCurrent = () => {
@@ -94,9 +94,9 @@ export class patientEdit extends Component {
         // const { name, ble, gps, current} = result
         return (
             <View style={{alignSelf:'stretch'}}>
-                <ScrollView>
+                {/* <ScrollView>
                 <SearchPatient />
-                </ScrollView>
+                </ScrollView> */}
                 <View style={{ padding: 5 }}>
                     <Text style={local.heading1}> Edit </Text>
 

@@ -20,6 +20,7 @@ class Search extends Component {
 
   constructor(props) {
     super(props);
+    
     // this.props.updateData()
     // console.log('search naja')
     // this.props.dumpData()

@@ -9,6 +9,11 @@ import { ActionConst } from 'react-native-router-flux';
 
 
 
+
+
+
+
+
 export const patientActions = {
     createNewPatient,
     listAllPatients,
@@ -16,7 +21,11 @@ export const patientActions = {
     editPatientByIndex,
     selectEditPatient,
     updatePatientList,
-    selectHospitalPatient
+    selectHospitalPatient,
+    updateBle,
+    updateGps,
+    listAllBle,
+    listAllGps
 };
 
 function listAllPatients(data) {
@@ -26,22 +35,57 @@ function listAllPatients(data) {
     }
 }
 
-//   "01" : {
-//     BLE : {
-//       building : "IC KMITL",
-//       floor : 6,
-//       grid : 5,
-//       room : 3
-//     },
-//     GPS : {
-//       latitude : 13.666699999999999,
-//       longitude : 100.63599833333335
-//     },
-//     id : id,
-//     name : name,
-//     status : "in"
-//   }
+function listAllBle(data){
+    return {
+        type: "LIST_ALL_BLE",
+        ble: data
+    }
+}
+
+function listAllGps(data){
+    return {
+        type: "LIST_ALL_GPS",
+        gps: data
+    }
+}
+
 function createNewPatient(id, name, ble, gps) {
+    // var allowed = "0369cf".split( '' ), s = "#";
+    // while ( s.length < 4 ) {
+    //     s += allowed.splice( Math.floor( ( Math.random() * allowed.length ) ), 1 );
+    // }
+    var markerColor = ['red', 'tomato', 'orange', 'yellow', 
+    'gold', 'wheat', 'tan', 'linen', 'green', 'aqua', 'violet', 'indigo'];
+
+    
+    // for (var i = 0; i < 12; i++){
+    var s = markerColor[Math.floor(Math.random() * markerColor.length)];
+
+    //     db.ref('/colors').orderByChild('/id').equalTo(s).on('value', snapshot => {
+    //         let data = snapshot.val()
+    //         //console.log('this is color: ', s)
+    //         if ((data == null)) {
+    //             console.log('in')
+    //             return s
+    //         }
+    //         else if (i == 11){
+    //             return s
+    //         }
+
+    //     })
+       
+    // }
+
+    
+        
+    // db.ref('/colors').on("value", function (snapshot) {
+    //     let data = snapshot.val();
+    //     //let items = Object.values(data);
+    //     return items = Object.values(data);
+    // })
+    // console.log('this is item',items)
+
+    //return s;
     return function () {
         // db.ref('/patients').child(id).set({
         //     id: id,
@@ -63,16 +107,29 @@ function createNewPatient(id, name, ble, gps) {
                 longitude: 0,
                 name: gps,
             },
+            color: s,
             id: id,
             name: name,
-            status: "in"
+            status: "out"
         })
+
+        // db.ref('/colors').child(id).set({
+        //     id: s,
+        //     patient: id
+        // })
 
         db.ref('/GPS_devices').child(gps).set({
             id: gps,
             patient: id
         })
+
+        db.ref('/BLE_devices').child(ble).set({
+            id: ble,
+            patient: id
+        })
     }
+
+
 }
 
 function updatePatientList() {
@@ -85,9 +142,14 @@ function updatePatientList() {
     }
 }
 
-function deletePatientByIndex(id) {
+function deletePatientByIndex(id, ble, gps) {
+    console.log('gps: ', gps)
     return function () {
         db.ref('/patients').child(id).remove()
+        db.ref('/BLE_devices').child(ble).update({patient: 'n/a'})
+        db.ref('/GPS_devices').child(gps).update({patient: 'n/a'})
+        // db.ref('/colors').child(id).remove()
+
     }
 }
 
@@ -115,6 +177,40 @@ function editPatientByIndex(id, ble, gps) {
             db.ref('/patients').child(id).child('GPS').update({name: gps})
         }
         dispatch(selectEditPatient(null))
+    }
+}
+
+
+
+function updateBle() {
+    return function (dispatch) {
+        db.ref('/BLE_devices').orderByChild('/patient').equalTo('n/a').on('value', snapshot => {
+            let data = snapshot.val()
+            if (data !== null) {
+                let items = Object.values(data);
+                dispatch(listAllBle(items))
+            }
+            else {
+                const items = 'N/A'
+                dispatch(listAllBle(items))
+            }
+        })
+    }
+}
+
+function updateGps() {
+    return function (dispatch) {
+        db.ref('/GPS_devices').orderByChild('/patient').equalTo('n/a').on('value', snapshot => {
+            let data = snapshot.val()
+            if (data !== null) {
+                let items = Object.values(data);
+                dispatch(listAllGps(items))
+            }
+            else {
+                const items = 'N/A'
+                dispatch(listAllGps(items))
+            }
+        })
     }
 }
 

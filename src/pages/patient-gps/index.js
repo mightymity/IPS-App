@@ -8,6 +8,7 @@ import { Actions } from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
 import { updateAllPatientGps, cancelSelectedTrackingGps } from '../../actions/gps.action'
+import { selectPatientToTrackBle } from '../../actions/ble.action';
 
 import { db } from '../../services/firebase_demo'
 
@@ -138,6 +139,7 @@ export class TestFeature2 extends Component {
     }
 
     this.props.cancel()
+    Actions.jump('search_patient')
   }
 
   checkEqualPL = ({ id }, query) => {
@@ -189,14 +191,13 @@ export class TestFeature2 extends Component {
     if (this.props.gps.selected_gps === null) {
 
       if (this.props.gps.data_gps !== null && this.props.gps.data_gps !== 'N/A') {
-
         const markers = this.props.gps.data_gps.map(m => (
           <MapView.Marker
             coordinate={{
               latitude: Number(m.GPS.latitude),
               longitude: Number(m.GPS.longitude)
             }}
-            pinColor={m.color}
+
             title={m.name}
           />
         ))
@@ -205,6 +206,7 @@ export class TestFeature2 extends Component {
 
       else if (this.props.gps.data_gps === 'N/A') {
         Alert.alert('Notification', 'No patients outside, please check out BLE mode')
+        
       }
 
     }
@@ -260,7 +262,7 @@ export class TestFeature2 extends Component {
 
             </View>
 
-            <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
+            {/* <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
               <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{ marginRight: 15 }}>
@@ -271,7 +273,7 @@ export class TestFeature2 extends Component {
                   </View>
                 </View>
               </TouchableOpacity>
-            </View>
+            </View> */}
           </View>
         </View>
       )
