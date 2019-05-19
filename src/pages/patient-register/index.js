@@ -54,7 +54,7 @@ export class patientRegist extends Component {
     bleList: this.props.patients.ble,
     gpsList: this.props.patients.gps,
     ble: this.props.patients.ble[0].id,
-    gps: null
+    gps: this.props.patients.gps[0].id,
   }
 
 
@@ -130,6 +130,33 @@ export class patientRegist extends Component {
 
 
 
+  gpsPicker = () => {
+    console.log('this is gpsList: ', this.state.gpsList)
+    if (this.state.gpsList !== 'N/A') {
+      return this.state.gpsList.map((item, index) => (
+        <Picker.Item label={item.id} value={item.id} style={{ fontSize: 16 }} />
+      ))
+    }
+
+    else {
+      Alert.alert(
+
+        // This is Alert Dialog Title
+        'Message',
+  
+        // This is Alert Dialog Message. 
+        'There is no GPS device available',
+        [
+          // First Text Button in Alert Dialog.
+          { text: 'OK' }
+  
+        ]
+  
+      )
+    }
+  }
+
+
 
   render() {
     const { id, name, ble, gps } = this.state
@@ -187,6 +214,16 @@ export class patientRegist extends Component {
 
           </Picker>
 
+          <Picker
+            style={local.textInput}
+            mode="dropdown"
+            selectedValue={gps}
+            onValueChange={(item, index) => { this.onChangeGps(item) }}>
+
+            {this.gpsPicker()}
+
+          </Picker>
+
           {/* <Hoshi
             style={local.textInput}
             label={'BLE'}
@@ -199,7 +236,7 @@ export class patientRegist extends Component {
             //editable={false}
           /> */}
 
-          <Hoshi
+          {/* <Hoshi
             style={local.textInput}
             label={'GPS'}
             // this is used as active border color
@@ -209,7 +246,7 @@ export class patientRegist extends Component {
             inputPadding={16}
             onChangeText={(value) => this.onChangeGps(value)}
             //editable={false}
-          />
+          /> */}
 
           
 

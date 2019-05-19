@@ -143,10 +143,10 @@ class Search_Patient extends Component {
     Alert.alert(
 
         // This is Alert Dialog Title
-        b,
+        'Message',
 
         // This is Alert Dialog Message. 
-        g,
+        'Delete this patient?',
         [
         // First Text Button in Alert Dialog.
         { text: 'YES', onPress: () => this.deletePatient(index, b, g) },

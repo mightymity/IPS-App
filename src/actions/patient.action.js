@@ -103,8 +103,8 @@ function createNewPatient(id, name, ble, gps) {
                 name: ble,
             },
             GPS: {
-                latitude: 0,
-                longitude: 0,
+                latitude: 13.729954171728675,
+                longitude: 100.77549254874613,
                 name: gps,
             },
             color: s,
