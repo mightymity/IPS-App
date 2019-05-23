@@ -62,8 +62,25 @@ export class patientRegist extends Component {
   saveNewPatient = () => {
     //this.setState({avatar: '../../assets/images/default.png'})
     const { id, name, bleList, gpsList, ble, gps } = this.state
+    if ((id == null) || (name == null)){
+      Alert.alert(
+
+        // This is Alert Dialog Title
+        'Message',
+  
+        // This is Alert Dialog Message. 
+        'Please select patient',
+        [
+          // First Text Button in Alert Dialog.
+          { text: 'OK'}
+  
+        ]
+  
+      )
+    }
     //addItem(this.state)
-    console.log('this is ble regist', ble)
+    //console.log('this is ble regist', ble)
+    else {
     this.props.dispatch(patientActions.createNewPatient(id, name, ble, gps));
     //Actions.jump('patient')
     Alert.alert(
@@ -81,6 +98,7 @@ export class patientRegist extends Component {
 
     )
   }
+}
 
   onChangeId = (value) => {
     this.setState({ id: value })

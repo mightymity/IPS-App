@@ -8,7 +8,7 @@ import { Actions } from 'react-native-router-flux';
 const defaultState = {
   current: null,
   data: null,
-  selectedName: '',
+  selectedName: null,
   selectedId: null,
   ble: null,
   gps: null,

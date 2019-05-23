@@ -109,8 +109,8 @@ class Search extends Component {
 
 
   cancelSelect = () => {
-    this.setState({ selectedId: '' })
-    this.setState({ selectedName: ''})
+    this.setState({ selectedId: null })
+    this.setState({ selectedName: null})
   }
   
   selectPatient = () => {
