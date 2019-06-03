@@ -39,8 +39,8 @@ export class TestFeature2 extends Component {
   }
 
   initialLocation = {
-    latitude: 13.669557,
-    longitude: 100.634628,
+    latitude: 13.729954171728675,
+    longitude: 100.77549254874613,
   }
 
   componentWillReceiveProps = (nextprops) => {
@@ -71,7 +71,7 @@ export class TestFeature2 extends Component {
       const black = '#000000';
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name 
           return (
             <AppText size="l" value={name} center bold color={black} />
           )

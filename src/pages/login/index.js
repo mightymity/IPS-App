@@ -54,27 +54,7 @@ export class logIn extends Component {
     loading: false,
   }
 
-  saveNewPatient = () => {
-    //this.setState({avatar: '../../assets/images/default.png'})
-    const { id, name, ble, gps } = this.state
-    //addItem(this.state)
-    this.props.dispatch(patientActions.createNewPatient(id, name, ble, gps));
-    //Actions.jump('patient')
-    Alert.alert(
-
-      // This is Alert Dialog Title
-      'Message',
-
-      // This is Alert Dialog Message. 
-      'Patient Added',
-      [
-        // First Text Button in Alert Dialog.
-        { text: 'YES', onPress: () => this.confirm() }
-
-      ]
-
-    )
-  }
+  
 
   onChangeUsername = (value) => {
     this.setState({ username: value })
@@ -89,7 +69,7 @@ export class logIn extends Component {
     this.setState({loading:true});
     auth.signInWithEmailAndPassword(username, password)
       .then(() => {
-        alert("Signed In with \nUsername: "+username+"\nPassword: "+password);
+        // alert("Signed In with \nUsername: "+username+"\nPassword: "+password);
         this.setState({ loading: false });
         this.props.dispatch(updateAllPatientBle())
         this.props.dispatch(updateMap())
@@ -97,6 +77,7 @@ export class logIn extends Component {
         //this.props.dispatch(patientActions.logIn(username, password))
         Actions.jump('tf')
       })
+      
       .catch((msgError) => { alert(msgError.message); });
   }
 
