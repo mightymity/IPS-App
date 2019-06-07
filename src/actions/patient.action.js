@@ -35,14 +35,14 @@ function listAllPatients(data) {
     }
 }
 
-function listAllBle(data){
+function listAllBle(data) {
     return {
         type: "LIST_ALL_BLE",
         ble: data
     }
 }
 
-function listAllGps(data){
+function listAllGps(data) {
     return {
         type: "LIST_ALL_GPS",
         gps: data
@@ -54,10 +54,10 @@ function createNewPatient(id, name, ble, gps) {
     // while ( s.length < 4 ) {
     //     s += allowed.splice( Math.floor( ( Math.random() * allowed.length ) ), 1 );
     // }
-    var markerColor = ['red', 'tomato', 'orange', 'yellow', 
-    'gold', 'wheat', 'tan', 'linen', 'green', 'aqua', 'violet', 'indigo'];
+    var markerColor = ['red', 'tomato', 'orange', 'yellow',
+        'gold', 'wheat', 'tan', 'linen', 'green', 'aqua', 'violet', 'indigo'];
 
-    
+
     // for (var i = 0; i < 12; i++){
     var s = markerColor[Math.floor(Math.random() * markerColor.length)];
 
@@ -73,11 +73,11 @@ function createNewPatient(id, name, ble, gps) {
     //         }
 
     //     })
-       
+
     // }
 
-    
-        
+
+
     // db.ref('/colors').on("value", function (snapshot) {
     //     let data = snapshot.val();
     //     //let items = Object.values(data);
@@ -135,9 +135,11 @@ function createNewPatient(id, name, ble, gps) {
 function updatePatientList() {
     return function (dispatch) {
         db.ref('/patients').on("value", function (snapshot) {
+
             let data = snapshot.val();
             let items = Object.values(data);
             dispatch(listAllPatients(items))
+
         })
     }
 }
@@ -146,8 +148,8 @@ function deletePatientByIndex(id, ble, gps) {
     console.log('gps: ', gps)
     return function () {
         db.ref('/patients').child(id).remove()
-        db.ref('/BLE_devices').child(ble).update({patient: 'n/a'})
-        db.ref('/GPS_devices').child(gps).update({patient: 'n/a'})
+        db.ref('/BLE_devices').child(ble).update({ patient: 'n/a' })
+        db.ref('/GPS_devices').child(gps).update({ patient: 'n/a' })
         // db.ref('/colors').child(id).remove()
 
     }
@@ -171,10 +173,10 @@ function selectHospitalPatient(name, id) {
 function editPatientByIndex(id, ble, gps) {
     return function (dispatch) {
         if (ble != '') {
-            db.ref('/patients').child(id).child('BLE').update({name: ble})
+            db.ref('/patients').child(id).child('BLE').update({ name: ble })
         }
         if (gps != '') {
-            db.ref('/patients').child(id).child('GPS').update({name: gps})
+            db.ref('/patients').child(id).child('GPS').update({ name: gps })
         }
         dispatch(selectEditPatient(null))
     }

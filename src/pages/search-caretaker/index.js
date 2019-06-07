@@ -92,11 +92,12 @@ class Search_Caretaker extends Component {
         const n = 'Name: ' + item.name
         const p = 'Patient: ' + item.patient
         const detail = i + '\n' + n + '\n' + p
+        console.log(detail)
         Alert.alert(
 
             // This is Alert Dialog Title
             //'Message',
-    
+            'Detail',
             // This is Alert Dialog Message. 
             detail,
             [

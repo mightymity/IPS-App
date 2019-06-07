@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Picker, Modal, Button } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Picker, Modal, Button, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import Search from "../../containers/search"
 import { local } from "./style";
@@ -371,7 +371,7 @@ export class TestFeature extends Component {
             position: "absolute",
             width: 25,
             height: 25,
-            color: "tomato",
+            color: this.state.trackedPatient.color,
             top: patientGrid.top,
             left: patientGrid.left
           }} name="ios-close-circle" size={25} onPress={() => { this.renderModal(this.state.trackedPatient) }} />
@@ -472,7 +472,7 @@ export class TestFeature extends Component {
 
 
     return (
-
+      <ScrollView>
       <View style={{ flex: 1 }}>
 
         {this.renderSearchZone()}
@@ -492,6 +492,7 @@ export class TestFeature extends Component {
 
 
       </View>
+      </ScrollView>
     )
   }
 }

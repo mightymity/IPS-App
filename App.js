@@ -123,20 +123,22 @@ class App extends Component {
               component={test_map}
             /> */}
 
-              <Scene
-                title="Patient"
-                key="search_patient"
-                component={search_patient}
-              />
+              
 
               <Scene
-                title="TF-BLE"
+                title="BLE"
                 key="tf"
                 component={TestFeature}
               />
 
               <Scene
-                title="TF-GPS"
+                title="Patient"
+                key="search_patient"
+                component={search_patient}
+              />      
+
+              <Scene
+                title="GPS"
                 key="tf2"
                 component={TestFeature2}
 
@@ -148,7 +150,7 @@ class App extends Component {
               component={TestFeature}
             /> */}
 
-              <Scene
+              {/* <Scene
                 title="BLE"
                 key="ble"
                 component={BLE}
@@ -165,21 +167,21 @@ class App extends Component {
                 key="patient"
                 component={Patient}
 
-              />
+              /> */}
 
-              <Scene
+              {/* <Scene
                 title="Caretaker"
                 key="caretaker"
                 component={Caretaker}
-              />
+              /> */}
 
-              <Scene
+              {/* <Scene
                 title="Edit Map"
                 key="edit-map"
                 component={EditMap}
-              />
+              /> */}
 
-              <Scene
+              {/* <Scene
                 title="Home"
                 // drawerLockMode="locked-closed"
                 // renderRightButton={() => <View />}
@@ -195,7 +197,7 @@ class App extends Component {
                 title="Create Todo"
                 key="create_todo"
                 component={CreateTodo}
-              />
+              /> */}
 
               <Scene
                 title="Caretaker Registration"

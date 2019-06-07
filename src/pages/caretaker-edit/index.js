@@ -106,12 +106,12 @@ export class caretakerEdit extends Component {
         // const result = patient.find(item => (item.current === true), this);
         // const { name, ble, gps, current} = result
         return (
-            <View style={{alignSelf:'stretch'}}>
-                {/* <ScrollView>
-                <SearchPatient />
-                </ScrollView> */}
-                <View style={{ padding: 5 }}>
-                    <Text style={local.heading1}> Edit </Text>
+            <View style={{ alignSelf: 'stretch' }}>
+            {/* <ScrollView>
+            <SearchPatient />
+            </ScrollView> */}
+            <View style={{ padding: 5, alignSelf: 'center' }}>
+                <Text style={local.heading1}> Edit information </Text>
 
                     <TextInput value={name} style={local.textInput} placeholder="Name"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeName(value)}/>
@@ -128,12 +128,14 @@ export class caretakerEdit extends Component {
                     <TextInput value={patient} style={local.textInput} placeholder="Patient"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangePatient(value)}/>
 
+                    <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between'}}>
                     <TouchableOpacity style={local.button} onPress={() => {this.editCaretaker()}}>
                     <Text style={local.btnText}>Confirm</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={local.button} onPress={() => {this.setCurrentNull()}}>
                     <Text style={local.btnText}>Back</Text>
                     </TouchableOpacity>
+                    </View>
                 </View>
                 
                 

@@ -223,6 +223,7 @@ export class TestFeature2 extends Component {
             longitude: Number(newLongitude)
           }}
           title={trackedPatient.name}
+          pinColor={trackedPatient.color}
         />
 
       }

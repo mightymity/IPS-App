@@ -357,7 +357,7 @@ export class TestFeature extends Component {
                   position: "absolute",
                   width: 25,
                   height: 25,
-                  color: "tomato",
+                  color: item.color,
                   top: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].top,
                   left: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].left
                 }} name="ios-close-circle" size={25} onPress={() => { temp.renderModal(item) }} />
@@ -373,7 +373,7 @@ export class TestFeature extends Component {
             position: "absolute",
             width: 25,
             height: 25,
-            color: "tomato",
+            color: this.state.trackedPatient.color,
             top: patientGrid.top,
             left: patientGrid.left
           }} name="ios-close-circle" size={25} onPress={() => { this.renderModal(this.state.trackedPatient) }} />

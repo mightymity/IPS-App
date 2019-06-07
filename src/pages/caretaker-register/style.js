@@ -3,8 +3,11 @@ import { colors } from "../../theme/colors";
 
 export const local = StyleSheet.create({
   heading1: {
-    fontSize: 24,
-    fontWeight: 'bold'
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginTop: 30,
+    marginBottom: 30,
+    alignSelf: 'center'
   },
   header: {
     fontSize: 24,

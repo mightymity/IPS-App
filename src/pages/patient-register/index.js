@@ -41,10 +41,14 @@ export class patientRegist extends Component {
 
     const { dispatch } = props;
     dispatch(patientActions.updatePatientList())
+    dispatch(patientActions.updateBle())
+    dispatch(patientActions.updateGps())
 
   }
 
   goToPatient = () => {
+    this.props.patients.selectedId = null
+    this.props.patients.selectedName = null
     Actions.jump('search_patient')
   }
 
@@ -92,7 +96,10 @@ export class patientRegist extends Component {
       'Patient Added',
       [
         // First Text Button in Alert Dialog.
-        { text: 'YES', onPress: () => this.goToPatient() }
+        { text: 'YES', onPress: () => {
+                                        this.goToPatient() 
+                                       }
+        }
 
       ]
 

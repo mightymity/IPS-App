@@ -68,11 +68,11 @@ export class caretakerRegist extends Component {
         const { name, id, address, tel, patient } = this.state
         return (
             <View style={{ alignSelf: 'stretch' }}>
-                {/* <ScrollView>
-                    <SearchPatient />
-                </ScrollView> */}
-                <View style={{ padding: 5 }}>
-                    <Text style={local.heading1}> Registration </Text>
+        {/* <ScrollView>
+          <SearchPatient />
+        </ScrollView> */}
+            <View style={{ padding: 30, alignSelf: 'center' }}>
+                <Text style={local.heading1}> Registration </Text>
 
                     <TextInput value={name} style={local.textInput} placeholder="Name"
                         underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeName(value)} />

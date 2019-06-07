@@ -93,12 +93,12 @@ export class patientEdit extends Component {
         // const result = patient.find(item => (item.current === true), this);
         // const { name, ble, gps, current} = result
         return (
-            <View style={{alignSelf:'stretch'}}>
-                {/* <ScrollView>
-                <SearchPatient />
-                </ScrollView> */}
-                <View style={{ padding: 5 }}>
-                    <Text style={local.heading1}> Edit </Text>
+            <View style={{ alignSelf: 'stretch' }}>
+            {/* <ScrollView>
+            <SearchPatient />
+            </ScrollView> */}
+            <View style={{ padding: 5, alignSelf: 'center' }}>
+                <Text style={local.heading1}> Edit information </Text>
 
                     <TextInput value={ble} style={local.textInput} placeholder="BLE"
                     underlineColorAndroid={'transparent'} onChangeText={(value) => this.onChangeBle(value)}/>

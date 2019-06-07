@@ -72,7 +72,7 @@ export class TestFeature2 extends Component {
       const black = '#000000';
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name
           return (
             <AppText size="l" value={name} center bold color={black} />
           )
@@ -197,7 +197,7 @@ export class TestFeature2 extends Component {
               latitude: Number(m.GPS.latitude),
               longitude: Number(m.GPS.longitude)
             }}
-
+            pinColor={m.color}
             title={m.name}
           />
         ))
@@ -225,6 +225,7 @@ export class TestFeature2 extends Component {
             longitude: Number(newLongitude)
           }}
           title={trackedPatient.name}
+          pinColor={trackedPatient.color}
         />
 
       }

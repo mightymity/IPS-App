@@ -3,8 +3,11 @@ import {colors} from "../../theme/colors";
 
 export const local = StyleSheet.create({
   heading1: {
-    fontSize: 24,
-    fontWeight: 'bold'
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginTop: 30,
+    marginBottom: 30,
+    alignSelf: 'center'
   },
   header: {
     fontSize: 24,
@@ -17,7 +20,7 @@ export const local = StyleSheet.create({
   textInput: {
     alignSelf: 'stretch',
     height: 40,
-    marginBottom: 30,
+    // marginBottom: 30,
     
     borderBottomColor: '#f8f8f8',
     borderBottomWidth: 1
@@ -28,7 +31,7 @@ export const local = StyleSheet.create({
     alignItems: 'flex-end',
     padding: 20,
     backgroundColor: colors.purpleA,
-    marginTop: 30,
+    // marginTop: 30,
     
   },
 
