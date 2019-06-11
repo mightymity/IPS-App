@@ -16,6 +16,8 @@ import { colors, global } from "../../theme";
 
 import { Actions } from "react-native-router-flux";
 
+import { hook } from 'cavy'
+
 class NavItem extends Component {
   state = {}
   render() {
@@ -61,7 +63,7 @@ class SideMenu extends Component {
         <View style={local.menuTitleContainer}>
           <AppText value="Menu" size="l" />
         </View>
-        <NavItem name="Home" onPress={() => { Actions.jump('home') }}
+        {/* <NavItem name="Home" onPress={() => { Actions.jump('home') }}
           icon={require('../../assets/icons/build.png')} />
         <NavItem name="Create Todo" onPress={() => { Actions.jump('create_todo') }}
           icon={require('../../assets/icons/save.png')} />
@@ -79,11 +81,22 @@ class SideMenu extends Component {
           <NavItem name="TF" onPress={() => { Actions.jump('tf') }}
           icon={require('../../assets/icons/save.png')} />
           <NavItem name="TF2" onPress={() => { Actions.jump('tf2') }}
-          icon={require('../../assets/icons/save.png')} />
+          icon={require('../../assets/icons/save.png')} /> */}
+
+          <TouchableOpacity>
+          <NavItem name="TF" onPress={() => { Actions.jump('tf') }}
+          icon={require('../../assets/icons/save.png')} 
+          ref={this.props.generateTestHook('TF')}/>
+          </TouchableOpacity>
+          <TouchableOpacity>
+          <NavItem name="TF2" onPress={() => { Actions.jump('tf2') }}
+          icon={require('../../assets/icons/save.png')} 
+          ref={this.props.generateTestHook('TF2')}/>
+          </TouchableOpacity>
           
       </View>
     );
   }
 }
 
-export default SideMenu;
+export default hook(SideMenu);

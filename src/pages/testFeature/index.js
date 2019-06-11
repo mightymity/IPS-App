@@ -22,6 +22,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
+import { hook } from 'cavy'
 
 
 export class TestFeature extends Component {
@@ -127,7 +128,7 @@ export class TestFeature extends Component {
 
     else {
       return (
-        <TouchableOpacity onPress={() => { this.cancelTracking() }}>
+        <TouchableOpacity onPress={() => { this.cancelTracking() }} ref={this.props.generateTestHook('BLE.cancel.button')}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ marginRight: 15 }}>
               <Icon name="times" size={23} color="#FF0000" />
@@ -194,7 +195,7 @@ export class TestFeature extends Component {
     const black = '#000000';
     if (this.props.ble.selected_ble === null) {
       return (
-        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+        <TouchableOpacity onPress={() => { this.goToSearchPage() }} ref={this.props.generateTestHook('BLE.search')}>
           <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
             <View style={{ marginRight: 15, marginLeft: 5 }}>
               <Icon name="search" size={20} />
@@ -222,7 +223,7 @@ export class TestFeature extends Component {
             </View>
 
             <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
-              <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+              <TouchableOpacity onPress={() => { this.goToSearchPage() }} ref={this.props.generateTestHook('BLE.search.new')}>
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{ marginRight: 15 }}>
                     <Icon name="search" size={23} />
@@ -430,4 +431,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestFeature)
+export default hook(connect(mapStateToProps, mapDispatchToProps)(TestFeature))

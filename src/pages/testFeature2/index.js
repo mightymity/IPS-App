@@ -17,6 +17,8 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import AppText from '../../components/app-text'
 
+import { hook } from 'cavy'
+
 
 export class TestFeature2 extends Component {
 
@@ -103,7 +105,7 @@ export class TestFeature2 extends Component {
 
     else {
       return (
-        <TouchableOpacity onPress={() => { this.cancelTracking() }}>
+        <TouchableOpacity onPress={() => { this.cancelTracking() }} ref={this.props.generateTestHook('GPS.cancel.button')}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ marginRight: 15 }}>
               <Icon name="times" size={23} color="#FF0000" />
@@ -233,7 +235,7 @@ export class TestFeature2 extends Component {
     const black = '#000000';
     if (this.props.gps.selected_gps === null) {
       return (
-        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+        <TouchableOpacity onPress={() => { this.goToSearchPage() }} ref={this.props.generateTestHook('GPS.search')}>
           <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
             <View style={{ marginRight: 15, marginLeft: 5 }}>
               <Icon name="search" size={20} />
@@ -261,7 +263,7 @@ export class TestFeature2 extends Component {
             </View>
 
             <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
-              <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
+              <TouchableOpacity onPress={() => { this.goToSearchPage() }} ref={this.props.generateTestHook('GPS.search.new')}>
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{ marginRight: 15 }}>
                     <Icon name="search" size={23} />
@@ -369,4 +371,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TestFeature2)
+export default hook(connect(mapStateToProps, mapDispatchToProps)(TestFeature2))

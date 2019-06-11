@@ -10,6 +10,10 @@ import Icon from 'react-native-vector-icons/FontAwesome'
 import _ from "lodash";
 import { selectPatientToTrackGps } from '../../actions/gps.action';
 
+import { local } from "./style";
+
+import { hook } from 'cavy'
+
 
 class Search_GPS extends Component {
 
@@ -87,7 +91,7 @@ class Search_GPS extends Component {
     return (
       <View style={{ flexDirection: 'row', alignItems: 'center', paddingHorizontal: 10 }}>
         <View>
-          <TouchableOpacity onPress={() => { this.goBack() }}>
+          <TouchableOpacity onPress={() => { this.goBack() }} ref={this.props.generateTestHook('Search.GPS.back')}>
             <Icon name="arrow-left" size={25} />
           </TouchableOpacity>
         </View>
@@ -106,14 +110,24 @@ class Search_GPS extends Component {
         <FlatList
           data={this.state.filteredData2}
           renderItem={({ item }) => (
-            <ListItem
-              //roundAvatar
-              title={`${item.name} ${item.last}`}
-              subtitle={item.email}
-              //leftAvatar={{ source: { uri: item.picture.thumbnail } }}
-              containerStyle={{ borderBottomWidth: 0 }}
-              onPress={() => { this.selectPatient2(item.id) }}
-            />
+            // <ListItem
+            //   //roundAvatar
+            //   title={`${item.name} ${item.last}`}
+            //   subtitle={item.email}
+            //   //leftAvatar={{ source: { uri: item.picture.thumbnail } }}
+            //   containerStyle={{ borderBottomWidth: 0 }}
+            //   onPress={() => { this.selectPatient2(item.id) }}
+            // />
+
+            <TouchableOpacity onPress={() => { this.selectPatient2(item.id)}}  ref={this.props.generateTestHook(item.name)}>
+            <View style={[local.card, { flexDirection: 'row', alignItems: 'center', }]}>
+              <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
+                <Text>
+                  {`${item.name} ${item.last}`}
+                </Text>
+              </View>
+            </View>
+            </TouchableOpacity>
           )}
           keyExtractor={item => item.email}
           ItemSeparatorComponent={this.renderSeparator}
@@ -132,4 +146,4 @@ const mapDispatchToProps = (dispatch) => ({
   selectTracking: item => dispatch(selectPatientToTrackGps(item)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search_GPS)
+export default hook(connect(mapStateToProps, mapDispatchToProps)(Search_GPS))

@@ -61,19 +61,7 @@ class App extends Component {
             backButtonTintColor={colors.whiteA}
             rightButtonTintColor={colors.whiteB}
           >
-
-            <Scene
-              title="TF3"
-              key="tf3"
-              component={TestFeature3}
-            />
-          
-            <Scene
-              title="GPS"
-              key="gps"
-              component={GPS}
-            />
-
+            
             <Scene
               title="TF-BLE"
               key="tf"
@@ -91,7 +79,13 @@ class App extends Component {
               key="ble"
               component={BLE}
             />
-            
+
+            <Scene
+              title="GPS"
+              key="gps"
+              component={GPS}
+            />
+
 
             <Scene
               title="Patient"
@@ -151,9 +145,13 @@ class App extends Component {
               component={Search_GPS}
             />
 
-            
+            <Scene
+              title="TF3"
+              key="tf3"
+              component={TestFeature3}
+            />
 
-            
+
 
           </Drawer>
         </Router>
