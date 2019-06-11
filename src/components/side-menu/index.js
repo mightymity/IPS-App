@@ -22,7 +22,7 @@ class NavItem extends Component {
   state = {}
   render() {
     let itemColor;
-    const tintColor = colors.greenB;
+    const tintColor = colors.purpleA;
     let active = this.props.active == null ? false : this.props.active;
 
     if (active) {
@@ -66,34 +66,25 @@ class SideMenu extends Component {
         {/* <NavItem name="Home" onPress={() => { Actions.jump('home') }}
           icon={require('../../assets/icons/build.png')} />
         <NavItem name="Create Todo" onPress={() => { Actions.jump('create_todo') }}
-          icon={require('../../assets/icons/save.png')} />
-
-          <NavItem name="BLE" onPress={() => { Actions.jump('ble') }}
-          icon={require('../../assets/icons/save.png')} />
-          <NavItem name="GPS" onPress={() => { Actions.jump('gps') }}
-          icon={require('../../assets/icons/save.png')} />
-          <NavItem name="Patient" onPress={() => { Actions.jump('patient') }}
-          icon={require('../../assets/icons/save.png')} />
-          <NavItem name="Caretaker" onPress={() => { Actions.jump('caretaker') }}
-          icon={require('../../assets/icons/save.png')} />
-          <NavItem name="Edit Map" onPress={() => { Actions.jump('edit-map') }}
-          icon={require('../../assets/icons/save.png')} />
-          <NavItem name="TF" onPress={() => { Actions.jump('tf') }}
-          icon={require('../../assets/icons/save.png')} />
-          <NavItem name="TF2" onPress={() => { Actions.jump('tf2') }}
           icon={require('../../assets/icons/save.png')} /> */}
 
-          <TouchableOpacity>
-          <NavItem name="TF" onPress={() => { Actions.jump('tf') }}
-          icon={require('../../assets/icons/save.png')} 
-          ref={this.props.generateTestHook('TF')}/>
-          </TouchableOpacity>
-          <TouchableOpacity>
-          <NavItem name="TF2" onPress={() => { Actions.jump('tf2') }}
-          icon={require('../../assets/icons/save.png')} 
-          ref={this.props.generateTestHook('TF2')}/>
-          </TouchableOpacity>
-          
+          <NavItem name="BLE" onPress={() => { Actions.jump('tf') }}
+          icon={require('../../assets/icons/ble.png')} />
+          <NavItem name="GPS" onPress={() => { Actions.jump('tf2') }}
+          icon={require('../../assets/icons/gps.png')} />
+          <NavItem name="Patient" onPress={() => { Actions.jump('search_patient') }}
+          icon={require('../../assets/icons/patient.png')} />
+          <NavItem name="Caretaker" onPress={() => { Actions.jump('search_caretaker') }}
+          icon={require('../../assets/icons/caretaker.png')} />
+          {/* <NavItem name="Edit Map" onPress={() => { Actions.jump('edit-map') }}
+          icon={require('../../assets/icons/save.png')} /> */}
+          {/* <NavItem name="BLE" onPress={() => { Actions.jump('tf') }}
+          icon={require('../../assets/icons/ble.png')} />
+          <NavItem name="GPS" onPress={() => { Actions.jump('tf2') }}
+          icon={require('../../assets/icons/gps.png')} /> */}
+          <NavItem name="Logout" onPress={() => { Actions.jump('login') }}
+          icon={require('../../assets/icons/logout.png')} />
+
       </View>
     );
   }

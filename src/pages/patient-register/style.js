@@ -3,8 +3,11 @@ import {colors} from "../../theme/colors";
 
 export const local = StyleSheet.create({
   heading1: {
-    fontSize: 24,
-    fontWeight: 'bold'
+    fontSize: 30,
+    fontWeight: 'bold',
+    marginTop: 30,
+    marginBottom: 30,
+    alignSelf: 'center'
   },
   header: {
     fontSize: 24,
@@ -13,13 +16,14 @@ export const local = StyleSheet.create({
     marginBottom: 40,
     borderBottomColor: '#199187',
     borderBottomWidth: 1,
+    
   },
   textInput: {
     alignSelf: 'stretch',
-    height: 40,
-    marginBottom: 30,
-    
-    borderBottomColor: '#f8f8f8',
+    //height: 40,
+    marginTop: 4,
+    color: '#11294f',
+    borderBottomColor: '#199187',
     borderBottomWidth: 1
   },
 
@@ -35,5 +39,29 @@ export const local = StyleSheet.create({
   btnText:{
     color: '#fff',
     fontWeight: 'bold',
-  }
+  },
+
+  search: {
+    borderBottomColor: '#F5FCFF',
+    backgroundColor: '#FFFFFF',
+    borderRadius:30,
+    borderBottomWidth: 1,
+    width:350,
+    height:45,
+    marginBottom:20,
+    flexDirection: 'row',
+    alignItems:'center'
+  },
+
+  searchText: {
+    marginTop: 25,
+    height:45,
+    marginLeft:16,
+    borderBottomColor: '#FFFFFF',
+    flex:1,
+  },
+
+  input: {
+    marginTop: 4,
+  },
 });

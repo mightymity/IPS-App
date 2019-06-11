@@ -17,8 +17,6 @@ import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
 import AppText from '../../components/app-text'
 
-import { hook } from 'cavy'
-
 
 export class TestFeature2 extends Component {
 
@@ -41,8 +39,8 @@ export class TestFeature2 extends Component {
   }
 
   initialLocation = {
-    latitude: 13.669557,
-    longitude: 100.634628,
+    latitude: 13.729954171728675,
+    longitude: 100.77549254874613,
   }
 
   componentWillReceiveProps = (nextprops) => {
@@ -73,7 +71,7 @@ export class TestFeature2 extends Component {
       const black = '#000000';
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name 
           return (
             <AppText size="l" value={name} center bold color={black} />
           )
@@ -105,7 +103,7 @@ export class TestFeature2 extends Component {
 
     else {
       return (
-        <TouchableOpacity onPress={() => { this.cancelTracking() }} ref={this.props.generateTestHook('GPS.cancel.button')}>
+        <TouchableOpacity onPress={() => { this.cancelTracking() }}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ marginRight: 15 }}>
               <Icon name="times" size={23} color="#FF0000" />
@@ -198,7 +196,7 @@ export class TestFeature2 extends Component {
               latitude: Number(m.GPS.latitude),
               longitude: Number(m.GPS.longitude)
             }}
-
+            pinColor={m.color}
             title={m.name}
           />
         ))
@@ -225,6 +223,7 @@ export class TestFeature2 extends Component {
             longitude: Number(newLongitude)
           }}
           title={trackedPatient.name}
+          pinColor={trackedPatient.color}
         />
 
       }
@@ -235,7 +234,7 @@ export class TestFeature2 extends Component {
     const black = '#000000';
     if (this.props.gps.selected_gps === null) {
       return (
-        <TouchableOpacity onPress={() => { this.goToSearchPage() }} ref={this.props.generateTestHook('GPS.search')}>
+        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
           <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
             <View style={{ marginRight: 15, marginLeft: 5 }}>
               <Icon name="search" size={20} />
@@ -263,7 +262,7 @@ export class TestFeature2 extends Component {
             </View>
 
             <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
-              <TouchableOpacity onPress={() => { this.goToSearchPage() }} ref={this.props.generateTestHook('GPS.search.new')}>
+              <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{ marginRight: 15 }}>
                     <Icon name="search" size={23} />
@@ -371,4 +370,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default hook(connect(mapStateToProps, mapDispatchToProps)(TestFeature2))
+export default connect(mapStateToProps, mapDispatchToProps)(TestFeature2)

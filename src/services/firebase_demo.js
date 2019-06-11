@@ -1,13 +1,14 @@
 import Firebase from 'firebase';
 
-let config = {
-    apiKey: "AIzaSyBh9NpWPWrYCfcFTSG3vAHVibhJkPSVp_M",
-    authDomain: "testbright-f19de.firebaseapp.com",
-    databaseURL: "https://testbright-f19de.firebaseio.com",
-    projectId: "testbright-f19de",
-    storageBucket: "testbright-f19de.appspot.com",
-    messagingSenderId: "503193222980"
+let config = {  
+    apiKey: "AIzaSyCEwsnw51LHiL2entmVNcsZ95UQApv7BQ0",
+    authDomain: "ips-app-ce85b.firebaseapp.com",
+    databaseURL: "https://ips-app-ce85b.firebaseio.com",
+    projectId: "ips-app-ce85b",
+    storageBucket: "ips-app-ce85b.appspot.com",
+    messagingSenderId: "131590502729"
 };
 
 let app = Firebase.initializeApp(config);
 export const db = app.database();
+export const auth = Firebase.auth();

@@ -1,196 +1,230 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, Image, TextInput, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, Image, TextInput, ScrollView, TouchableOpacity, Alert } from 'react-native'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
-import { ListItem} from 'react-native-elements'
+import { ListItem } from 'react-native-elements'
 
 import { local } from './style'
-import { global,colors } from '../../theme'
+import { global } from '../../theme'
+import colors from '../../theme/colors'
 
-import {Actions} from 'react-native-router-flux'
+import { Actions } from 'react-native-router-flux'
 
 import SearchPatient from "../../containers/search-patient"
 import TodoItem from '../../components/todo-item'
 import PatientList from '../../components/patient-list'
 
+import { patientActions } from '../../actions/patient.action';
 
-
-// list = [
-//     {
-//       name: 'Amy Farha',
-//       avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-//       subtitle: 'Vice President'
-//     },
-//     {
-//       name: 'Chris Jackson',
-//       avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-//       subtitle: 'Vice Chairman'
-//     },
-// ]
-//===========================
-// {
-  //   name: 'James Taylor',
-  //   avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/men\/43.jpg',
-  //   subtitle: 'Building 1 - 1st Floor'
-  // },
-  // {
-  //   name: 'Helen Young',
-  //   avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/68.jpg',
-  //   subtitle: 'Building 1 - 1st Floor'
-  // },
-  // {
-  //   name: 'Steve Brown',
-  //   avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/men\/97.jpg',
-  //   subtitle: 'Building 1 - 1st Floor'
-  // },
-  // {
-  //   name: 'Amanda Clark',
-  //   avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/26.jpg',
-  //   subtitle: 'Building 1 - 1st Floor'
-  // },
-  // {
-  //   name: 'Sam Wright',
-  //   avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/men\/56.jpg',
-  //   subtitle: 'Building 1 - 1st Floor'
-  // },
-  // {
-  //   name: 'Claire Smith',
-  //   avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/42.jpg',
-  //   subtitle: 'Building 1 - 1st Floor'
-  // },
-  // {
-  //   name: 'Henry White',
-  //   avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/men\/79.jpg',
-  //   subtitle: 'Building 1 - 1st Floor'
-  // },
-  // {
-  //   name: 'Jasmine Simmons',
-  //   avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/85.jpg',
-  //   subtitle: 'Building 1 - 1st Floor'
-  // },
-
-    
+import { db, auth } from '../../services/firebase_demo';
 
 
 import Autocomplete from 'react-native-autocomplete-input'
 
 export class Patient extends Component {
-  list = [
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-      subtitle: 'Building 1 - 1st Floor'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      subtitle: 'Building 1 - 1st Floor'
-    },
-    {
-        name: 'Linda Clark',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/44.jpg',
-        subtitle: 'Building 1 - 1st Floor'
-      }
-      
-]
 
-state = {
-  patientss: [{ name: "Prayut JunOK", duty: "Uncle near home" },
-  { name: "Pravitt TheWatch", duty: "Watcher" },
-  { name: "Suthep T.", duty: "Karawa Land" }],
 
-  buildings: [{
-      name: 'IC Building',
-      floors: [
-          {
-              number: '6',
-              img: 'abc'
-          },
-          {
-              number: '8',
-              img: 'abc'
-          }
-      ]
-  },
-  {
-      name: 'ECC Building',
-      floors: [
-          {
-              number: '3',
-              img: 'abc'
-          },
-          {
-              number: '5',
-              img: 'abc'
-          }
-      ]
+  constructor(props) {
+    super(props);
+
+    const { dispatch } = props;
+    dispatch(patientActions.updatePatientList())
   }
-  ]
 
-}
-    goToReg = () => {
-      Actions.jump('patient_regis')
-    }
+  state = {
+    curr: ''
+  }
 
-    renderItem = ({ item }) => (
-        <ListItem
-          title={item.name}
-          subtitle={item.subtitle}
-          leftAvatar={{ source: { uri: item.avatar_url } }}
-        />
-      )
-      
+  logout = () => {
+    Alert.alert(
 
-    render () {
-      const { patients } = this.props;
-    return (
-        
-         //{/* // <View>
-        // // <SearchPatient />
-        
-        // // </View> */}
-        
-            //{/* <SearchPatient /> */}
-        
-        <ScrollView style={{flex:3}} contentContainerStyle={global.pageScrollView}>
-        <SearchPatient patientss={this.state.patientss}/>
-        
-        
-        {/* <FlatList
-        //keyExtractor={this.keyExtractor}
-        data={list}
-        renderItem={this.renderItem}
-        /> */}
-        <FlatList data={patients} renderItem={({ item, index }) =>
-            <PatientList name={item.name} ble={item.ble} gps={item.gps} />
-        } />
-        
-        
-        <TouchableOpacity style={local.button} onPress={() => {this.goToReg()}}>
-          <Text style={local.btnText}>Add</Text>
-        </TouchableOpacity>
+      // This is Alert Dialog Title
+      'Message',
 
-        </ScrollView>
+      // This is Alert Dialog Message. 
+      'Are you sure you want to Logout?',
+      [
+        // First Text Button in Alert Dialog.
+        { text: 'YES', onPress: () => auth.signOut().then(() => {
+          Alert.alert(
+            'Message',
+            'Logout successfully'
+          )
+          Actions.jump('login')
+        }).catch((msgError) => { alert(msgError.message); }) },
+        { text: 'NO', onPress: () => console.log('Cancel Pressed!'), style: 'cancel' },
+
+
+      ],
+      { cancelable: false }
+
     )
-    }
 
-    // render() {
-    //     const { todos } = this.props;
-    //     return (
-    //         <View style={global.pageContainer}>
-    //              <Text>Patient</Text>
-    //         </View>
-    //     )
-    // }
+    // auth.signOut().then(() => {
+    //   Actions.jump('login')
+    // })
+  }
+
+  goToReg = () => {
+    Actions.jump('patient_regis')
+  }
+
+  goToEdit = () => {
+    const { curr } = this.state
+    this.props.dispatch(patientActions.selectEditPatient(curr))
+    Actions.jump('patient_edit');
+  }
+
+  onChangeId = (value) => {
+    this.setState({ curr: value })
+    this.changeCurrent()
+  }
+
+  changeCurrent = () => {
+    Alert.alert(
+
+      // This is Alert Dialog Title
+      'Message',
+
+      // This is Alert Dialog Message. 
+      'Edit this patient information?',
+      [
+        // First Text Button in Alert Dialog.
+        { text: 'YES', onPress: () => this.goToEdit() },
+        { text: 'NO', onPress: () => console.log('Cancel Pressed!'), style: 'cancel' },
+
+
+      ],
+      { cancelable: false }
+
+    )
+  }
+
+
+
+  onDeletePatient = (index, b, g) => {
+    console.log('this is b: ', b)
+    console.log('this is g: ', g)
+    Alert.alert(
+
+      // This is Alert Dialog Title
+      'Message',
+
+      // This is Alert Dialog Message. 
+      'Delete this patient?',
+      [
+        // First Text Button in Alert Dialog.
+        { text: 'YES', onPress: () => this.deletePatient(index, b, g) },
+        { text: 'NO', onPress: () => console.log('Cancel Pressed!'), style: 'cancel' },
+
+
+      ],
+      { cancelable: false }
+
+    )
+
+  }
+
+  deletePatient = (index) => {
+    this.props.dispatch(patientActions.deletePatientByIndex(index));
+  }
+
+
+  renderItem = ({ item }) => (
+    <ListItem bottomDivider={true}
+      title={item.name}
+      subtitle={
+        <View>
+          <Text>BLE: {item.ble}     GPS: {item.gps}</Text>
+        </View>
+      }
+      leftAvatar={{
+        source: item.avatar_url && { uri: item.avatar_url },
+        title: item.name[0]
+      }}
+      rightElement={
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={() => this.onChangeId(item.id)}>
+            <Image style={local.image} source={require('../../assets/icons/edit.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.onDeletePatient(item.id, item.ble, item.gps)}>
+            <Image style={local.image} source={require('../../assets/icons/remove.png')} />
+          </TouchableOpacity>
+
+        </View>
+      }
+    />
+  )
+
+
+  render() {
+    const { patients } = this.props;
+
+    return (
+
+      <ScrollView style={local.view} contentContainerStyle={global.pageScrollView}>
+        {/* <SearchPatient /> */}
+        <FlatList
+          data={patients.data}
+          renderItem={(this.renderItem)}
+        />
+        {/* <FlatList data={patients.data} renderItem={({ item, index }) =>
+          <View style={{flexDirection:'row'}}>
+            <PatientList id={item.id} name={item.name} ble={item.ble} gps={item.gps} />
+            <Text> {item.id} </Text>
+            <TouchableOpacity onPress={() => this.onDeletePatient(item.id)}>
+            <Image style={local.image} source={require('../../assets/icons/remove.png')} />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.onChangeId(item.id)}>
+            <Image style={local.image} source={require('../../assets/icons/edit.png')} />
+            </TouchableOpacity>
+          </View>
+        } /> */}
+        
+        {/* <View style={{
+          alignSelf: 'flex-start',
+          // alignItems: 'flex-start',
+          // padding: 20,
+          marginTop: 100,
+          flexDirection: 'row'
+        }}>
+        <TouchableOpacity style={local.button} onPress={() => { this.logout() }}>
+            <Text style={local.btnText}>Logout</Text>
+          </TouchableOpacity>
+          </View> */}
+        
+
+        <View style={{
+          alignSelf: 'flex-end',
+          // alignItems: 'flex-end',
+          // padding: 20,
+          // marginTop: 30,
+          flexDirection: 'row',
+        }}>
+
+          {/* <TouchableOpacity style={local.button} onPress={() => { this.logout() }}>
+            <Text style={local.btnText}>Logout</Text>
+          </TouchableOpacity> */}
+
+          <TouchableOpacity onPress={() => { this.goToReg() }}>
+            <Image style={{ height: 40, width: 40 }} source={require('../../assets/icons/plus.png')} />
+          </TouchableOpacity>
+        </View>
+        
+      </ScrollView>
+    )
+  }
 }
 
 const mapStateToProps = (state) => ({
-    todos: state.todos,
-    patients: state.patients
+  todos: state.todos,
+  patients: state.patients
 })
 
-const mapDispatchToProps = {
+// const mapDispatchToProps = (dispatch) => {
+//   return {
 
-}
+//   }
+// }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Patient)
+export default connect(mapStateToProps)(Patient)

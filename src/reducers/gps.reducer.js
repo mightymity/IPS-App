@@ -1,5 +1,5 @@
 import { bleConstants } from '../_constants';
-import users from '../services/demo_users'
+//import users from '../services/demo_users'
 
 const defaultState = {
   selected_gps: null,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Picker } from 'react-native'
+import { View, Text, StyleSheet, TouchableOpacity, Alert, Image, Picker, Modal, Button, ScrollView } from 'react-native'
 import { connect } from 'react-redux'
 import Search from "../../containers/search"
 import { local } from "./style";
@@ -13,8 +13,8 @@ import { db } from '../../services/firebase_demo'
 
 import _ from "lodash";
 
-import buildings from '../../services/demo_buildings'
-import NewIndoorMap from '../../containers/new-indoor-map'
+// import buildings from '../../services/demo_buildings'
+// import NewIndoorMap from '../../containers/new-indoor-map'
 
 import AppText from '../../components/app-text'
 
@@ -22,7 +22,6 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import Icon from 'react-native-vector-icons/FontAwesome5'
 
-import { hook } from 'cavy'
 
 
 export class TestFeature extends Component {
@@ -38,6 +37,9 @@ export class TestFeature extends Component {
       buildingIndex: null,
       floorNumber: null,
 
+      ModalVisibleStatus: false,
+      modalPatient: null,
+
     }
 
     this.props.updateMap()
@@ -47,6 +49,7 @@ export class TestFeature extends Component {
 
   componentWillReceiveProps = (nextprops) => {
     if (this.props.ble.ble_map !== null) {
+      console.log('in')
       this.setState({ indoorMaps: this.props.ble.ble_map })
       if (this.props.ble.building_index !== null && this.props.ble.floor_number !== null) {
         if (this.state.buildingIndex === null && this.state.floorNumber === null) {
@@ -99,7 +102,7 @@ export class TestFeature extends Component {
       const black = '#000000';
       if (this.state.trackedPatient != null) {
         if (this.state.trackedPatient != 'no') {
-          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name + ' ' + this.state.trackedPatient.last
+          let name = this.state.trackedPatient.id + '       ' + this.state.trackedPatient.name
           return (
             <AppText size="l" value={name} center bold color={black} />
           )
@@ -128,7 +131,7 @@ export class TestFeature extends Component {
 
     else {
       return (
-        <TouchableOpacity onPress={() => { this.cancelTracking() }} ref={this.props.generateTestHook('BLE.cancel.button')}>
+        <TouchableOpacity onPress={() => { this.cancelTracking() }}>
           <View style={{ flexDirection: 'row' }}>
             <View style={{ marginRight: 15 }}>
               <Icon name="times" size={23} color="#FF0000" />
@@ -195,7 +198,7 @@ export class TestFeature extends Component {
     const black = '#000000';
     if (this.props.ble.selected_ble === null) {
       return (
-        <TouchableOpacity onPress={() => { this.goToSearchPage() }} ref={this.props.generateTestHook('BLE.search')}>
+        <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
           <View style={[local.card, { flexDirection: 'row', alignItems: 'center', marginTop: 3 }]}>
             <View style={{ marginRight: 15, marginLeft: 5 }}>
               <Icon name="search" size={20} />
@@ -223,7 +226,7 @@ export class TestFeature extends Component {
             </View>
 
             <View style={{ flex: 2, flexDirection: 'row', backgroundColor: '' }}>
-              <TouchableOpacity onPress={() => { this.goToSearchPage() }} ref={this.props.generateTestHook('BLE.search.new')}>
+              <TouchableOpacity onPress={() => { this.goToSearchPage() }}>
                 <View style={{ flexDirection: 'row' }}>
                   <View style={{ marginRight: 15 }}>
                     <Icon name="search" size={23} />
@@ -332,8 +335,10 @@ export class TestFeature extends Component {
   }
 
   renderPatientMarker = (selectedLocation) => {
+    const temp = this
     if (this.props.ble.data_ble !== 'N/A') {
       const trackedPatient = this.state.trackedPatient;
+      
       if (trackedPatient !== null && typeof (trackedPatient) !== 'undefined') {
         if (trackedPatient === 'no') {
           if (this.state.buildingName !== null && this.state.floorNumber !== null) {
@@ -350,10 +355,10 @@ export class TestFeature extends Component {
                   position: "absolute",
                   width: 25,
                   height: 25,
-                  color: "tomato",
+                  color: item.color,
                   top: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].top,
                   left: selectedLocation.rooms[item.BLE.room].grids[item.BLE.grid].left
-                }} name="ios-close-circle" size={25} />
+                }} name="ios-close-circle" size={25} onPress={() => { temp.renderModal(item) }} />
               ))
             }
           }
@@ -366,10 +371,12 @@ export class TestFeature extends Component {
             position: "absolute",
             width: 25,
             height: 25,
-            color: "tomato",
+            color: this.state.trackedPatient.color,
             top: patientGrid.top,
             left: patientGrid.left
-          }} name="ios-close-circle" size={25} />
+          }} name="ios-close-circle" size={25} onPress={() => { this.renderModal(this.state.trackedPatient) }} />
+
+
           )
         }
       }
@@ -379,12 +386,93 @@ export class TestFeature extends Component {
     }
   }
 
+  ShowModalFunction = (visible, item) => {
+
+    this.setState({ ModalVisibleStatus: visible });
+    //this.setState({ modalPatient: item })
+    this.renderModal(item)
+
+  }
+
+  renderModal = (item) => {
+    
+    // db.ref('/hospital').child(item.id).on("value", function (snapshot) {
+    //   let data = snapshot.val();
+    //   console.log(data)
+    //   return data
+    //   //let items = Object.values(data);
+    //   //console.log(items)
+    // })
+  
+
+    //console.log(hospital)
+
+    const id = 'ID:   ' + item.id
+    const name = 'Name:   ' + item.name
+    // const hosp = 'Blood Type:   ' + data.blood
+    // const diagnosis = 'Diagnosis:   ' + data.diagnosis
+    const c = id + '\n\n' + name 
+    Alert.alert(
+
+      // This is Alert Dialog Title
+      '',
+
+      // This is Alert Dialog Message. 
+      c,
+      [
+        // First Text Button in Alert Dialog.
+        { text: 'OK' }
+
+
+
+      ],
+      { cancelable: false }
+
+    )
+    // console.log('in')
+    // return (
+    //   <Modal
+    //     transparent={true}
+
+    //     animationType={"fade"}
+
+    //     visible={this.state.ModalVisibleStatus}
+
+    //     onRequestClose={() => { this.ShowModalFunction(!this.state.ModalVisibleStatus) }} >
+
+
+    //     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+
+
+    //       <View style={local.ModalInsideView}>
+
+
+    //         {/* Put All Your Components Here, Which You Want To Show Inside The Modal. */}
+
+    //         <Text style={local.TextStyle}>Name: {item.name} {'\n'}  Id: {item.id} </Text>
+
+    //         <Button title="Close" onPress={() => { this.ShowModalFunction(!this.state.ModalVisibleStatus) }} />
+
+    //         {/* Put All Your Components Here, Which You Want To Show Inside The Modal. */}
+
+
+    //       </View>
+
+    //     </View>
+
+
+    //   </Modal>
+
+    // )
+  }
+
   render() {
 
     console.log('trackedPatient', this.state.trackedPatient)
 
-    return (
 
+    return (
+     
       <View style={{ flex: 1 }}>
 
         {this.renderSearchZone()}
@@ -401,7 +489,10 @@ export class TestFeature extends Component {
 
         </View>
 
+
+
       </View>
+    
     )
   }
 }
@@ -431,4 +522,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default hook(connect(mapStateToProps, mapDispatchToProps)(TestFeature))
+export default connect(mapStateToProps, mapDispatchToProps)(TestFeature)

@@ -133,8 +133,8 @@ class IndoorMap extends Component {
 
         <View style={{ flex: 8, justifyContent: 'center', alignItems: 'center', backgroundColor: '' }}>
           {/* <Image resizeMode='contain' source={require('../../assets/images/MorgantownMall.png')}></Image> */}
-          {/* <Text>{img}</Text> */}
-          <Image resizeMode='center' style={{ width:800, height:400}} source={this.state.buildings[this.state.nameIndex].floors[this.state.floorsIndex].img}></Image>
+          {/* <Text>{img}</Text>    width:800, height:400*/} 
+          <Image resizeMode='center' style={{ width:1500, height:420}} source={this.state.buildings[this.state.nameIndex].floors[this.state.floorsIndex].img}></Image>
         </View>
 
       </View>

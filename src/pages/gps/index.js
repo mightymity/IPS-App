@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, Dimensions, ScrollView, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, Dimensions, ScrollView } from 'react-native'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -23,8 +23,6 @@ export class GPS extends Component {
 
         locationChosen: false,
 
-        title: 'no',
-
         markers: [{
             title: 'Big C',
             coordinates: {
@@ -40,7 +38,7 @@ export class GPS extends Component {
             },
         }],
 
-        patientss: [{ name: "Prayut JunOK", duty: "Uncle near home" },
+        patientss:[{ name: "Prayut JunOK", duty: "Uncle near home" },
         { name: "Pravitt TheWatch", duty: "Watcher" },
         { name: "Suthep T.", duty: "Karawa Land" }]
 
@@ -62,23 +60,6 @@ export class GPS extends Component {
                 },
 
                 locationChosen: true
-            }
-        })
-    }
-
-    trackLocationHandler = event => {
-        console.log('trackLocation event', event)
-    }
-
-    changeLocation = (coords,title) => {
-        this.setState(prevState => {
-            return {
-                focusedLocation: {
-                    ...prevState.focusedLocation,
-                    latitude: coords.latitude,
-                    longitude: coords.longitude
-                },
-                title: title
             }
         })
     }
@@ -106,7 +87,7 @@ export class GPS extends Component {
             marker = <MapView.Marker coordinate={this.state.focusedLocation} />
         }
 
-
+    
 
         return (
             // <ScrollView contentContainerStyle={global.pageScrollView}>
@@ -130,18 +111,9 @@ export class GPS extends Component {
             //     </ScrollView>
 
             <ScrollView contentContainerStyle={global.pageScrollView}>
-                <View style={[local.card,{flexDirection:'row',justifyContent:'space-around'}]}>
+                <View>
                     {/* <SearchPatient patientss={this.state.patientss}/> */}
-                    <TouchableOpacity onPress={()=>{this.changeLocation({latitude:13.668866,longitude:100.635654}, "test1")}}>
-                    <Text>
-                        test1
-                    </Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={()=>{this.changeLocation({latitude:13.669696,longitude:100.610179}, "test2")}}>
-                    <Text>
-                        test2
-                    </Text>
-                    </TouchableOpacity>
+                    <SearchPatient patientss={this.state.patientss}/>
                 </View>
                 <View>
                     <MapView
@@ -149,20 +121,17 @@ export class GPS extends Component {
 
                         style={{ width: '100%', height: '100%' }}
                         onPress={this.pickLocationHandler}
-                        // onRegionChange={this.trackLocationHandler}
                         ref={ref => this.map = ref}
                     >
 
-                        {/* {marker} */}
+                        {marker}
 
-                        {this.trackedLocation()}
-
-                        {/* {this.state.markers.map(m => (
+                        {this.state.markers.map(m => (
                             <MapView.Marker
                                 coordinate={m.coordinates}
                                 title={m.title}
                             />
-                        ))} */}
+                        ))}
 
 
 

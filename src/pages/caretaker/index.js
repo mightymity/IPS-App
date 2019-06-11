@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Text, FlatList, ScrollView, TouchableOpacity} from 'react-native'
+import { View, Text, FlatList, ScrollView, TouchableOpacity, Alert, Image } from 'react-native'
 // import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
 
@@ -7,157 +7,159 @@ import { local } from './style'
 import { global } from '../../theme'
 
 import TodoItem from '../../components/todo-item'
-import {Actions} from 'react-native-router-flux'
+import { Actions } from 'react-native-router-flux'
 import SearchPatient from "../../containers/search-patient"
-import { ListItem} from 'react-native-elements'
+import { ListItem } from 'react-native-elements'
+import CaretakerList from '../../components/caretaker-list'
 
-list = [
-    {
-      name: 'Amy Farha',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/ladylexy/128.jpg',
-      //subtitle: 'Building 1 - 1st Floor'
-    },
-    {
-      name: 'Chris Jackson',
-      avatar_url: 'https://s3.amazonaws.com/uifaces/faces/twitter/adhamdannaway/128.jpg',
-      //subtitle: 'Building 1 - 1st Floor'
-    },
-    {
-        name: 'Linda Clark',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/44.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-      {
-        name: 'James Taylor',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/men\/43.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-      {
-        name: 'Helen Young',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/68.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-      {
-        name: 'Steve Brown',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/men\/97.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-      {
-        name: 'Amanda Clark',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/26.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-      {
-        name: 'Sam Wright',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/men\/56.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-      {
-        name: 'Claire Smith',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/42.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-      {
-        name: 'Henry White',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/men\/79.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-      {
-        name: 'Jasmine Simmons',
-        avatar_url: 'https:\/\/randomuser.me\/api\/portraits\/women\/85.jpg',
-        //subtitle: 'Building 1 - 1st Floor'
-      },
-]
+import { caretakerActions } from '../../actions/caretaker.action';
+import { Row } from 'react-native-easy-grid';
+
 
 
 
 export class Caretaker extends Component {
+  constructor(props) {
+    super(props);
 
-  state = {
-    patientss: [{ name: "Prayut JunOK", duty: "Uncle near home" },
-    { name: "Pravitt TheWatch", duty: "Watcher" },
-    { name: "Suthep T.", duty: "Karawa Land" }],
-  
-    buildings: [{
-        name: 'IC Building',
-        floors: [
-            {
-                number: '6',
-                img: 'abc'
-            },
-            {
-                number: '8',
-                img: 'abc'
-            }
-        ]
-    },
-    {
-        name: 'ECC Building',
-        floors: [
-            {
-                number: '3',
-                img: 'abc'
-            },
-            {
-                number: '5',
-                img: 'abc'
-            }
-        ]
-    }
-    ]
-  
+    const { dispatch } = props;
+    dispatch(caretakerActions.updateCaretakerList())
   }
 
-   
-        goToReg = () => {
-            Actions.jump('caretaker_regis')
-          }
-      
-          renderItem = ({ item }) => (
-              <ListItem
-                title={item.name}
-                //subtitle={item.subtitle}
-                leftAvatar={{ source: { uri: item.avatar_url } }}
-              />
-            )
-            
-      
-          render () {
-          return (
-              
-               //{/* // <View>
-              // // <SearchPatient />
-              
-              // // </View> */}
-              
-                  //{/* <SearchPatient /> */}
-              
-              <ScrollView style={{flex:3}} contentContainerStyle={global.pageScrollView}>
-              <SearchPatient patientss={this.state.patientss}/>
-              
-              
-              <FlatList
-              //keyExtractor={this.keyExtractor}
-              data={list}
-              renderItem={this.renderItem}
-              />
-              
-              
-              <TouchableOpacity style={local.button} onPress={() => {this.goToReg()}}>
-                <Text style={local.btnText}>Add</Text>
-              </TouchableOpacity>
-      
-              </ScrollView>
-          )
-            }
-        }          
-      
-const mapStateToProps = (state) => ({
-    todos: state.todos,
-})
+  state = {
+    curr: '',
+  }
 
-const mapDispatchToProps = {
+  goToEdit = () => {
+    const { curr } = this.state
+    this.props.dispatch(caretakerActions.selectEditCaretaker(curr))
+    Actions.jump('caretaker_edit');
+  }
 
+  onChangeId = (value) => {
+    this.setState({ curr: value })
+    this.changeCurrent()
+  }
+
+  changeCurrent = () => {
+    Alert.alert(
+
+      // This is Alert Dialog Title
+      'Message',
+
+      // This is Alert Dialog Message. 
+      'Edit this caretaker information?',
+      [
+        // First Text Button in Alert Dialog.
+        { text: 'YES', onPress: () => this.goToEdit() },
+        { text: 'NO', onPress: () => console.log('Cancel Pressed!'), style: 'cancel' },
+
+
+      ],
+      { cancelable: false }
+
+    )
+  }
+
+  onDeleteCaretaker = (index) => {
+    Alert.alert(
+
+      // This is Alert Dialog Title
+      'Message',
+
+      // This is Alert Dialog Message. 
+      'Delete this caretaker?',
+      [
+        // First Text Button in Alert Dialog.
+        { text: 'YES', onPress: () => this.deleteCaretaker(index) },
+        { text: 'NO', onPress: () => console.log('Cancel Pressed!'), style: 'cancel' },
+
+
+      ],
+      { cancelable: false }
+
+    )
+
+  }
+
+  deleteCaretaker = (index) => {
+    this.props.dispatch(caretakerActions.deleteCaretakerByIndex(index));
+  }
+
+  goToReg = () => {
+    Actions.jump('caretaker_regis')
+  }
+
+
+  renderItem = ({ item }) => (
+    <ListItem bottomDivider={true}
+      title={item.name}
+      subtitle={
+        <View>
+          <Text>Patient: {item.patient}</Text>
+        </View>
+      }
+      leftAvatar={{
+        source: item.avatar_url && { uri: item.avatar_url },
+        title: item.name[0]
+      }}
+      rightElement={
+        <View style={{ flexDirection: 'row' }}>
+          <TouchableOpacity onPress={() => this.onChangeId(item.id)}>
+            <Image style={local.image} source={require('../../assets/icons/edit.png')} />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.onDeleteCaretaker(item.id)}>
+            <Image style={local.image} source={require('../../assets/icons/remove.png')} />
+          </TouchableOpacity>
+
+        </View>
+      }
+    />
+  )
+
+
+  render() {
+    const { caretakers } = this.props;
+    return (
+      <ScrollView style={local.view} contentContainerStyle={global.pageScrollView}>
+        <SearchPatient />
+        <FlatList
+          data={caretakers.data}
+          renderItem={(this.renderItem)}
+        />
+        {/* <FlatList data={caretakers.data} renderItem={({ item, index }) =>
+          <View style={{ flexDirection: 'row' }}>
+            <CaretakerList name={item.name} id={item.id} patient={item.patient} />
+            <TouchableOpacity onPress={() => this.onDeleteCaretaker(item.id)}>
+              <Image style={local.image} source={require('../../assets/icons/remove.png')} />
+              
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => this.onChangeId(item.id)}>
+              <Image style={local.image} source={require('../../assets/icons/edit.png')} />
+            </TouchableOpacity>
+          </View>
+        } /> */}
+        <View style={{
+          alignSelf: 'flex-end',
+          alignItems: 'flex-end',
+          padding: 20,
+          marginTop: 30,
+          flexDirection: 'row'
+        }}>
+          <TouchableOpacity onPress={() => { this.goToReg() }}>
+            <Image style={{ height: 40, width: 40 }} source={require('../../assets/icons/plus.png')} />
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    )
+  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Caretaker)
+const mapStateToProps = (state) => ({
+  todos: state.todos,
+  caretakers: state.caretakers
+})
+
+
+
+export default connect(mapStateToProps)(Caretaker)

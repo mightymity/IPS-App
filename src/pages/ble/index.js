@@ -13,6 +13,7 @@ import IndoorMap from "../../containers/indoor-map"
 
 
 
+
 export class BLE extends Component {
 
     state = {
@@ -38,11 +39,11 @@ export class BLE extends Component {
             floors: [
                 {
                     number: '3',
-                    img: require('../../assets/images/ecc-floor3.png')
+                    img: require('../../assets/images/ecc-floor6.png')
                 },
                 {
                     number: '5',
-                    img: require('../../assets/images/ecc-floor5.png')
+                    img: require('../../assets/images/ecc-floor6.png')
                 }
             ]
         }
